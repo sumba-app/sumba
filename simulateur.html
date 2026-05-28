@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sumba — Simulateur</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green: #1a3c2e;
+  --green-mid: #2d6a4f;
+  --green-light: #52b788;
+  --green-pale: #d8f3dc;
+  --cream: #faf9f6;
+  --white: #ffffff;
+  --dark: #0d1f17;
+  --gray: #6b7280;
+  --gray-light: #f3f4f6;
+  --border: rgba(26,60,46,0.12);
+  --red: #dc2626;
+  --red-pale: #fef2f2;
+  --amber: #d97706;
+  --amber-pale: #fffbeb;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 24px rgba(0,0,0,0.08);
+  --shadow-lg: 0 16px 48px rgba(0,0,0,0.12);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --radius-pill: 100px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--dark); line-height: 1.6; }
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px; height: 68px;
+  background: rgba(250,249,246,0.95); backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.nav-logo-mark { width: 34px; height: 34px; background: var(--green); border-radius: 9px; display: flex; align-items: center; justify-content: center; }
+.nav-logo-text { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--green); }
+.nav-right { display: flex; align-items: center; gap: 12px; }
+.btn-ghost { font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; color: var(--green); background: none; border: 1.5px solid var(--border); border-radius: var(--radius-pill); padding: 8px 20px; cursor: pointer; text-decoration: none; transition: all 0.2s; }
+.btn-ghost:hover { border-color: var(--green); background: var(--green-pale); }
+.btn-primary { font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; color: var(--white); background: var(--green); border: none; border-radius: var(--radius-pill); padding: 9px 22px; cursor: pointer; text-decoration: none; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+.btn-primary:hover { background: var(--green-mid); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(26,60,46,0.25); }
+
+/* LAYOUT */
+.app-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr 340px;
+  min-height: 100vh;
+  padding-top: 68px;
+}
+
+/* SIDEBAR */
+.sidebar {
+  background: var(--white);
+  border-right: 1px solid var(--border);
+  padding: 32px 20px;
+  position: sticky;
+  top: 68px;
+  height: calc(100vh - 68px);
+  overflow-y: auto;
+}
+.sidebar-title { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gray); margin-bottom: 16px; padding: 0 8px; }
+.sidebar-nav { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+.sidebar-nav li a {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border-radius: 10px;
+  font-size: 14px; font-weight: 400; color: var(--gray);
+  text-decoration: none; transition: all 0.2s; cursor: pointer;
+}
+.sidebar-nav li a:hover { background: var(--gray-light); color: var(--dark); }
+.sidebar-nav li a.active { background: var(--green-pale); color: var(--green); font-weight: 600; }
+.sidebar-nav li a .nav-icon { width: 20px; text-align: center; font-size: 16px; }
+.sidebar-nav li a .nav-badge { margin-left: auto; font-size: 10px; background: var(--green-pale); color: var(--green-mid); padding: 2px 7px; border-radius: 20px; font-weight: 500; }
+.sidebar-divider { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
+
+/* MAIN */
+.main { padding: 40px 48px; overflow-y: auto; }
+.module { display: none; }
+.module.active { display: block; }
+
+.module-header { margin-bottom: 36px; }
+.module-label { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--green-light); margin-bottom: 8px; }
+.module-title { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700; color: var(--dark); line-height: 1.2; margin-bottom: 8px; }
+.module-desc { font-size: 15px; color: var(--gray); font-weight: 300; }
+
+/* FORM */
+.form-section { margin-bottom: 36px; }
+.form-section-title {
+  font-size: 13px; font-weight: 600; color: var(--dark);
+  margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+}
+.form-section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-grid-1 { display: grid; grid-template-columns: 1fr; gap: 16px; }
+
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label { font-size: 13px; font-weight: 500; color: var(--dark); display: flex; align-items: center; gap: 6px; }
+.field-hint { font-size: 12px; color: var(--gray); margin-top: 4px; }
+
+.field input, .field select {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px; font-weight: 400;
+  color: var(--dark);
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 11px 14px;
+  transition: all 0.2s;
+  width: 100%;
+  appearance: none;
+}
+.field input:focus, .field select:focus {
+  outline: none; border-color: var(--green-light);
+  box-shadow: 0 0 0 3px rgba(82,183,136,0.12);
+}
+.field input.error { border-color: var(--red); }
+
+.input-with-unit { position: relative; }
+.input-with-unit input { padding-right: 48px; }
+.input-unit {
+  position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+  font-size: 13px; color: var(--gray); font-weight: 500; pointer-events: none;
+}
+
+.toggle-group { display: flex; gap: 0; border: 1.5px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; }
+.toggle-btn {
+  flex: 1; padding: 10px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 400;
+  color: var(--gray); background: var(--white); border: none; cursor: pointer; transition: all 0.2s;
+}
+.toggle-btn:not(:last-child) { border-right: 1.5px solid var(--border); }
+.toggle-btn.active { background: var(--green); color: var(--white); font-weight: 600; }
+
+.tooltip-icon { width: 16px; height: 16px; background: var(--gray-light); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; color: var(--gray); cursor: help; position: relative; }
+.tooltip-icon:hover::after {
+  content: attr(data-tip);
+  position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: var(--dark); color: var(--white); font-size: 12px; font-weight: 400;
+  padding: 8px 12px; border-radius: 8px; width: 220px; z-index: 10; line-height: 1.5;
+  white-space: normal;
+}
+
+/* DEBT ROWS */
+.debt-list { display: flex; flex-direction: column; gap: 10px; }
+.debt-row {
+  display: grid; grid-template-columns: 1fr 120px 36px;
+  gap: 10px; align-items: end;
+}
+.debt-row .field input { font-size: 14px; padding: 9px 12px; }
+.btn-remove {
+  width: 36px; height: 36px; background: var(--red-pale); border: 1px solid rgba(220,38,38,0.15);
+  border-radius: 8px; color: var(--red); font-size: 18px; cursor: pointer; display: flex;
+  align-items: center; justify-content: center; transition: all 0.2s; flex-shrink: 0;
+}
+.btn-remove:hover { background: #fee2e2; }
+.btn-add {
+  display: flex; align-items: center; gap: 6px; padding: 9px 16px;
+  background: none; border: 1.5px dashed var(--border); border-radius: var(--radius-sm);
+  font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--gray);
+  cursor: pointer; transition: all 0.2s; width: 100%; margin-top: 8px;
+}
+.btn-add:hover { border-color: var(--green-light); color: var(--green); background: var(--green-pale); }
+
+/* CTA CALC */
+.calc-btn {
+  width: 100%; padding: 16px; font-family: 'DM Sans', sans-serif;
+  font-size: 16px; font-weight: 600; color: var(--white);
+  background: var(--green); border: none; border-radius: var(--radius);
+  cursor: pointer; transition: all 0.25s; margin-top: 8px;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.calc-btn:hover { background: var(--green-mid); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(26,60,46,0.25); }
+
+/* RESULTS PANEL */
+.results-panel {
+  background: var(--white);
+  border-left: 1px solid var(--border);
+  padding: 32px 28px;
+  position: sticky;
+  top: 68px;
+  height: calc(100vh - 68px);
+  overflow-y: auto;
+}
+.results-empty {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  height: 100%; text-align: center; color: var(--gray);
+}
+.results-empty-icon { font-size: 48px; margin-bottom: 16px; opacity: 0.4; }
+.results-empty p { font-size: 14px; line-height: 1.65; max-width: 220px; }
+.results-content { display: none; }
+.results-content.visible { display: block; }
+
+.result-hero {
+  background: var(--green); border-radius: var(--radius); padding: 24px;
+  text-align: center; margin-bottom: 20px;
+}
+.result-hero-label { font-size: 12px; color: rgba(255,255,255,0.6); margin-bottom: 4px; }
+.result-hero-value { font-family: 'Playfair Display', serif; font-size: 40px; font-weight: 700; color: var(--white); line-height: 1; }
+.result-hero-sub { font-size: 13px; color: rgba(255,255,255,0.6); margin-top: 6px; }
+
+.result-cards { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+.result-card {
+  background: var(--gray-light); border-radius: var(--radius-sm); padding: 14px 16px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.result-card-label { font-size: 13px; color: var(--gray); }
+.result-card-value { font-size: 15px; font-weight: 600; color: var(--dark); }
+.result-card-value.pos { color: #15803d; }
+.result-card-value.neg { color: var(--red); }
+.result-card-value.warn { color: var(--amber); }
+
+.result-alert {
+  border-radius: var(--radius-sm); padding: 14px 16px;
+  font-size: 13px; line-height: 1.6; margin-bottom: 12px;
+  display: flex; gap: 10px; align-items: flex-start;
+}
+.result-alert.danger { background: var(--red-pale); color: #991b1b; border: 1px solid rgba(220,38,38,0.2); }
+.result-alert.warn { background: var(--amber-pale); color: #92400e; border: 1px solid rgba(217,119,6,0.2); }
+.result-alert.ok { background: var(--green-pale); color: #14532d; border: 1px solid rgba(82,183,136,0.3); }
+.result-alert-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+.result-section-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--gray); margin: 20px 0 10px; }
+
+/* REGIME CARDS */
+.regime-cards { display: flex; flex-direction: column; gap: 10px; }
+.regime-card {
+  border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 14px;
+  transition: all 0.2s; cursor: default;
+}
+.regime-card.best { border-color: var(--green-light); background: var(--green-pale); }
+.regime-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.regime-name { font-size: 14px; font-weight: 600; color: var(--dark); }
+.regime-badge { font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 20px; }
+.regime-badge.best { background: var(--green); color: var(--white); }
+.regime-badge.ok { background: var(--amber-pale); color: var(--amber); border: 1px solid rgba(217,119,6,0.2); }
+.regime-card-value { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--dark); }
+.regime-card-sub { font-size: 12px; color: var(--gray); margin-top: 2px; }
+
+/* TABS */
+.tabs { display: flex; gap: 0; border: 1.5px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; margin-bottom: 28px; }
+.tab-btn {
+  flex: 1; padding: 10px 8px; font-family: 'DM Sans', sans-serif; font-size: 13px;
+  font-weight: 400; color: var(--gray); background: var(--white); border: none;
+  cursor: pointer; transition: all 0.2s; border-right: 1px solid var(--border);
+}
+.tab-btn:last-child { border-right: none; }
+.tab-btn.active { background: var(--green); color: var(--white); font-weight: 600; }
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* PROGRESS BAR */
+.progress-bar-wrap { height: 6px; background: var(--gray-light); border-radius: 3px; overflow: hidden; margin: 6px 0 12px; }
+.progress-bar-fill { height: 100%; border-radius: 3px; transition: width 0.5s ease; }
+.progress-bar-fill.green { background: var(--green-light); }
+.progress-bar-fill.amber { background: var(--amber); }
+.progress-bar-fill.red { background: var(--red); }
+
+/* INFO BOX */
+.info-box {
+  background: #eff6ff; border: 1px solid #bfdbfe; border-radius: var(--radius-sm);
+  padding: 14px 16px; font-size: 13px; color: #1e40af; line-height: 1.65; margin-top: 16px;
+}
+.info-box strong { font-weight: 600; }
+
+/* RESPONSIVE */
+@media (max-width: 1100px) {
+  .app-layout { grid-template-columns: 220px 1fr 300px; }
+  .main { padding: 32px 32px; }
+}
+@media (max-width: 768px) {
+  .app-layout { grid-template-columns: 1fr; }
+  nav { padding: 0 20px; }
+  .sidebar { display: none; }
+  .results-panel { position: static; height: auto; border-left: none; border-top: 1px solid var(--border); }
+  .main { padding: 24px 20px; }
+  .form-grid-2 { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-mark">
+      <svg viewBox="0 0 20 20" fill="none"><path d="M3 14L8 9L11 12L17 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 6H17V9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <span class="nav-logo-text">Sumba</span>
+  </a>
+  <div class="nav-right">
+    <a href="#" class="btn-ghost">Sauvegarder</a>
+    <a href="#" class="btn-primary">Mon compte</a>
+  </div>
+</nav>
+
+<div class="app-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <p class="sidebar-title">Simulateurs</p>
+    <ul class="sidebar-nav">
+      <li><a onclick="showModule('capacite')" class="active" id="nav-capacite"><span class="nav-icon">💳</span> Capacité d'emprunt</a></li>
+      <li><a onclick="showModule('locatif')" id="nav-locatif"><span class="nav-icon">🏠</span> Investissement locatif</a></li>
+      <li><a onclick="showModule('mb')" id="nav-mb"><span class="nav-icon">🔨</span> Marchand de biens</a></li>
+      <li><a onclick="showModule('fiscalite')" id="nav-fiscalite"><span class="nav-icon">📊</span> Régimes fiscaux</a></li>
+      <li><a onclick="showModule('sci')" id="nav-sci"><span class="nav-icon">🏢</span> SCI vs Nom propre</a></li>
+      <li><a onclick="showModule('projection')" id="nav-projection"><span class="nav-icon">📈</span> Projection patrimoine <span class="nav-badge">Bientôt</span></a></li>
+    </ul>
+    <hr class="sidebar-divider">
+    <p class="sidebar-title">Mes simulations</p>
+    <ul class="sidebar-nav">
+      <li><a href="#"><span class="nav-icon">💾</span> Connexion pour sauvegarder</a></li>
+    </ul>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- MODULE : CAPACITÉ D'EMPRUNT -->
+    <div class="module active" id="module-capacite">
+      <div class="module-header">
+        <div class="module-label">Simulateur</div>
+        <h1 class="module-title">Capacité d'emprunt</h1>
+        <p class="module-desc">Calculez combien une banque acceptera réellement de vous prêter, selon les règles HCSF 2024.</p>
+      </div>
+
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('cap', 'solo', this)">Seul</button>
+        <button class="tab-btn" onclick="switchTab('cap', 'duo', this)">En couple / co-emprunt</button>
+        <button class="tab-btn" onclick="switchTab('cap', 'societe', this)">En société</button>
+      </div>
+
+      <!-- TAB SOLO -->
+      <div class="tab-content active" id="cap-solo">
+        <div class="form-section">
+          <div class="form-section-title">Vos revenus</div>
+          <div class="form-grid-2">
+            <div class="field">
+              <label>Salaire net mensuel <span class="tooltip-icon" data-tip="Votre salaire net après impôts. Si vous êtes en période d'essai, indiquez quand même votre salaire — mais sachez que les banques exigent généralement un CDI confirmé.">?</span></label>
+              <div class="input-with-unit"><input type="number" id="cap-salaire" placeholder="3 000" oninput="calcCapacite()"><span class="input-unit">€</span></div>
+            </div>
+            <div class="field">
+              <label>Revenus locatifs bruts / mois <span class="tooltip-icon" data-tip="Vos loyers bruts perçus. La banque n'en retient que 70% pour se couvrir contre les risques de vacance locative.">?</span></label>
+              <div class="input-with-unit"><input type="number" id="cap-locatif" placeholder="0" oninput="calcCapacite()"><span class="input-unit">€</span></div>
+            </div>
+            <div class="field">
+              <label>Autres revenus réguliers</label>
+              <div class="input-with-unit"><input type="number" id="cap-autres" placeholder="0" oninput="calcCapacite()"><span class="input-unit">€</span></div>
+              <p class="field-hint">Dividendes, pensions, BIC déclarés... (sur 3 ans minimum)</p>
+            </div>
+            <div class="field">
+              <label>Type de contrat</label>
+              <select id="cap-contrat" onchange="calcCapacite()">
+                <option value="cdi">CDI confirmé</option>
+                <option value="pe">CDI — période d'essai</option>
+                <option value="cdd">CDD</option>
+                <option value="independant">Indépendant / TNS</option>
+                <option value="etudiant">Étudiant / sans revenu</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-title">Vos charges existantes</div>
+          <div id="debt-list" class="debt-list"></div>
+          <button class="btn-add" onclick="addDebt()">+ Ajouter un crédit en cours</button>
+          <div class="info-box" style="margin-top:12px">
+            <strong>Pourquoi c'est important :</strong> La banque additionne toutes vos mensualités de crédit existantes (voiture, conso, immo) avant de calculer ce qu'elle peut encore vous prêter. Le plafond légal est 35% de vos revenus nets, <em>charges comprises</em>.
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-title">Paramètres du prêt</div>
+          <div class="form-grid-2">
+            <div class="field">
+              <label>Durée souhaitée</label>
+              <select id="cap-duree" onchange="calcCapacite()">
+                <option value="15">15 ans</option>
+                <option value="20" selected>20 ans</option>
+                <option value="25">25 ans</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Taux d'intérêt estimé <span class="tooltip-icon" data-tip="Taux fixe hors assurance. En 2024, les taux se situent entre 3,5% et 4,5% selon la durée et le profil.">?</span></label>
+              <div class="input-with-unit"><input type="number" id="cap-taux" value="4.0" step="0.1" oninput="calcCapacite()"><span class="input-unit">%</span></div>
+            </div>
+            <div class="field">
+              <label>Apport disponible</label>
+              <div class="input-with-unit"><input type="number" id="cap-apport" placeholder="0" oninput="calcCapacite()"><span class="input-unit">€</span></div>
+            </div>
+            <div class="field">
+              <label>Objectif d'achat</label>
+              <select id="cap-objectif" onchange="calcCapacite()">
+                <option value="locatif">Investissement locatif</option>
+                <option value="rp">Résidence principale</option>
+                <option value="mb">Marchand de biens (in fine)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <button class="calc-btn" onclick="calcCapacite()">Calculer ma capacité d'emprunt →</button>
+      </div>
+
+      <!-- TAB DUO -->
+      <div class="tab-content" id="cap-duo">
+        <div class="form-section">
+          <div class="form-section-title">Emprunteur 1</div>
+          <div class="form-grid-2">
+            <div class="field">
+              <label>Salaire net mensuel</label>
+              <div class="input-with-unit"><input type="number" id="duo-sal1" placeholder="3 000" oninput="calcCapaciteDuo()"><span class="input-unit">€</span></div>
+            </div>
+            <div class="field">
+              <label>Type de contrat</label>
+              <select id="duo-contrat1" onchange="calcCapaciteDuo()">
+                <option value="cdi">CDI confirmé</option>
+                <option value="pe">CDI — période d'essai</option>
+                <option value="cdd">CDD</option>
+                <option value="independant">Indépendant</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="form-section">
+          <div class="form-section-title">Emprunteur 2</div>
+          <div class="form-grid-2">
+            <div class="field">
+              <label>Salaire net mensuel</label>
+              <div class="input-with-unit"><input type="number" id="duo-sal2" placeholder="2 500" oninput="calcCapaciteDuo()"><span class="input-unit">€</span></div>
+            </div>
+            <div class="field">
+              <label>Type de contrat</label>
+              <select id="duo-contrat2" onchange="calcCapaciteDuo()">
+                <option value="cdi">CDI confirmé</option>
+                <option value="pe">CDI — période d'essai</option>
+                <option value="cdd">CDD</option>
+                <option value="independant">Indépendant</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="form-section">
+          <div class="form-section-title">Revenus complémentaires & charges</div>
+          <div class="form-grid-2">
+            <div class="field">
+              <label>Revenus locatifs bruts / mois</label>
+              <div class="input-with-unit"><input type="number" id="duo-locatif" placeholder="0" oninput="calcCapaciteDuo()"><span class="input-unit">€</span></div>
+            </div>
+            <div class="field">
+              <label>Total mensualités crédit en cours</label>
+              <div class="input-with-unit"><input type="number" id="duo-dettes" placeholder="0" oninput="calcCapaciteDuo()"><span class="input-unit">€/mois</span></div>
+            </div>
+            <div class="field">
+              <label>Durée souhaitée</label>
+              <select id="duo-duree" onchange="calcCapaciteDuo()">
+                <option value="15">15 ans</option>
+                <option value="20" selected>20 ans</option>
+                <option value="25">25 ans</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Taux estimé</label>
+              <div class="input-with-unit"><input type="number" id="duo-taux" value="3.9" step="0.1" oninput="calcCapaciteDuo()"><span class="input-unit">%</span></div>
+            </div>
+          </div>
+        </div>
+        <button class="calc-btn" onclick="calcCapaciteDuo()">Calculer notre capacité d'emprunt →</button>
+      </div>
+
+      <!-- TAB SOCIÉTÉ -->
+      <div class="tab-content" id="cap-societe">
+        <div class="info-box" style="margin-bottom:20px">
+          <strong>Look-through bancaire :</strong> Même en société (SCI, SAS), la banque analyse les revenus personnels des associés. Les calculs ci-dessous intègrent cette réalité.
+        </div>
+        <div class="form-section">
+          <div class="form-section-title">Associé principal (gérant)</div>
+          <div class="form-grid-2">
+            <div class="field">
+              <label>Revenus nets personnels / mois</label>
+              <div class="input-with-unit"><input type="number" id="soc-sal1" placeholder="3 000" oninput="calcCapaciteSoc()"><span class="input-unit">€</span></div>
+            </div>
+            <div class="field">
+              <label>Revenus locatifs existants / mois</label>
+              <div class="input-with-unit"><input type="number" id="soc-loc1" placeholder="0" oninput="calcCapaciteSoc()"><span class="input-unit">€</span></div>
+            </div>
+            <div class="field">
+              <label>Mensualités crédit perso en cours</label>
+              <div class="input-with-unit"><input type="number" id="soc-dette1" placeholder="0" oninput="calcCapaciteSoc()"><span class="input-unit">€/mois</span></div>
+            </div>
+            <div class="field">
+              <label>Type de contrat</label>
+              <select id="soc-contrat1" onchange="calcCapaciteSoc()">
+                <option value="cdi">CDI confirmé</option>
+                <option value="pe">CDI — période d'essai</option>
+                <option value="independant">Indépendant</option>
+                <option value="etudiant">Sans revenu stable</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="form-section">
+          <div class="form-section-title">Associé 2 (optionnel)</div>
+          <div class="form-grid-2">
+            <div class="field">
+              <label>Revenus nets personnels / mois</label>
+              <div class="input-with-unit"><input type="number" id="soc-sal2" placeholder="0" oninput="calcCapaciteSoc()"><span class="input-unit">€</span></div>
+            </div>
+            <div class="field">
+              <label>Mensualités crédit perso en cours</label>
+              <div class="input-with-unit"><input type="number" id="soc-dette2" placeholder="0" oninput="calcCapaciteSoc()"><span class="input-unit">€/mois</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="form-section">
+          <div class="form-section-title">Structure & financement</div>
+          <div class="form-grid-2">
+            <div class="field">
+              <label>Type de société</label>
+              <select id="soc-type" onchange="calcCapaciteSoc()">
+                <option value="sci">SCI</option>
+                <option value="sas">SAS / SARL</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Type de crédit visé</label>
+              <select id="soc-credit" onchange="calcCapaciteSoc()">
+                <option value="amortissable">Amortissable (20 ans)</option>
+                <option value="infine">In fine (12-18 mois)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Apport société</label>
+              <div class="input-with-unit"><input type="number" id="soc-apport" placeholder="0" oninput="calcCapaciteSoc()"><span class="input-unit">€</span></div>
+            </div>
+            <div class="field">
+              <label>Garantie hypothécaire disponible</label>
+              <div class="input-with-unit"><input type="number" id="soc-hypo" placeholder="0" oninput="calcCapaciteSoc()"><span class="input-unit">€</span></div>
+              <p class="field-hint">Valeur nette du bien (valeur − capital restant dû)</p>
+            </div>
+          </div>
+        </div>
+        <button class="calc-btn" onclick="calcCapaciteSoc()">Calculer la capacité de la société →</button>
+      </div>
+    </div>
+
+    <!-- MODULE : LOCATIF -->
+    <div class="module" id="module-locatif">
+      <div class="module-header">
+        <div class="module-label">Simulateur</div>
+        <h1 class="module-title">Investissement locatif</h1>
+        <p class="module-desc">Cash flow mensuel, rendement net, optimisation fiscale selon votre tranche d'imposition.</p>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Le bien</div>
+        <div class="form-grid-2">
+          <div class="field">
+            <label>Prix d'achat</label>
+            <div class="input-with-unit"><input type="number" id="loc-prix" placeholder="150 000" oninput="calcLocatif()"><span class="input-unit">€</span></div>
+          </div>
+          <div class="field">
+            <label>Frais de notaire <span class="tooltip-icon" data-tip="~8% en ancien, ~3% en neuf. Sumba calcule automatiquement selon le type de bien.">?</span></label>
+            <select id="loc-notaire" onchange="calcLocatif()">
+              <option value="0.08">Ancien (~8%)</option>
+              <option value="0.03">Neuf / VEFA (~3%)</option>
+              <option value="custom">Saisir manuellement</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Travaux de rénovation</label>
+            <div class="input-with-unit"><input type="number" id="loc-travaux" placeholder="0" oninput="calcLocatif()"><span class="input-unit">€</span></div>
+          </div>
+          <div class="field">
+            <label>Type de location</label>
+            <select id="loc-type" onchange="calcLocatif()">
+              <option value="nue">Location nue</option>
+              <option value="meuble">Meublée (LMNP)</option>
+              <option value="airbnb">Meublée courte durée (Airbnb)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Les revenus</div>
+        <div class="form-grid-2">
+          <div class="field">
+            <label>Loyer mensuel brut estimé</label>
+            <div class="input-with-unit"><input type="number" id="loc-loyer" placeholder="800" oninput="calcLocatif()"><span class="input-unit">€/mois</span></div>
+          </div>
+          <div class="field">
+            <label>Vacance locative estimée <span class="tooltip-icon" data-tip="Nombre de mois par an où le bien est inoccupé. En zone tendue, comptez 0,5 à 1 mois. En zone détendue, 1 à 2 mois.">?</span></label>
+            <select id="loc-vacance" onchange="calcLocatif()">
+              <option value="0">Aucune (0 mois)</option>
+              <option value="0.5" selected>Faible (0,5 mois / an)</option>
+              <option value="1">Normale (1 mois / an)</option>
+              <option value="2">Élevée (2 mois / an)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Les charges annuelles</div>
+        <div class="form-grid-2">
+          <div class="field">
+            <label>Taxe foncière</label>
+            <div class="input-with-unit"><input type="number" id="loc-tf" placeholder="800" oninput="calcLocatif()"><span class="input-unit">€/an</span></div>
+          </div>
+          <div class="field">
+            <label>Charges de copropriété (non récupérables)</label>
+            <div class="input-with-unit"><input type="number" id="loc-copro" placeholder="600" oninput="calcLocatif()"><span class="input-unit">€/an</span></div>
+          </div>
+          <div class="field">
+            <label>Assurance PNO</label>
+            <div class="input-with-unit"><input type="number" id="loc-assurance" placeholder="200" oninput="calcLocatif()"><span class="input-unit">€/an</span></div>
+          </div>
+          <div class="field">
+            <label>Gestion agence</label>
+            <select id="loc-gestion" onchange="calcLocatif()">
+              <option value="0">Gestion directe (0%)</option>
+              <option value="0.07">Agence (~7% des loyers)</option>
+              <option value="0.10">Agence premium (~10%)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Le financement</div>
+        <div class="form-grid-2">
+          <div class="field">
+            <label>Apport personnel</label>
+            <div class="input-with-unit"><input type="number" id="loc-apport" placeholder="20 000" oninput="calcLocatif()"><span class="input-unit">€</span></div>
+          </div>
+          <div class="field">
+            <label>Durée du crédit</label>
+            <select id="loc-duree" onchange="calcLocatif()">
+              <option value="15">15 ans</option>
+              <option value="20" selected>20 ans</option>
+              <option value="25">25 ans</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Taux d'intérêt</label>
+            <div class="input-with-unit"><input type="number" id="loc-taux" value="4.0" step="0.1" oninput="calcLocatif()"><span class="input-unit">%</span></div>
+          </div>
+          <div class="field">
+            <label>Assurance emprunteur</label>
+            <div class="input-with-unit"><input type="number" id="loc-assur-credit" value="0.3" step="0.05" oninput="calcLocatif()"><span class="input-unit">%</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Votre fiscalité personnelle</div>
+        <div class="form-grid-2">
+          <div class="field">
+            <label>Tranche marginale d'imposition <span class="tooltip-icon" data-tip="Votre taux d'imposition sur la dernière tranche de revenus. Sumba l'utilise pour comparer les régimes fiscaux et recommander le plus avantageux.">?</span></label>
+            <select id="loc-tmi" onchange="calcLocatif()">
+              <option value="0">0% (non imposable)</option>
+              <option value="0.11">11%</option>
+              <option value="0.30" selected>30%</option>
+              <option value="0.41">41%</option>
+              <option value="0.45">45%</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Structure d'achat</label>
+            <select id="loc-structure" onchange="calcLocatif()">
+              <option value="perso">Nom propre</option>
+              <option value="sci-ir">SCI à l'IR</option>
+              <option value="sci-is">SCI à l'IS</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <button class="calc-btn" onclick="calcLocatif()">Calculer mon rendement →</button>
+    </div>
+
+    <!-- MODULE : MB -->
+    <div class="module" id="module-mb">
+      <div class="module-header">
+        <div class="module-label">Simulateur</div>
+        <h1 class="module-title">Marchand de biens</h1>
+        <p class="module-desc">Calculez la rentabilité de votre opération achat / rénovation / revente.</p>
+      </div>
+      <div class="form-section">
+        <div class="form-section-title">L'opération</div>
+        <div class="form-grid-2">
+          <div class="field"><label>Prix d'achat</label><div class="input-with-unit"><input type="number" id="mb-achat" placeholder="120 000" oninput="calcMB()"><span class="input-unit">€</span></div></div>
+          <div class="field"><label>Budget travaux</label><div class="input-with-unit"><input type="number" id="mb-travaux" placeholder="40 000" oninput="calcMB()"><span class="input-unit">€</span></div></div>
+          <div class="field"><label>Prix de revente visé</label><div class="input-with-unit"><input type="number" id="mb-revente" placeholder="220 000" oninput="calcMB()"><span class="input-unit">€</span></div></div>
+          <div class="field"><label>Durée de l'opération</label><select id="mb-duree" onchange="calcMB()"><option value="9">9 mois</option><option value="12">12 mois</option><option value="15">15 mois</option><option value="18" selected>18 mois</option><option value="24">24 mois</option></select></div>
+        </div>
+      </div>
+      <div class="form-section">
+        <div class="form-section-title">Financement</div>
+        <div class="form-grid-2">
+          <div class="field"><label>Apport société</label><div class="input-with-unit"><input type="number" id="mb-apport" placeholder="50 000" oninput="calcMB()"><span class="input-unit">€</span></div></div>
+          <div class="field"><label>Quotité financée</label><select id="mb-quotite" onchange="calcMB()"><option value="70">70%</option><option value="80" selected>80%</option><option value="90">90%</option><option value="100">100%</option><option value="110">110%</option></select></div>
+          <div class="field"><label>Taux in fine</label><div class="input-with-unit"><input type="number" id="mb-taux" value="5.5" step="0.1" oninput="calcMB()"><span class="input-unit">%</span></div></div>
+          <div class="field"><label>Commission agence vente</label><select id="mb-agence" onchange="calcMB()"><option value="0">Sans agence (0%)</option><option value="0.03" selected>Agence (3%)</option><option value="0.05">Agence premium (5%)</option></select></div>
+        </div>
+      </div>
+      <button class="calc-btn" onclick="calcMB()">Calculer ma marge →</button>
+    </div>
+
+    <!-- MODULES COMING SOON -->
+    <div class="module" id="module-fiscalite">
+      <div class="module-header">
+        <div class="module-label">Bientôt disponible</div>
+        <h1 class="module-title">Comparateur fiscal</h1>
+        <p class="module-desc">LMNP micro-BIC vs réel, SCI IR vs IS — Sumba met en évidence le régime optimal selon votre tranche d'imposition.</p>
+      </div>
+      <div class="result-alert ok"><span class="result-alert-icon">🚧</span>Ce module est en cours de développement. Il sera disponible très prochainement.</div>
+    </div>
+    <div class="module" id="module-sci">
+      <div class="module-header">
+        <div class="module-label">Bientôt disponible</div>
+        <h1 class="module-title">SCI vs Nom propre</h1>
+        <p class="module-desc">Comparez les deux structures sur 20 ans — fiscalité, transmission, flexibilité.</p>
+      </div>
+      <div class="result-alert ok"><span class="result-alert-icon">🚧</span>Ce module est en cours de développement.</div>
+    </div>
+    <div class="module" id="module-projection">
+      <div class="module-header">
+        <div class="module-label">Bientôt disponible</div>
+        <h1 class="module-title">Projection patrimoine</h1>
+        <p class="module-desc">Visualisez l'évolution de votre patrimoine net sur 30 ans.</p>
+      </div>
+      <div class="result-alert ok"><span class="result-alert-icon">🚧</span>Ce module est en cours de développement.</div>
+    </div>
+
+  </main>
+
+  <!-- RESULTS PANEL -->
+  <aside class="results-panel">
+    <div class="results-empty" id="results-empty">
+      <div class="results-empty-icon">📊</div>
+      <p>Remplissez le formulaire et lancez le calcul pour voir vos résultats ici.</p>
+    </div>
+    <div class="results-content" id="results-content"></div>
+  </aside>
+
+</div>
+
+<script>
+// ─── NAVIGATION ───────────────────────────────────────────────
+function showModule(name) {
+  document.querySelectorAll('.module').forEach(m => m.classList.remove('active'));
+  document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+  document.getElementById('module-' + name).classList.add('active');
+  document.getElementById('nav-' + name).classList.add('active');
+  clearResults();
+}
+
+function switchTab(module, tab, btn) {
+  const prefix = module + '-';
+  document.querySelectorAll('[id^="' + prefix + '"]').forEach(el => {
+    if (el.classList.contains('tab-content')) el.classList.remove('active');
+  });
+  document.getElementById(prefix + tab).classList.add('active');
+  btn.closest('.tabs').querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  clearResults();
+}
+
+function clearResults() {
+  document.getElementById('results-empty').style.display = 'flex';
+  document.getElementById('results-content').classList.remove('visible');
+  document.getElementById('results-content').innerHTML = '';
+}
+
+function showResults(html) {
+  document.getElementById('results-empty').style.display = 'none';
+  const rc = document.getElementById('results-content');
+  rc.innerHTML = html;
+  rc.classList.add('visible');
+}
+
+// ─── DEBTS ────────────────────────────────────────────────────
+let debtCount = 0;
+function addDebt() {
+  debtCount++;
+  const id = 'debt-' + debtCount;
+  const row = document.createElement('div');
+  row.className = 'debt-row';
+  row.id = id;
+  row.innerHTML = `
+    <div class="field"><input type="text" placeholder="Nom du crédit (ex: crédit auto)" oninput="calcCapacite()"></div>
+    <div class="field"><div class="input-with-unit"><input type="number" placeholder="350" oninput="calcCapacite()"><span class="input-unit">€/mois</span></div></div>
+    <button class="btn-remove" onclick="removeDebt('${id}')">×</button>
+  `;
+  document.getElementById('debt-list').appendChild(row);
+}
+function removeDebt(id) {
+  document.getElementById(id).remove();
+  calcCapacite();
+}
+function getTotalDebts() {
+  let total = 0;
+  document.querySelectorAll('#debt-list .debt-row').forEach(row => {
+    const inputs = row.querySelectorAll('input[type=number]');
+    if (inputs[0]) total += parseFloat(inputs[0].value) || 0;
+  });
+  return total;
+}
+
+// ─── HELPERS ──────────────────────────────────────────────────
+function fmt(n) { return Math.round(n).toLocaleString('fr-FR') + ' €'; }
+function fmtPct(n) { return n.toFixed(1).replace('.', ',') + ' %'; }
+function mensualite(capital, taux, duree) {
+  const r = taux / 100 / 12;
+  const n = duree * 12;
+  if (r === 0) return capital / n;
+  return capital * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
+}
+function capitalEmpruntable(mensuMax, taux, duree) {
+  const r = taux / 100 / 12;
+  const n = duree * 12;
+  if (r === 0) return mensuMax * n;
+  return mensuMax * (1 - Math.pow(1 + r, -n)) / r;
+}
+function alerteContrat(type) {
+  if (type === 'pe') return '<div class="result-alert warn"><span class="result-alert-icon">⚠️</span><span>Période d\'essai détectée : la plupart des banques exigent un CDI confirmé. Cette simulation indique votre capacité théorique, mais l\'obtention du prêt nécessite généralement d\'attendre la fin de la période d\'essai.</span></div>';
+  if (type === 'cdd') return '<div class="result-alert danger"><span class="result-alert-icon">🚫</span><span>CDD : les banques refusent quasi-systématiquement les dossiers en CDD. Un co-emprunteur en CDI peut débloquer la situation.</span></div>';
+  if (type === 'etudiant') return '<div class="result-alert danger"><span class="result-alert-icon">🚫</span><span>Sans revenu stable : l\'obtention d\'un crédit immobilier seul est impossible. Un co-emprunteur solvable est indispensable.</span></div>';
+  return '';
+}
+
+// ─── CAPACITÉ SOLO ────────────────────────────────────────────
+function calcCapacite() {
+  const salaire = parseFloat(document.getElementById('cap-salaire').value) || 0;
+  const locatif = parseFloat(document.getElementById('cap-locatif').value) || 0;
+  const autres = parseFloat(document.getElementById('cap-autres').value) || 0;
+  const contrat = document.getElementById('cap-contrat').value;
+  const duree = parseInt(document.getElementById('cap-duree').value);
+  const taux = parseFloat(document.getElementById('cap-taux').value) || 4;
+  const apport = parseFloat(document.getElementById('cap-apport').value) || 0;
+  const dettes = getTotalDebts();
+
+  const locatifRetenu = locatif * 0.7;
+  const revenusTotal = salaire + locatifRetenu + autres;
+  const capaciteMensuelle = revenusTotal * 0.35 - dettes;
+  const tauxEndettement = dettes > 0 ? (dettes / revenusTotal * 100) : 0;
+
+  let capital = 0;
+  let alerteMsg = alerteContrat(contrat);
+
+  if (capaciteMensuelle > 0) {
+    capital = capitalEmpruntable(capaciteMensuelle, taux, duree);
+  }
+
+  const budgetTotal = capital + apport;
+  const fraisNotaire = budgetTotal * 0.08;
+  const budgetNet = budgetTotal - fraisNotaire;
+  const ratioEndettement = Math.min((dettes + (capaciteMensuelle > 0 ? capaciteMensuelle : 0)) / revenusTotal * 100, 35);
+
+  const barColor = tauxEndettement > 30 ? 'red' : tauxEndettement > 20 ? 'amber' : 'green';
+  const barWidth = Math.min(tauxEndettement / 35 * 100, 100);
+
+  const html = `
+    ${alerteMsg}
+    <div class="result-hero">
+      <div class="result-hero-label">Vous pouvez emprunter jusqu'à</div>
+      <div class="result-hero-value">${fmt(Math.max(capital, 0))}</div>
+      <div class="result-hero-sub">sur ${duree} ans à ${taux}%</div>
+    </div>
+    <div class="result-cards">
+      <div class="result-card"><span class="result-card-label">Budget total avec apport</span><span class="result-card-value">${fmt(Math.max(budgetTotal, 0))}</span></div>
+      <div class="result-card"><span class="result-card-label">Budget net (hors notaire)</span><span class="result-card-value">${fmt(Math.max(budgetNet, 0))}</span></div>
+      <div class="result-card"><span class="result-card-label">Mensualité max</span><span class="result-card-value ${capaciteMensuelle > 0 ? '' : 'neg'}">${fmt(Math.max(capaciteMensuelle, 0))}/mois</span></div>
+      <div class="result-card"><span class="result-card-label">Revenus retenus par la banque</span><span class="result-card-value">${fmt(revenusTotal)}/mois</span></div>
+    </div>
+    <div class="result-section-title">Taux d'endettement actuel</div>
+    <div style="font-size:13px;color:var(--gray);margin-bottom:4px">Charges existantes / Revenus</div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill ${barColor}" style="width:${barWidth}%"></div></div>
+    <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--gray)"><span>${fmtPct(tauxEndettement)}</span><span>Plafond 35%</span></div>
+    ${locatif > 0 ? '<div class="info-box" style="margin-top:16px"><strong>Revenus locatifs :</strong> Vos ' + fmt(locatif) + '/mois de loyers sont retenus à 70% par la banque, soit ' + fmt(locatifRetenu) + '/mois pris en compte.</div>' : ''}
+    ${dettes > 0 ? '<div class="result-alert ' + (dettes > revenusTotal * 0.25 ? 'danger' : 'warn') + '" style="margin-top:12px"><span class="result-alert-icon">' + (dettes > revenusTotal * 0.25 ? '🚫' : '⚠️') + '</span><span>Vos crédits en cours (' + fmt(dettes) + '/mois) réduisent significativement votre capacité d\'emprunt. Les rembourser avant d\'emprunter augmenterait votre budget.</span></div>' : ''}
+  `;
+  showResults(html);
+}
+
+// ─── CAPACITÉ DUO ─────────────────────────────────────────────
+function calcCapaciteDuo() {
+  const sal1 = parseFloat(document.getElementById('duo-sal1').value) || 0;
+  const sal2 = parseFloat(document.getElementById('duo-sal2').value) || 0;
+  const locatif = parseFloat(document.getElementById('duo-locatif').value) || 0;
+  const dettes = parseFloat(document.getElementById('duo-dettes').value) || 0;
+  const duree = parseInt(document.getElementById('duo-duree').value);
+  const taux = parseFloat(document.getElementById('duo-taux').value) || 3.9;
+  const contrat1 = document.getElementById('duo-contrat1').value;
+  const contrat2 = document.getElementById('duo-contrat2').value;
+
+  const revenusTotal = sal1 + sal2 + locatif * 0.7;
+  const capaciteMensuelle = revenusTotal * 0.35 - dettes;
+  const capital = capaciteMensuelle > 0 ? capitalEmpruntable(capaciteMensuelle, taux, duree) : 0;
+
+  let alertes = '';
+  if (contrat1 === 'pe' || contrat2 === 'pe') alertes += '<div class="result-alert warn"><span class="result-alert-icon">⚠️</span><span>Un des co-emprunteurs est en période d\'essai. Le dossier reste possible si l\'autre est en CDI confirmé, mais les conditions seront plus strictes.</span></div>';
+
+  const html = `
+    ${alertes}
+    <div class="result-hero">
+      <div class="result-hero-label">Capacité en co-emprunt</div>
+      <div class="result-hero-value">${fmt(Math.max(capital, 0))}</div>
+      <div class="result-hero-sub">sur ${duree} ans à ${taux}%</div>
+    </div>
+    <div class="result-cards">
+      <div class="result-card"><span class="result-card-label">Revenus combinés retenus</span><span class="result-card-value">${fmt(revenusTotal)}/mois</span></div>
+      <div class="result-card"><span class="result-card-label">Mensualité maximale</span><span class="result-card-value">${fmt(Math.max(capaciteMensuelle, 0))}/mois</span></div>
+      <div class="result-card"><span class="result-card-label">Gain vs seul (emprunteur 1)</span><span class="result-card-value pos">+ ${fmt(Math.max(capital - capitalEmpruntable(Math.max(sal1 * 0.35 - dettes, 0), taux, duree), 0))}</span></div>
+    </div>
+    <div class="info-box"><strong>Avantage du co-emprunt :</strong> Les revenus s'additionnent mais les dettes aussi. Si le second emprunteur a beaucoup de crédits en cours, l'apport peut être contre-productif.</div>
+  `;
+  showResults(html);
+}
+
+// ─── CAPACITÉ SOCIÉTÉ ─────────────────────────────────────────
+function calcCapaciteSoc() {
+  const sal1 = parseFloat(document.getElementById('soc-sal1').value) || 0;
+  const loc1 = parseFloat(document.getElementById('soc-loc1').value) || 0;
+  const dette1 = parseFloat(document.getElementById('soc-dette1').value) || 0;
+  const sal2 = parseFloat(document.getElementById('soc-sal2').value) || 0;
+  const dette2 = parseFloat(document.getElementById('soc-dette2').value) || 0;
+  const apport = parseFloat(document.getElementById('soc-apport').value) || 0;
+  const hypo = parseFloat(document.getElementById('soc-hypo').value) || 0;
+  const contrat1 = document.getElementById('soc-contrat1').value;
+  const credit = document.getElementById('soc-credit').value;
+
+  const revenusTotal = sal1 + sal2 + loc1 * 0.7;
+  const dettesTotal = dette1 + dette2;
+  const capaciteMensuelle = Math.max(revenusTotal * 0.35 - dettesTotal, 0);
+
+  let capital = 0;
+  if (credit === 'amortissable') {
+    capital = capitalEmpruntable(capaciteMensuelle, 4.5, 20);
+  } else {
+    const interetsMensuels = capital * 0.06 / 12;
+    capital = apport > 0 ? (apport + hypo * 0.75) * 2.5 : hypo * 0.75 * 1.5;
+  }
+
+  const budgetTotal = capital + apport;
+  let alertes = alerteContrat(contrat1);
+
+  const html = `
+    ${alertes}
+    <div class="result-hero">
+      <div class="result-hero-label">Capacité de la société</div>
+      <div class="result-hero-value">${fmt(Math.max(capital, 0))}</div>
+      <div class="result-hero-sub">${credit === 'infine' ? 'Crédit in fine estimé' : 'Crédit amortissable 20 ans'}</div>
+    </div>
+    <div class="result-cards">
+      <div class="result-card"><span class="result-card-label">Budget total avec apport</span><span class="result-card-value">${fmt(Math.max(budgetTotal, 0))}</span></div>
+      <div class="result-card"><span class="result-card-label">Revenus look-through retenus</span><span class="result-card-value">${fmt(revenusTotal)}/mois</span></div>
+      <div class="result-card"><span class="result-card-label">Garantie hypothécaire nette</span><span class="result-card-value">${fmt(hypo)}</span></div>
+      <div class="result-card"><span class="result-card-label">Capacité mensuelle résiduelle</span><span class="result-card-value ${capaciteMensuelle > 0 ? 'pos' : 'neg'}">${fmt(capaciteMensuelle)}/mois</span></div>
+    </div>
+    <div class="info-box"><strong>Look-through bancaire :</strong> La banque analyse les revenus personnels des associés gérants même pour un prêt en société. Vos dettes personnelles impactent directement la capacité de la SCI.</div>
+    ${dettesTotal > revenusTotal * 0.25 ? '<div class="result-alert danger" style="margin-top:12px"><span class="result-alert-icon">🚫</span><span>Le niveau d\'endettement personnel des associés est élevé. Envisagez de solder certains crédits avant de monter le dossier.</span></div>' : ''}
+  `;
+  showResults(html);
+}
+
+// ─── LOCATIF ──────────────────────────────────────────────────
+function calcLocatif() {
+  const prix = parseFloat(document.getElementById('loc-prix').value) || 0;
+  const notaire = parseFloat(document.getElementById('loc-notaire').value) || 0.08;
+  const travaux = parseFloat(document.getElementById('loc-travaux').value) || 0;
+  const loyer = parseFloat(document.getElementById('loc-loyer').value) || 0;
+  const vacance = parseFloat(document.getElementById('loc-vacance').value) || 0.5;
+  const tf = parseFloat(document.getElementById('loc-tf').value) || 0;
+  const copro = parseFloat(document.getElementById('loc-copro').value) || 0;
+  const assurance = parseFloat(document.getElementById('loc-assurance').value) || 0;
+  const gestion = parseFloat(document.getElementById('loc-gestion').value) || 0;
+  const apport = parseFloat(document.getElementById('loc-apport').value) || 0;
+  const duree = parseInt(document.getElementById('loc-duree').value);
+  const taux = parseFloat(document.getElementById('loc-taux').value) || 4;
+  const assurCredit = parseFloat(document.getElementById('loc-assur-credit').value) || 0.3;
+  const tmi = parseFloat(document.getElementById('loc-tmi').value) || 0.3;
+  const typeLocation = document.getElementById('loc-type').value;
+  const structure = document.getElementById('loc-structure').value;
+
+  const fraisNotaire = prix * notaire;
+  const coutTotal = prix + fraisNotaire + travaux;
+  const capital = coutTotal - apport;
+
+  const mensualiteCredit = capital > 0 ? mensualite(capital, taux, duree) : 0;
+  const mensualiteAssur = capital * assurCredit / 100 / 12;
+  const mensualiteTotale = mensualiteCredit + mensualiteAssur;
+
+  const loyerAnnuel = loyer * (12 - vacance);
+  const fraisGestion = loyerAnnuel * gestion;
+  const chargesAnnuelles = tf + copro + assurance + fraisGestion;
+  const loyerNetCharges = loyerAnnuel - chargesAnnuelles;
+  const creditAnnuel = mensualiteTotale * 12;
+  const cashflowAnnuel = loyerNetCharges - creditAnnuel;
+  const cashflowMensuel = cashflowAnnuel / 12;
+
+  const rendementBrut = prix > 0 ? (loyer * 12 / prix * 100) : 0;
+  const rendementNet = coutTotal > 0 ? (loyerNetCharges / coutTotal * 100) : 0;
+  const rendementNetNet = coutTotal > 0 ? ((loyerNetCharges - creditAnnuel) / apport * 100) : 0;
+
+  // Fiscalité
+  let impotNue = 0, impotLmnpMicro = 0, impotLmnpReel = 0;
+  const revenuImposableNu = Math.max(loyerAnnuel - chargesAnnuelles - (capital * taux / 100), 0);
+  impotNue = revenuImposableNu * (tmi + 0.172);
+
+  const revenuMicroBic = loyerAnnuel * 0.5;
+  impotLmnpMicro = revenuMicroBic * (tmi + 0.172);
+
+  const amortissement = prix * 0.8 / 30 + travaux / 10;
+  const revenuLmnpReel = Math.max(loyerAnnuel - chargesAnnuelles - amortissement - (capital * taux / 100), 0);
+  impotLmnpReel = revenuLmnpReel * (tmi + 0.172);
+
+  const cfNue = cashflowMensuel - impotNue / 12;
+  const cfMicro = cashflowMensuel - impotLmnpMicro / 12;
+  const cfReel = cashflowMensuel - impotLmnpReel / 12;
+
+  const regimes = [
+    { name: 'Location nue', impot: impotNue, cf: cfNue, desc: 'Revenus fonciers' },
+    { name: 'LMNP micro-BIC', impot: impotLmnpMicro, cf: cfMicro, desc: 'Abattement 50%' },
+    { name: 'LMNP réel', impot: impotLmnpReel, cf: cfReel, desc: 'Amortissement du bien' },
+  ];
+  const bestRegime = regimes.reduce((a, b) => a.cf > b.cf ? a : b);
+
+  const cfColor = cashflowMensuel >= 0 ? 'pos' : 'neg';
+  const cfIcon = cashflowMensuel >= 100 ? '✅' : cashflowMensuel >= 0 ? '⚠️' : '🚫';
+
+  const regimesHtml = regimes.map(r => `
+    <div class="regime-card ${r === bestRegime ? 'best' : ''}">
+      <div class="regime-card-header">
+        <span class="regime-name">${r.name}</span>
+        ${r === bestRegime ? '<span class="regime-badge best">✓ Optimal</span>' : '<span class="regime-badge ok">Alternative</span>'}
+      </div>
+      <div class="regime-card-value">${r.cf >= 0 ? '+' : ''}${fmt(r.cf)}/mois</div>
+      <div class="regime-card-sub">après impôts · ${r.desc} · impôt annuel ${fmt(r.impot)}</div>
+    </div>
+  `).join('');
+
+  const html = `
+    <div class="result-hero">
+      <div class="result-hero-label">Cash flow mensuel brut</div>
+      <div class="result-hero-value">${cashflowMensuel >= 0 ? '+' : ''}${fmt(cashflowMensuel)}</div>
+      <div class="result-hero-sub">avant impôts · ${duree} ans à ${taux}%</div>
+    </div>
+    <div class="result-cards">
+      <div class="result-card"><span class="result-card-label">Rendement brut</span><span class="result-card-value">${fmtPct(rendementBrut)}</span></div>
+      <div class="result-card"><span class="result-card-label">Rendement net de charges</span><span class="result-card-value">${fmtPct(rendementNet)}</span></div>
+      <div class="result-card"><span class="result-card-label">Mensualité crédit + assurance</span><span class="result-card-value neg">${fmt(mensualiteTotale)}/mois</span></div>
+      <div class="result-card"><span class="result-card-label">Loyer annuel encaissé</span><span class="result-card-value pos">${fmt(loyerAnnuel)}</span></div>
+    </div>
+    <div class="result-section-title">Comparatif régimes fiscaux</div>
+    <div class="regime-cards">${regimesHtml}</div>
+    ${cashflowMensuel < 0 ? '<div class="result-alert danger" style="margin-top:12px"><span class="result-alert-icon">🚫</span><span>Cash flow négatif : vous devrez compléter chaque mois de votre poche. Revoir l\'apport, le loyer ou la durée du crédit.</span></div>' : ''}
+    <div class="info-box" style="margin-top:16px"><strong>Régime recommandé : ${bestRegime.name}</strong><br>Avec une TMI à ${Math.round(tmi*100)}%, ce régime vous laisse le meilleur cash flow net après impôts grâce à ${bestRegime.desc.toLowerCase()}.</div>
+  `;
+  showResults(html);
+}
+
+// ─── MARCHAND DE BIENS ────────────────────────────────────────
+function calcMB() {
+  const achat = parseFloat(document.getElementById('mb-achat').value) || 0;
+  const travaux = parseFloat(document.getElementById('mb-travaux').value) || 0;
+  const revente = parseFloat(document.getElementById('mb-revente').value) || 0;
+  const duree = parseInt(document.getElementById('mb-duree').value);
+  const apport = parseFloat(document.getElementById('mb-apport').value) || 0;
+  const quotite = parseInt(document.getElementById('mb-quotite').value) / 100;
+  const taux = parseFloat(document.getElementById('mb-taux').value) || 5.5;
+  const agence = parseFloat(document.getElementById('mb-agence').value) || 0.03;
+
+  const fraisNotaire = achat * 0.08;
+  const totalProjet = achat + fraisNotaire + travaux;
+  const emprunt = totalProjet * quotite;
+  const apportReel = Math.max(totalProjet - emprunt, 0);
+  const tresorerie = apport - apportReel;
+
+  const interets = emprunt * (taux / 100) * (duree / 12);
+  const fraisAgence = revente * agence;
+  const fraisDossier = 2000;
+  const totalCharges = totalProjet + interets + fraisAgence + fraisDossier;
+  const margeNette = revente - totalCharges;
+  const margePct = totalProjet > 0 ? (margeNette / totalProjet * 100) : 0;
+  const roi = apportReel > 0 ? (margeNette / apportReel * 100) : 0;
+  const roiAnnuel = roi / (duree / 12);
+
+  const margeColor = margeNette > 20000 ? 'pos' : margeNette > 0 ? 'warn' : 'neg';
+  const alertType = margeNette > 20000 ? 'ok' : margeNette > 0 ? 'warn' : 'danger';
+  const alertMsg = margeNette > 20000 ? 'Opération rentable. La marge couvre les aléas de chantier.' : margeNette > 0 ? 'Marge serrée. Un dépassement de travaux de 10% suffit à effacer le bénéfice.' : 'Opération déficitaire avec ces paramètres. Revoir le prix de revente ou réduire les travaux.';
+
+  const html = `
+    <div class="result-hero">
+      <div class="result-hero-label">Marge nette estimée</div>
+      <div class="result-hero-value">${margeNette >= 0 ? '+' : ''}${fmt(margeNette)}</div>
+      <div class="result-hero-sub">sur ${duree} mois · ${fmtPct(margePct)} du coût projet</div>
+    </div>
+    <div class="result-cards">
+      <div class="result-card"><span class="result-card-label">Coût total projet</span><span class="result-card-value">${fmt(totalProjet)}</span></div>
+      <div class="result-card"><span class="result-card-label">Emprunt in fine (${Math.round(quotite*100)}%)</span><span class="result-card-value">${fmt(emprunt)}</span></div>
+      <div class="result-card"><span class="result-card-label">Apport immobilisé</span><span class="result-card-value">${fmt(apportReel)}</span></div>
+      <div class="result-card"><span class="result-card-label">Trésorerie restante</span><span class="result-card-value ${tresorerie >= 0 ? 'pos' : 'neg'}">${fmt(tresorerie)}</span></div>
+      <div class="result-card"><span class="result-card-label">Intérêts in fine</span><span class="result-card-value neg">${fmt(interets)}</span></div>
+      <div class="result-card"><span class="result-card-label">ROI annualisé</span><span class="result-card-value ${roi > 0 ? 'pos' : 'neg'}">${fmtPct(roiAnnuel)}</span></div>
+    </div>
+    <div class="result-alert ${alertType}" style="margin-top:4px"><span class="result-alert-icon">${margeNette > 20000 ? '✅' : margeNette > 0 ? '⚠️' : '🚫'}</span><span>${alertMsg}</span></div>
+    ${margePct < 15 ? '<div class="result-alert warn" style="margin-top:8px"><span class="result-alert-icon">🏦</span><span>Marge < 15% : la plupart des banques spécialisées MB exigent une marge brute minimale de 15-20% pour financer l\'opération.</span></div>' : ''}
+    <div class="info-box" style="margin-top:12px"><strong>Frais inclus dans le calcul :</strong> frais de notaire (8%), intérêts in fine sur ${duree} mois, frais de dossier (2 000€), commission agence vente (${Math.round(agence*100)}%).</div>
+  `;
+  showResults(html);
+}
+</script>
+</body>
+</html>
