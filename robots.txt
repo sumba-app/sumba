@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /auth.html
+Disallow: /compte.html
+Disallow: /callback.html
+
+Sitemap: https://www.sumba.fr/sitemap.xml
