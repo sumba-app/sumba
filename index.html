@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-N0L4F9NRM7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-N0L4F9NRM7');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="google-site-verification" content="344aiPYQkIT5FYPonWoGJSXmqwQMQohSadEmvYIXQic" />
+<title>Sumba — Simulateur d'investissement immobilier gratuit</title>
+<meta name="description" content="Calculez votre capacité d'emprunt, votre note de crédit et votre rentabilité locative avec la précision d'un conseiller en gestion de patrimoine. Gratuit, sans inscription.">
+<meta name="keywords" content="capacité d'emprunt, simulateur immobilier, rentabilité locative, investissement immobilier, HCSF, LMNP, calcul prêt immobilier">
+<link rel="canonical" href="https://www.sumba.fr/">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Sumba">
+<!-- Open Graph (partages réseaux sociaux / messageries) -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Sumba">
+<meta property="og:title" content="Sumba — Simulateur d'investissement immobilier gratuit">
+<meta property="og:description" content="Capacité d'emprunt, note de crédit, rentabilité locative : la précision d'un conseiller en gestion de patrimoine. Gratuit, sans inscription.">
+<meta property="og:url" content="https://www.sumba.fr/">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:image" content="https://www.sumba.fr/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Sumba — Simulateur d'investissement immobilier gratuit">
+<meta name="twitter:description" content="Capacité d'emprunt, note de crédit, rentabilité locative. Gratuit, sans inscription.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --g:#0f2942;--gm:#1c4a6e;--gl:#e8b873;--gp:#eef2f6;--gx:#f6f9fb;
+  --cr:#fbfaf8;--w:#fff;--dk:#0f2942;--gr:#5a6572;--grl:#f3f4f6;
+  --cuivre:#e8b873;--cuivre-dark:#c9974f;
+  --bd:rgba(15,41,66,0.1);
+  --r:20px;--rs:12px;--rp2:100px;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--cr);color:var(--dk);line-height:1.6;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:1180px;margin:0 auto;padding:0 48px;}
+
+/* NAV */
+nav{border-bottom:1px solid var(--bd);position:sticky;top:0;background:rgba(251,250,248,0.92);backdrop-filter:blur(12px);z-index:50;}
+.nav-in{max-width:1180px;margin:0 auto;padding:16px 48px;display:flex;align-items:center;justify-content:space-between;}
+.logo{display:flex;align-items:center;gap:11px;text-decoration:none;flex-shrink:0;}
+.logo-mark{width:34px;height:34px;background:var(--g);border-radius:8px;display:flex;align-items:center;justify-content:center;}
+.logo-mark svg{width:22px;height:22px;}
+.logo-name{font-family:'Spectral',serif;font-size:20px;font-weight:700;color:var(--g);}
+.nav-links{display:flex;gap:30px;list-style:none;}
+.nav-links a{text-decoration:none;color:var(--g);font-size:14px;font-weight:400;opacity:0.85;transition:opacity .2s;}
+.nav-links a:hover{opacity:1;color:var(--gm);}
+.nav-cta{display:flex;align-items:center;gap:16px;flex-shrink:0;}
+.nav-cta .login{text-decoration:none;color:var(--g);font-size:13px;font-weight:500;}
+.nav-cta .btn{text-decoration:none;color:var(--cr);background:var(--g);padding:10px 20px;border-radius:var(--rp2);font-size:13px;font-weight:500;transition:background .2s;white-space:nowrap;}
+.nav-cta .btn:hover{background:var(--gm);}
+
+/* HERO */
+.hero{padding:84px 0 78px;border-bottom:1px solid var(--bd);}
+.hero-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:64px;align-items:center;}
+.hero-badge{display:inline-flex;align-items:center;gap:9px;font-size:13px;color:var(--gm);background:var(--gp);padding:7px 15px;border-radius:var(--rp2);margin-bottom:26px;font-weight:500;}
+.hero-badge .dot{width:7px;height:7px;background:var(--cuivre);border-radius:50%;}
+.hero h1{font-family:'Spectral',serif;font-weight:600;font-size:58px;line-height:1.06;letter-spacing:-0.02em;margin-bottom:24px;color:var(--g);}
+.hero h1 .light{font-weight:400;}
+.hero-sub{font-size:18px;color:var(--gr);font-weight:300;margin-bottom:36px;max-width:510px;}
+.hero-actions{display:flex;gap:16px;align-items:center;flex-wrap:wrap;}
+.btn-primary{text-decoration:none;color:var(--cr);background:var(--g);padding:15px 30px;border-radius:var(--rp2);font-size:15px;font-weight:600;transition:background .2s;display:inline-block;}
+.btn-primary:hover{background:var(--gm);}
+.btn-line{text-decoration:none;color:var(--g);font-size:15px;font-weight:500;border-bottom:1.5px solid var(--cuivre);padding-bottom:3px;}
+
+/* Carte démo note de crédit */
+.hero-demo{background:var(--g);border-radius:var(--r);padding:32px;color:var(--cr);box-shadow:0 24px 60px rgba(15,41,66,0.22);}
+.hero-demo-top{display:flex;align-items:center;gap:20px;padding-bottom:22px;border-bottom:1px solid rgba(255,255,255,0.14);margin-bottom:20px;}
+.demo-gauge{width:84px;height:84px;position:relative;flex-shrink:0;}
+.demo-gauge-num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.demo-gauge-num strong{font-family:'Spectral',serif;font-size:28px;font-weight:600;}
+.demo-gauge-num span{font-size:10px;opacity:0.6;}
+.demo-label{font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--cuivre);margin-bottom:6px;font-weight:600;}
+.demo-title{font-family:'Spectral',serif;font-size:21px;font-weight:500;}
+.demo-factors{display:flex;flex-direction:column;gap:13px;}
+.demo-factor-head{display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px;}
+.demo-factor-head span:last-child{color:var(--cuivre);font-weight:500;}
+.demo-bar{height:5px;background:rgba(255,255,255,0.14);border-radius:3px;overflow:hidden;}
+.demo-bar-fill{height:100%;background:var(--cuivre);border-radius:3px;}
+
+/* BANDE CHIFFRES */
+.figures{background:var(--g);color:var(--cr);}
+.figures-grid{max-width:1180px;margin:0 auto;padding:0 48px;display:grid;grid-template-columns:repeat(4,1fr);}
+.figure{padding:44px 24px;text-align:center;border-right:1px solid rgba(255,255,255,0.12);}
+.figure:last-child{border-right:none;}
+.figure-num{font-family:'Spectral',serif;font-size:40px;font-weight:600;line-height:1;color:var(--cuivre);}
+.figure-lbl{font-size:12.5px;color:rgba(255,255,255,0.72);margin-top:12px;}
+
+/* SECTIONS */
+.section{padding:84px 0;}
+.section-head{margin-bottom:50px;max-width:680px;}
+.section-eyebrow{font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:var(--cuivre-dark);margin-bottom:14px;font-weight:600;}
+.section-title{font-family:'Spectral',serif;font-weight:600;font-size:42px;line-height:1.1;letter-spacing:-0.01em;margin-bottom:16px;color:var(--g);}
+.section-intro{font-size:17px;color:var(--gr);font-weight:300;}
+
+/* OUTILS */
+.tools{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
+.tool{background:var(--w);border:1px solid var(--bd);border-radius:var(--r);padding:32px 34px;box-shadow:0 4px 16px rgba(15,41,66,0.04);transition:all .2s;text-decoration:none;display:block;color:inherit;}
+.tool:hover{box-shadow:0 14px 34px rgba(15,41,66,0.1);transform:translateY(-2px);}
+.tool-head{display:flex;align-items:center;gap:14px;margin-bottom:14px;}
+.tool-ico{width:44px;height:44px;border-radius:11px;background:var(--gp);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.tool-ico svg{width:24px;height:24px;}
+.tool-num{font-family:'Spectral',serif;font-size:14px;color:var(--cuivre-dark);margin-left:auto;}
+.tool h3{font-family:'Spectral',serif;font-size:23px;font-weight:600;margin-bottom:9px;color:var(--g);}
+.tool p{font-size:14.5px;color:var(--gr);font-weight:300;line-height:1.6;}
+
+/* EXEMPLE CONCRET */
+.example{padding:84px 0;}
+.example-card{background:var(--w);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;box-shadow:0 14px 40px rgba(15,41,66,0.08);display:grid;grid-template-columns:1fr 1fr;}
+.example-left{padding:52px 48px;}
+.example-left h2{font-family:'Spectral',serif;font-weight:600;font-size:30px;line-height:1.14;margin-bottom:16px;color:var(--g);}
+.example-left p{font-size:15.5px;color:var(--gr);font-weight:300;margin-bottom:12px;}
+.example-right{background:var(--g);color:var(--cr);padding:52px 48px;display:flex;flex-direction:column;justify-content:center;}
+.calc-line{display:flex;justify-content:space-between;align-items:center;padding:15px 0;border-bottom:1px solid rgba(255,255,255,0.14);}
+.calc-label{font-size:14.5px;color:rgba(255,255,255,0.75);}
+.calc-val{font-family:'Spectral',serif;font-size:19px;font-weight:500;color:var(--cr);}
+.calc-line.total{border-bottom:none;padding-top:22px;margin-top:6px;border-top:2px solid var(--cuivre);}
+.calc-line.total .calc-label{color:var(--cr);font-weight:600;font-size:15.5px;}
+.calc-line.total .calc-val{color:var(--cuivre);font-size:28px;font-weight:600;}
+
+/* GUIDE */
+.guide{background:var(--gx);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);}
+.guide-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+.guide-card{background:var(--w);border:1px solid var(--bd);border-radius:var(--rs);padding:26px;text-decoration:none;color:inherit;transition:all .2s;}
+.guide-card:hover{box-shadow:0 10px 28px rgba(15,41,66,0.08);transform:translateY(-2px);}
+.guide-card-ico{width:40px;height:40px;border-radius:10px;background:var(--g);display:flex;align-items:center;justify-content:center;margin-bottom:16px;}
+.guide-card h3{font-family:'Spectral',serif;font-size:18px;font-weight:600;margin-bottom:7px;color:var(--g);}
+.guide-card p{font-size:13.5px;color:var(--gr);font-weight:300;line-height:1.55;}
+
+/* FAQ */
+.faq-list{max-width:780px;margin:0 auto;}
+.faq-item{border-bottom:1px solid var(--bd);}
+.faq-q{width:100%;text-align:left;background:none;border:none;padding:24px 0;font-family:'Inter',sans-serif;font-size:17px;font-weight:500;color:var(--g);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:20px;}
+.faq-q::after{content:'+';font-size:24px;color:var(--cuivre-dark);font-weight:300;flex-shrink:0;transition:transform .2s;}
+.faq-item.open .faq-q::after{content:'−';}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s ease;font-size:15px;color:var(--gr);font-weight:300;line-height:1.7;}
+.faq-item.open .faq-a{max-height:320px;padding-bottom:24px;}
+
+/* CTA */
+.cta{background:var(--g);color:var(--cr);padding:90px 0;text-align:center;}
+.cta h2{font-family:'Spectral',serif;font-weight:600;font-size:44px;line-height:1.1;margin-bottom:16px;}
+.cta p{font-size:17px;opacity:0.8;font-weight:300;margin-bottom:36px;}
+.cta .btn-primary{background:var(--cuivre);color:var(--g);}
+.cta .btn-primary:hover{background:var(--w);}
+
+/* FOOTER */
+footer{background:var(--g);color:var(--cr);padding:48px 0 34px;}
+.footer-in{max-width:1180px;margin:0 auto;padding:0 48px;}
+.footer-top{display:flex;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.15);padding-bottom:32px;margin-bottom:22px;flex-wrap:wrap;gap:30px;}
+.footer-logo{font-family:'Spectral',serif;font-size:20px;font-weight:700;}
+.footer-cols{display:flex;gap:56px;flex-wrap:wrap;}
+.footer-col h4{font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--cuivre);margin-bottom:13px;}
+.footer-col a{display:block;color:rgba(255,255,255,0.72);text-decoration:none;font-size:13.5px;margin-bottom:9px;font-weight:300;}
+.footer-col a:hover{color:#fff;}
+.footer-bottom{font-size:12px;color:rgba(255,255,255,0.5);}
+
+@media(max-width:900px){
+  .nav-in{padding:14px 22px;}.nav-links{display:none;}.wrap{padding:0 22px;}
+  .hero{padding:48px 0;}.hero-grid{grid-template-columns:1fr;gap:40px;}.hero h1{font-size:40px;}
+  .figures-grid{grid-template-columns:1fr 1fr;padding:0 22px;}
+  .figure:nth-child(-n+2){border-bottom:1px solid rgba(255,255,255,0.12);}.figure:nth-child(2){border-right:none;}
+  .section{padding:54px 0;}.section-title{font-size:30px;}
+  .tools{grid-template-columns:1fr;}
+  .example{padding:54px 0;}.example-card{grid-template-columns:1fr;}.example-left,.example-right{padding:40px 28px;}
+  .guide-grid{grid-template-columns:1fr;}
+  .cta{padding:60px 0;}.cta h2{font-size:32px;}
+  .footer-cols{gap:34px;}
+}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Sumba",
+  "url": "https://www.sumba.fr/",
+  "description": "Simulateur d'investissement immobilier gratuit : capacité d'emprunt, note de crédit, rentabilité locative et comparateur fiscal.",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "inLanguage": "fr-FR",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "EUR"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Sumba",
+    "url": "https://www.sumba.fr/"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Sumba est-il vraiment gratuit ?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Oui, toutes les simulations sont 100% gratuites et le resteront. Sumba se rémunère uniquement sur les exports avancés (Excel, PDF business plan) disponibles en version Pro, et à terme sur des partenariats avec des courtiers et CGP sélectionnés." }
+    },
+    {
+      "@type": "Question",
+      "name": "Mes données sont-elles sécurisées ?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Vos données ne sont jamais vendues ni transmises à des tiers. Les simulations sans compte sont entièrement anonymes et stockées localement dans votre navigateur. La création de compte vous permet uniquement de sauvegarder vos simulations." }
+    },
+    {
+      "@type": "Question",
+      "name": "Les calculs sont-ils fiables ?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Sumba est conçu par des professionnels de l'immobilier et mis à jour régulièrement selon les règles HCSF, les barèmes fiscaux en vigueur et les taux du marché. Les résultats sont des estimations fiables mais ne remplacent pas un conseil personnalisé d'un notaire ou d'un conseiller fiscal." }
+    },
+    {
+      "@type": "Question",
+      "name": "Quelle différence entre LMNP et location nue ?",
+      "acceptedAnswer": { "@type": "Answer", "text": "La location meublée non professionnelle (LMNP) vous permet d'amortir le bien et de réduire significativement votre base imposable. La location nue est plus simple à gérer mais fiscalement moins avantageuse pour les tranches élevées. Sumba calcule les deux et met en évidence le meilleur choix selon votre tranche marginale d'imposition." }
+    },
+    {
+      "@type": "Question",
+      "name": "Puis-je simuler un achat en SCI ?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Oui. Sumba simule aussi bien les achats en nom propre qu'en société (SCI à l'IR, SCI à l'IS, SAS). Le module compare automatiquement les deux approches et explique en langage clair les avantages et inconvénients de chaque structure pour votre situation." }
+    },
+    {
+      "@type": "Question",
+      "name": "Qu'est-ce qu'un marchand de biens ?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Un marchand de biens achète un bien immobilier, le rénove et le revend rapidement pour dégager une plus-value. C'est une activité commerciale qui nécessite généralement une structure sociétaire et un financement court terme (crédit in fine). Sumba simule la rentabilité de ce type d'opération en intégrant tous les frais réels." }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<nav>
+  <div class="nav-in">
+    <a href="index.html" class="logo">
+      <div class="logo-mark"><svg viewBox="10 11 28 25" fill="none"><path d="M13 19L24 13.5L35 19" stroke="#e8b873" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 29V34M24 25V34M30 21V34" stroke="#e8b873" stroke-width="2.6" stroke-linecap="round"/></svg></div>
+      <span class="logo-name">Sumba</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#fonctionnalites">Outils</a></li>
+      <li><a href="guide/index.html">Le Guide</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <div class="nav-cta" id="nav-cta">
+      <a href="auth.html" class="login">Connexion</a>
+      <a href="simulateur.html?mod=cap" class="btn">Commencer</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-badge"><span class="dot"></span>100% gratuit · sans inscription</div>
+        <h1>Savez-vous vraiment <span class="light">combien vous pouvez</span> emprunter ?</h1>
+        <p class="hero-sub">Sumba calcule votre capacité d'emprunt, votre note de crédit et votre rentabilité locative avec la précision d'un conseiller en gestion de patrimoine.</p>
+        <div class="hero-actions">
+          <a href="simulateur.html?mod=cap" class="btn-primary">Lancer ma simulation</a>
+          <a href="#exemple" class="btn-line">Voir un exemple</a>
+        </div>
+      </div>
+      <div class="hero-demo">
+        <div class="hero-demo-top">
+          <div class="demo-gauge">
+            <svg viewBox="0 0 84 84" width="84" height="84">
+              <circle cx="42" cy="42" r="36" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="6"/>
+              <circle cx="42" cy="42" r="36" fill="none" stroke="#e8b873" stroke-width="6" stroke-linecap="round" stroke-dasharray="226" stroke-dashoffset="54" transform="rotate(-90 42 42)"/>
+            </svg>
+            <div class="demo-gauge-num"><strong>76</strong><span>/ 100</span></div>
+          </div>
+          <div>
+            <div class="demo-label">Votre note de crédit</div>
+            <div class="demo-title">Bon dossier</div>
+          </div>
+        </div>
+        <div class="demo-factors">
+          <div><div class="demo-factor-head"><span>Taux d'endettement</span><span>32 / 35</span></div><div class="demo-bar"><div class="demo-bar-fill" style="width:91%"></div></div></div>
+          <div><div class="demo-factor-head"><span>Stabilité professionnelle</span><span>22 / 25</span></div><div class="demo-bar"><div class="demo-bar-fill" style="width:88%"></div></div></div>
+          <div><div class="demo-factor-head"><span>Apport personnel</span><span>14 / 20</span></div><div class="demo-bar"><div class="demo-bar-fill" style="width:70%"></div></div></div>
+          <div><div class="demo-factor-head"><span>Reste à vivre</span><span>8 / 12</span></div><div class="demo-bar"><div class="demo-bar-fill" style="width:66%"></div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FIGURES -->
+<div class="figures">
+  <div class="figures-grid">
+    <div class="figure"><div class="figure-num">35 %</div><div class="figure-lbl">Taux d'endettement max (règle HCSF)</div></div>
+    <div class="figure"><div class="figure-num">5</div><div class="figure-lbl">Critères analysés comme en banque</div></div>
+    <div class="figure"><div class="figure-num">2 min</div><div class="figure-lbl">Pour une simulation complète</div></div>
+    <div class="figure"><div class="figure-num">Gratuit</div><div class="figure-lbl">Sans inscription, sans publicité</div></div>
+  </div>
+</div>
+
+<!-- OUTILS -->
+<section class="section" id="fonctionnalites">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow">Quatre outils, une méthode</div>
+      <h2 class="section-title">De votre budget à votre fiscalité, tout est couvert.</h2>
+      <p class="section-intro">Chaque simulateur vous donne une réponse claire et un chiffre fiable, pas un argumentaire commercial.</p>
+    </div>
+    <div class="tools">
+      <a href="simulateur.html?mod=cap" class="tool">
+        <div class="tool-head"><div class="tool-ico"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="12" rx="2" stroke="#1c4a6e" stroke-width="1.6"/><path d="M3 10h18" stroke="#1c4a6e" stroke-width="1.6"/></svg></div><span class="tool-num">01</span></div>
+        <h3>Capacité d'emprunt</h3><p>Votre budget maximal et votre note de crédit, calculés selon les critères réels d'analyse d'une banque : endettement, stabilité, apport, reste à vivre.</p>
+      </a>
+      <a href="simulateur.html?mod=loc" class="tool">
+        <div class="tool-head"><div class="tool-ico"><svg viewBox="0 0 24 24" fill="none"><path d="M5 11l7-6 7 6" stroke="#1c4a6e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 10v8h10v-8" stroke="#1c4a6e" stroke-width="1.6" stroke-linejoin="round"/></svg></div><span class="tool-num">02</span></div>
+        <h3>Investissement locatif</h3><p>Loyer estimé, cash-flow mensuel et rentabilité nette, charges, vacance et fiscalité comprises. Le vrai rendement, pas le brut.</p>
+      </a>
+      <a href="simulateur.html?mod=comp" class="tool">
+        <div class="tool-head"><div class="tool-ico"><svg viewBox="0 0 24 24" fill="none"><path d="M5 19V11M12 19V6M19 19V14" stroke="#1c4a6e" stroke-width="1.6" stroke-linecap="round"/><path d="M4 20h16" stroke="#1c4a6e" stroke-width="1.6" stroke-linecap="round"/></svg></div><span class="tool-num">03</span></div>
+        <h3>Comparateur fiscal</h3><p>Le régime le plus avantageux pour votre projet : location nue, meublée, et leurs différentes options, avec le détail de l'imposition.</p>
+      </a>
+      <a href="simulateur.html?mod=mb" class="tool">
+        <div class="tool-head"><div class="tool-ico"><svg viewBox="0 0 24 24" fill="none"><path d="M5 10l7-5 7 5" stroke="#1c4a6e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 9v9h10V9" stroke="#1c4a6e" stroke-width="1.6" stroke-linejoin="round"/><path d="M9.5 14h5M12 11.5v5" stroke="#1c4a6e" stroke-width="1.5" stroke-linecap="round"/></svg></div><span class="tool-num">04</span></div>
+        <h3>Marchand de biens</h3><p>Marge nette et rendement d'une opération d'achat-revente, du plan de financement jusqu'à la plus-value après impôts.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- EXEMPLE CONCRET -->
+<div class="example" id="exemple">
+  <div class="wrap">
+    <div class="example-card">
+      <div class="example-left">
+        <div class="section-eyebrow">Un exemple concret</div>
+        <h2>Couple, 60 000 € de revenus, 30 000 € d'apport.</h2>
+        <p>Voici ce que Sumba calcule en quelques secondes, charges et règles HCSF prises en compte, exactement comme le ferait votre banquier.</p>
+        <p style="font-size:13.5px;opacity:0.7">Illustration. Votre simulation sera adaptée à votre situation réelle.</p>
+      </div>
+      <div class="example-right">
+        <div class="calc-line"><span class="calc-label">Mensualité maximale</span><span class="calc-val">1 750 €</span></div>
+        <div class="calc-line"><span class="calc-label">Durée du prêt</span><span class="calc-val">25 ans</span></div>
+        <div class="calc-line"><span class="calc-label">Taux estimé (assurance comprise)</span><span class="calc-val">4,1 %</span></div>
+        <div class="calc-line total"><span class="calc-label">Capacité d'emprunt</span><span class="calc-val">324 000 €</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GUIDE -->
+<section class="section guide" id="guide">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow">Le Guide Sumba</div>
+      <h2 class="section-title">Comprendre avant d'investir.</h2>
+      <p class="section-intro">Des articles clairs pour maîtriser les notions clés de l'investissement immobilier.</p>
+    </div>
+    <div class="guide-grid">
+      <a href="guide/lmnp.html" class="guide-card">
+        <div class="guide-card-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 13v-2a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v2" stroke="#e8b873" stroke-width="1.6" stroke-linecap="round"/><path d="M4 13h16v4H4z" stroke="#e8b873" stroke-width="1.6" stroke-linejoin="round"/><path d="M6 17v2M18 17v2" stroke="#e8b873" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+        <h3>Le statut LMNP</h3><p>Louer en meublé pour amortir le bien et réduire votre imposition.</p>
+      </a>
+      <a href="simulateur.html?mod=apprendre&article=sci" class="guide-card">
+        <div class="guide-card-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="5" y="4" width="14" height="16" rx="1.5" stroke="#e8b873" stroke-width="1.6"/><path d="M9 8h2M9 12h2M9 16h2M14 8h1M14 12h1M14 16h1" stroke="#e8b873" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <h3>La SCI</h3><p>Acheter en société : IR ou IS, avantages et contraintes.</p>
+      </a>
+      <a href="simulateur.html?mod=apprendre&article=plusvalue" class="guide-card">
+        <div class="guide-card-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 19V11M12 19V6M19 19V14" stroke="#e8b873" stroke-width="1.6" stroke-linecap="round"/><path d="M4 20h16" stroke="#e8b873" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+        <h3>La plus-value</h3><p>Comment est calculée et imposée la plus-value immobilière.</p>
+      </a>
+      <a href="guide/regles-hcsf.html" class="guide-card">
+        <div class="guide-card-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 10l8-5 8 5" stroke="#e8b873" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 10v8M10 10v8M14 10v8M18 10v8M4 18h16" stroke="#e8b873" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+        <h3>Les règles HCSF</h3><p>Le cadre qui encadre votre crédit : 35%, 25 ans, flexibilité.</p>
+      </a>
+      <a href="simulateur.html?mod=apprendre&article=marchand" class="guide-card">
+        <div class="guide-card-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 10l7-5 7 5" stroke="#e8b873" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 9v9h10V9" stroke="#e8b873" stroke-width="1.6" stroke-linejoin="round"/><path d="M9.5 14h5M12 11.5v5" stroke="#e8b873" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <h3>Marchand de biens</h3><p>Acheter, rénover, revendre : le statut et sa fiscalité.</p>
+      </a>
+      <a href="simulateur.html?mod=apprendre&article=transmission" class="guide-card">
+        <div class="guide-card-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="8" cy="9" r="2.5" stroke="#e8b873" stroke-width="1.5"/><circle cx="16" cy="9" r="2.5" stroke="#e8b873" stroke-width="1.5"/><path d="M4 18c0-2.2 1.8-3.5 4-3.5s4 1.3 4 3.5M12 18c0-2.2 1.8-3.5 4-3.5s4 1.3 4 3.5" stroke="#e8b873" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <h3>La transmission</h3><p>Anticiper la transmission de votre patrimoine immobilier.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section" id="faq">
+  <div class="wrap">
+    <div class="section-head" style="text-align:center;margin-left:auto;margin-right:auto;">
+      <div class="section-eyebrow">Questions fréquentes</div>
+      <h2 class="section-title">Tout ce que vous devez savoir.</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Sumba est-il vraiment gratuit ?</button>
+        <div class="faq-a">Oui, toutes les simulations sont 100% gratuites et le resteront. Sumba se rémunère uniquement sur les exports avancés (Excel, PDF business plan) disponibles en version Pro, et à terme sur des partenariats avec des courtiers et CGP sélectionnés.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Mes données sont-elles sécurisées ?</button>
+        <div class="faq-a">Vos données ne sont jamais vendues ni transmises à des tiers. Les simulations sans compte sont entièrement anonymes et stockées localement dans votre navigateur. La création de compte vous permet uniquement de sauvegarder vos simulations.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Les calculs sont-ils fiables ?</button>
+        <div class="faq-a">Sumba est conçu par des professionnels de l'immobilier et mis à jour régulièrement selon les règles HCSF, les barèmes fiscaux en vigueur et les taux du marché. Les résultats sont des estimations fiables mais ne remplacent pas un conseil personnalisé d'un notaire ou d'un conseiller fiscal.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Quelle différence entre LMNP et location nue ?</button>
+        <div class="faq-a">La location meublée non professionnelle (LMNP) vous permet d'amortir le bien et de réduire significativement votre base imposable. La location nue est plus simple à gérer mais fiscalement moins avantageuse pour les tranches élevées. Sumba calcule les deux et met en évidence le meilleur choix selon votre tranche marginale d'imposition.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Puis-je simuler un achat en SCI ?</button>
+        <div class="faq-a">Oui. Sumba simule aussi bien les achats en nom propre qu'en société (SCI à l'IR, SCI à l'IS, SAS). Le module compare automatiquement les deux approches et explique en langage clair les avantages et inconvénients de chaque structure pour votre situation.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Qu'est-ce qu'un marchand de biens ?</button>
+        <div class="faq-a">Un marchand de biens achète un bien immobilier, le rénove et le revend rapidement pour dégager une plus-value. C'est une activité commerciale qui nécessite généralement une structure sociétaire et un financement court terme (crédit in fine). Sumba simule la rentabilité de ce type d'opération en intégrant tous les frais réels.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="wrap">
+    <h2>Votre simulation vous attend.</h2>
+    <p>Gratuit, sans inscription, en deux minutes.</p>
+    <a href="simulateur.html?mod=cap" class="btn-primary">Lancer ma simulation</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-in">
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo">Sumba</div>
+        <p style="margin-top:12px;opacity:0.6;font-size:12.5px;font-weight:300;max-width:260px">Le simulateur d'investissement immobilier pensé avec exigence.</p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col"><h4>Outils</h4><a href="simulateur.html?mod=cap">Capacité d'emprunt</a><a href="simulateur.html?mod=loc">Investissement locatif</a><a href="simulateur.html?mod=comp">Comparateur fiscal</a><a href="simulateur.html?mod=mb">Marchand de biens</a></div>
+        <div class="footer-col"><h4>Ressources</h4><a href="guide/index.html">Le Guide Sumba</a><a href="guide/regles-hcsf.html">Règles HCSF</a><a href="guide/lmnp.html">Fiscalité LMNP</a></div>
+        <div class="footer-col"><h4>Sumba</h4><a href="legal.html#mentions">Mentions légales</a><a href="legal.html#cgu">CGU</a><a href="legal.html#confidentialite">Confidentialité</a></div>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 Sumba — Tous droits réservés.</div>
+  </div>
+</footer>
+
+<script>
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+// Détection de session : adapte la nav si l'utilisateur est connecté
+(function(){
+  try {
+    const sb = supabase.createClient('https://zrngovgnkkkhnxdytmyd.supabase.co', 'sb_publishable_QRu38MszSvnpwZCz0qcQMw_ITzXLjnE', {
+  auth: {
+    persistSession: true,
+    autoRefreshToken: true,
+    detectSessionInUrl: true,
+    storageKey: 'sumba-auth',
+    flowType: 'pkce'
+  }
+});
+    sb.auth.getSession().then(({ data }) => {
+      if (data && data.session) {
+        const prenom = data.session.user.user_metadata?.prenom
+          || data.session.user.user_metadata?.full_name?.split(' ')[0]
+          || data.session.user.user_metadata?.name?.split(' ')[0]
+          || 'Mon compte';
+        const cta = document.getElementById('nav-cta');
+        if (cta) {
+          cta.innerHTML = '<a href="compte.html" class="login">' + prenom + '</a><a href="simulateur.html?mod=cap" class="btn">Lancer une simulation</a>';
+        }
+      }
+    });
+  } catch(e) {}
+})();
+</script>
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
+<script>
+  window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/speed-insights/script.js"></script>
+
+</body>
+</html>
