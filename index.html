@@ -29,154 +29,268 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Sumba — Simulateur d'investissement immobilier gratuit">
 <meta name="twitter:description" content="Capacité d'emprunt, note de crédit, rentabilité locative. Gratuit, sans inscription.">
+<meta name="theme-color" content="#eceee9">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
-  --g:#0f2942;--gm:#1c4a6e;--gl:#e8b873;--gp:#eef2f6;--gx:#f6f9fb;
-  --cr:#fbfaf8;--w:#fff;--dk:#0f2942;--gr:#5a6572;--grl:#f3f4f6;
-  --cuivre:#e8b873;--cuivre-dark:#c9974f;
-  --bd:rgba(15,41,66,0.1);
-  --r:20px;--rs:12px;--rp2:100px;
+  --bg:#eceee9;--surface:#ffffff;--surface-2:#f4f6f1;--surface-3:#eef1ea;
+  --ink:#15241d;--ink-2:#46544c;--ink-3:#838d85;
+  --line:#e4e7df;--line-2:#eceee9;
+  --lime:#bff05f;--lime-2:#aee63f;--lime-soft:#e9f9c8;
+  --forest:#173a2b;--forest-2:#1f4a37;
+  --green-acc:#2f8f56;
+  --danger:#e2554b;--danger-soft:#fdeceb;
+  --r:24px;--rs:16px;--rx:14px;--pill:999px;
+  --sh:0 1px 2px rgba(20,40,30,.04),0 10px 30px rgba(20,40,30,.05);
+  --sh-lift:0 2px 6px rgba(20,40,30,.06),0 24px 50px rgba(20,40,30,.10);
+  --ease:cubic-bezier(0.16,1,0.3,1);
 }
 html{scroll-behavior:smooth;}
-body{font-family:'Inter',sans-serif;background:var(--cr);color:var(--dk);line-height:1.6;-webkit-font-smoothing:antialiased;}
-.wrap{max-width:1180px;margin:0 auto;padding:0 48px;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;}
+a{-webkit-tap-highlight-color:transparent;}
+.wrap{max-width:1200px;margin:0 auto;padding:0 32px;position:relative;}
+h1,h2,h3,h4{letter-spacing:-0.02em;line-height:1.1;}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:0.08em;
+  text-transform:uppercase;color:var(--green-acc);}
+.eyebrow .pip{width:6px;height:6px;border-radius:50%;background:var(--lime-2);}
+.hl{position:relative;white-space:nowrap;}
+.hl::after{content:'';position:absolute;left:-2px;right:-2px;bottom:0.08em;height:0.38em;background:var(--lime);
+  z-index:-1;border-radius:4px;opacity:.9;}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+.reveal.in{opacity:1;transform:none;}
+.d1{transition-delay:.07s;}.d2{transition-delay:.14s;}.d3{transition-delay:.21s;}.d4{transition-delay:.28s;}
+
+/* BUTTONS */
+.btn-primary{display:inline-flex;align-items:center;gap:9px;text-decoration:none;background:var(--lime);color:var(--ink);
+  padding:14px 26px;border-radius:var(--pill);font-size:15px;font-weight:700;border:1px solid rgba(20,40,30,.06);
+  box-shadow:0 6px 18px rgba(150,220,80,.4);transition:transform .3s var(--ease),box-shadow .3s var(--ease),background .2s;}
+.btn-primary:hover{transform:translateY(-2px);background:var(--lime-2);box-shadow:0 12px 28px rgba(150,220,80,.5);}
+.btn-primary svg{width:17px;height:17px;}
+.btn-ghost{display:inline-flex;align-items:center;gap:8px;text-decoration:none;background:var(--surface);color:var(--ink);
+  padding:14px 24px;border-radius:var(--pill);font-size:15px;font-weight:600;border:1px solid var(--line);
+  transition:transform .3s var(--ease),border-color .2s,gap .2s;}
+.btn-ghost:hover{transform:translateY(-2px);border-color:var(--ink-3);gap:11px;}
 
 /* NAV */
-nav{border-bottom:1px solid var(--bd);position:sticky;top:0;background:rgba(251,250,248,0.92);backdrop-filter:blur(12px);z-index:50;}
-.nav-in{max-width:1180px;margin:0 auto;padding:16px 48px;display:flex;align-items:center;justify-content:space-between;}
+nav{position:sticky;top:0;z-index:100;padding:16px 0;transition:padding .4s var(--ease);}
+.nav-in{max-width:1200px;margin:0 auto;padding:11px 14px 11px 22px;display:flex;align-items:center;justify-content:space-between;
+  background:rgba(255,255,255,.78);border:1px solid var(--line);border-radius:var(--pill);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);transition:box-shadow .4s var(--ease),background .4s var(--ease);}
+nav.scrolled .nav-in{box-shadow:var(--sh);background:rgba(255,255,255,.92);}
 .logo{display:flex;align-items:center;gap:11px;text-decoration:none;flex-shrink:0;}
-.logo-mark{width:34px;height:34px;background:var(--g);border-radius:8px;display:flex;align-items:center;justify-content:center;}
-.logo-mark svg{width:22px;height:22px;}
-.logo-name{font-family:'Spectral',serif;font-size:20px;font-weight:700;color:var(--g);}
-.nav-links{display:flex;gap:30px;list-style:none;}
-.nav-links a{text-decoration:none;color:var(--g);font-size:14px;font-weight:400;opacity:0.85;transition:opacity .2s;}
-.nav-links a:hover{opacity:1;color:var(--gm);}
-.nav-cta{display:flex;align-items:center;gap:16px;flex-shrink:0;}
-.nav-cta .login{text-decoration:none;color:var(--g);font-size:13px;font-weight:500;}
-.nav-cta .btn{text-decoration:none;color:var(--cr);background:var(--g);padding:10px 20px;border-radius:var(--rp2);font-size:13px;font-weight:500;transition:background .2s;white-space:nowrap;}
-.nav-cta .btn:hover{background:var(--gm);}
+.logo-mark{width:38px;height:38px;border-radius:12px;background:var(--lime);display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 12px rgba(150,220,80,.45);flex-shrink:0;transition:transform .4s var(--ease);}
+.logo:hover .logo-mark{transform:rotate(-6deg) scale(1.05);}
+.logo-mark svg{width:23px;height:23px;}
+.logo-name{font-size:20px;font-weight:800;color:var(--ink);letter-spacing:-0.03em;}
+.nav-links{display:flex;gap:6px;list-style:none;}
+.nav-links a{text-decoration:none;color:var(--ink-2);font-size:14.5px;font-weight:600;padding:8px 16px;border-radius:var(--pill);
+  transition:color .2s,background .2s;}
+.nav-links a:hover{color:var(--ink);background:var(--surface-3);}
+.nav-cta{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.nav-cta .login{text-decoration:none;color:var(--ink-2);font-size:14px;font-weight:600;padding:9px 16px;border-radius:var(--pill);transition:color .2s,background .2s;}
+.nav-cta .login:hover{color:var(--ink);background:var(--surface-3);}
+.nav-cta .btn{text-decoration:none;color:var(--ink);background:var(--lime);padding:11px 22px;border-radius:var(--pill);font-size:14px;font-weight:700;
+  box-shadow:0 4px 14px rgba(150,220,80,.4);transition:transform .3s var(--ease),box-shadow .3s var(--ease),background .2s;white-space:nowrap;}
+.nav-cta .btn:hover{transform:translateY(-2px);background:var(--lime-2);box-shadow:0 8px 20px rgba(150,220,80,.5);}
 
 /* HERO */
-.hero{padding:84px 0 78px;border-bottom:1px solid var(--bd);}
-.hero-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:64px;align-items:center;}
-.hero-badge{display:inline-flex;align-items:center;gap:9px;font-size:13px;color:var(--gm);background:var(--gp);padding:7px 15px;border-radius:var(--rp2);margin-bottom:26px;font-weight:500;}
-.hero-badge .dot{width:7px;height:7px;background:var(--cuivre);border-radius:50%;}
-.hero h1{font-family:'Spectral',serif;font-weight:600;font-size:58px;line-height:1.06;letter-spacing:-0.02em;margin-bottom:24px;color:var(--g);}
-.hero h1 .light{font-weight:400;}
-.hero-sub{font-size:18px;color:var(--gr);font-weight:300;margin-bottom:36px;max-width:510px;}
-.hero-actions{display:flex;gap:16px;align-items:center;flex-wrap:wrap;}
-.btn-primary{text-decoration:none;color:var(--cr);background:var(--g);padding:15px 30px;border-radius:var(--rp2);font-size:15px;font-weight:600;transition:background .2s;display:inline-block;}
-.btn-primary:hover{background:var(--gm);}
-.btn-line{text-decoration:none;color:var(--g);font-size:15px;font-weight:500;border-bottom:1.5px solid var(--cuivre);padding-bottom:3px;}
+.hero{padding:64px 0 40px;}
+.hero-grid{display:grid;grid-template-columns:1.05fr 0.95fr;gap:56px;align-items:center;}
+.hero-badge{display:inline-flex;align-items:center;gap:9px;font-size:13px;color:var(--forest);background:var(--surface);
+  border:1px solid var(--line);padding:7px 9px 7px 16px;border-radius:var(--pill);margin-bottom:26px;font-weight:600;box-shadow:var(--sh);}
+.hero-badge .tag{background:var(--lime-soft);color:var(--forest);font-size:11px;font-weight:700;padding:3px 10px;border-radius:var(--pill);}
+.hero h1{font-size:60px;font-weight:800;letter-spacing:-0.035em;color:var(--ink);margin-bottom:22px;}
+.hero-sub{font-size:18px;color:var(--ink-2);font-weight:400;margin-bottom:32px;max-width:520px;}
+.hero-actions{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:34px;}
+.hero-trust{display:flex;align-items:center;gap:16px;}
+.hero-trust .avs{display:flex;}
+.hero-trust .avs span{width:34px;height:34px;border-radius:50%;border:2.5px solid var(--bg);margin-left:-10px;
+  background-size:cover;background-position:center;}
+.hero-trust .avs span:first-child{margin-left:0;}
+.hero-trust .txt{font-size:13.5px;color:var(--ink-2);}
+.hero-trust .txt b{color:var(--ink);font-weight:700;}
+.hero-trust .stars{color:#f0a92b;letter-spacing:1px;}
 
-/* Carte démo note de crédit */
-.hero-demo{background:var(--g);border-radius:var(--r);padding:32px;color:var(--cr);box-shadow:0 24px 60px rgba(15,41,66,0.22);}
-.hero-demo-top{display:flex;align-items:center;gap:20px;padding-bottom:22px;border-bottom:1px solid rgba(255,255,255,0.14);margin-bottom:20px;}
-.demo-gauge{width:84px;height:84px;position:relative;flex-shrink:0;}
-.demo-gauge-num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
-.demo-gauge-num strong{font-family:'Spectral',serif;font-size:28px;font-weight:600;}
-.demo-gauge-num span{font-size:10px;opacity:0.6;}
-.demo-label{font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--cuivre);margin-bottom:6px;font-weight:600;}
-.demo-title{font-family:'Spectral',serif;font-size:21px;font-weight:500;}
-.demo-factors{display:flex;flex-direction:column;gap:13px;}
-.demo-factor-head{display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px;}
-.demo-factor-head span:last-child{color:var(--cuivre);font-weight:500;}
-.demo-bar{height:5px;background:rgba(255,255,255,0.14);border-radius:3px;overflow:hidden;}
-.demo-bar-fill{height:100%;background:var(--cuivre);border-radius:3px;}
+/* HERO VISUAL */
+.hero-visual{position:relative;}
+.hv-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:28px;box-shadow:var(--sh-lift);}
+.hv-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.hv-label{font-size:13px;color:var(--ink-3);font-weight:600;}
+.hv-pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--forest);
+  background:var(--lime-soft);padding:5px 12px;border-radius:var(--pill);}
+.hv-amount{font-size:42px;font-weight:800;letter-spacing:-0.03em;color:var(--ink);margin:6px 0 18px;}
+.hv-bar{height:8px;background:var(--surface-3);border-radius:var(--pill);overflow:hidden;margin-bottom:8px;}
+.hv-bar > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--lime-2),var(--lime));border-radius:var(--pill);
+  transition:width 1.3s var(--ease);}
+.hv-barmeta{display:flex;justify-content:space-between;font-size:12px;color:var(--ink-3);font-weight:500;margin-bottom:22px;}
+.hv-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.hv-stat{background:var(--surface-2);border:1px solid var(--line-2);border-radius:var(--rx);padding:14px 16px;}
+.hv-stat .k{font-size:12px;color:var(--ink-3);font-weight:600;margin-bottom:4px;}
+.hv-stat .v{font-size:19px;font-weight:800;color:var(--ink);letter-spacing:-0.02em;}
+.hv-stat .v.up{color:var(--green-acc);}
+.hv-float{position:absolute;background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--sh-lift);
+  padding:14px 16px;display:flex;align-items:center;gap:12px;}
+.hv-float.score{top:-26px;right:-14px;animation:floaty 6s ease-in-out infinite;}
+.hv-float.flow{bottom:-24px;left:-18px;animation:floaty 7s ease-in-out infinite reverse;}
+@keyframes floaty{0%,100%{transform:translateY(0);}50%{transform:translateY(-9px);}}
+.ring{width:46px;height:46px;position:relative;flex-shrink:0;}
+.ring .num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:var(--ink);}
+.hv-float .k{font-size:11px;color:var(--ink-3);font-weight:600;}
+.hv-float .v{font-size:16px;font-weight:800;color:var(--ink);}
+.hv-float .v.green{color:var(--green-acc);}
+.ic-badge{width:38px;height:38px;border-radius:11px;background:var(--lime);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ic-badge svg{width:20px;height:20px;}
 
-/* BANDE CHIFFRES */
-.figures{background:var(--g);color:var(--cr);}
-.figures-grid{max-width:1180px;margin:0 auto;padding:0 48px;display:grid;grid-template-columns:repeat(4,1fr);}
-.figure{padding:44px 24px;text-align:center;border-right:1px solid rgba(255,255,255,0.12);}
-.figure:last-child{border-right:none;}
-.figure-num{font-family:'Spectral',serif;font-size:40px;font-weight:600;line-height:1;color:var(--cuivre);}
-.figure-lbl{font-size:12.5px;color:rgba(255,255,255,0.72);margin-top:12px;}
+/* TRUST STRIP */
+.strip{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:24px 0;margin-top:30px;}
+.strip-in{display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center;}
+.strip-in .lbl{font-size:13px;color:var(--ink-3);font-weight:600;margin-right:6px;}
+.chip{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--ink-2);
+  background:var(--surface);border:1px solid var(--line);padding:8px 14px;border-radius:var(--pill);}
+.chip .pip{width:6px;height:6px;border-radius:50%;background:var(--lime-2);}
 
-/* SECTIONS */
-.section{padding:84px 0;}
-.section-head{margin-bottom:50px;max-width:680px;}
-.section-eyebrow{font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:var(--cuivre-dark);margin-bottom:14px;font-weight:600;}
-.section-title{font-family:'Spectral',serif;font-weight:600;font-size:42px;line-height:1.1;letter-spacing:-0.01em;margin-bottom:16px;color:var(--g);}
-.section-intro{font-size:17px;color:var(--gr);font-weight:300;}
+/* STATS */
+.stats{padding:70px 0 10px;}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+.stat-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:30px 26px;transition:transform .35s var(--ease),box-shadow .35s var(--ease);}
+.stat-card:hover{transform:translateY(-4px);box-shadow:var(--sh-lift);}
+.stat-num{font-size:42px;font-weight:800;letter-spacing:-0.03em;color:var(--ink);line-height:1;}
+.stat-num .u{color:var(--green-acc);}
+.stat-lbl{font-size:13.5px;color:var(--ink-2);margin-top:12px;font-weight:500;}
 
-/* OUTILS */
-.tools{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
-.tool{background:var(--w);border:1px solid var(--bd);border-radius:var(--r);padding:32px 34px;box-shadow:0 4px 16px rgba(15,41,66,0.04);transition:all .2s;text-decoration:none;display:block;color:inherit;}
-.tool:hover{box-shadow:0 14px 34px rgba(15,41,66,0.1);transform:translateY(-2px);}
-.tool-head{display:flex;align-items:center;gap:14px;margin-bottom:14px;}
-.tool-ico{width:44px;height:44px;border-radius:11px;background:var(--gp);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.tool-ico svg{width:24px;height:24px;}
-.tool-num{font-family:'Spectral',serif;font-size:14px;color:var(--cuivre-dark);margin-left:auto;}
-.tool h3{font-family:'Spectral',serif;font-size:23px;font-weight:600;margin-bottom:9px;color:var(--g);}
-.tool p{font-size:14.5px;color:var(--gr);font-weight:300;line-height:1.6;}
+/* SECTION */
+.section{padding:90px 0;}
+.section-head{max-width:660px;margin-bottom:48px;}
+.section-head.center{margin-left:auto;margin-right:auto;text-align:center;}
+.section-head .eyebrow{margin-bottom:16px;}
+.section-title{font-size:42px;font-weight:800;letter-spacing:-0.03em;color:var(--ink);margin-bottom:14px;}
+.section-intro{font-size:17px;color:var(--ink-2);font-weight:400;}
 
-/* EXEMPLE CONCRET */
-.example{padding:84px 0;}
-.example-card{background:var(--w);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;box-shadow:0 14px 40px rgba(15,41,66,0.08);display:grid;grid-template-columns:1fr 1fr;}
-.example-left{padding:52px 48px;}
-.example-left h2{font-family:'Spectral',serif;font-weight:600;font-size:30px;line-height:1.14;margin-bottom:16px;color:var(--g);}
-.example-left p{font-size:15.5px;color:var(--gr);font-weight:300;margin-bottom:12px;}
-.example-right{background:var(--g);color:var(--cr);padding:52px 48px;display:flex;flex-direction:column;justify-content:center;}
-.calc-line{display:flex;justify-content:space-between;align-items:center;padding:15px 0;border-bottom:1px solid rgba(255,255,255,0.14);}
-.calc-label{font-size:14.5px;color:rgba(255,255,255,0.75);}
-.calc-val{font-family:'Spectral',serif;font-size:19px;font-weight:500;color:var(--cr);}
-.calc-line.total{border-bottom:none;padding-top:22px;margin-top:6px;border-top:2px solid var(--cuivre);}
-.calc-line.total .calc-label{color:var(--cr);font-weight:600;font-size:15.5px;}
-.calc-line.total .calc-val{color:var(--cuivre);font-size:28px;font-weight:600;}
+/* TOOLS */
+.tools{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;}
+.tool{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:30px;
+  text-decoration:none;color:inherit;display:block;transition:transform .35s var(--ease),box-shadow .35s var(--ease),border-color .3s;overflow:hidden;}
+.tool:hover{transform:translateY(-5px);box-shadow:var(--sh-lift);border-color:var(--line);}
+.tool-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.tool-ico{width:50px;height:50px;border-radius:14px;background:var(--surface-3);display:flex;align-items:center;justify-content:center;
+  transition:background .35s var(--ease),transform .35s var(--ease);}
+.tool-ico svg{width:25px;height:25px;stroke:var(--forest);}
+.tool:hover .tool-ico{background:var(--lime);transform:rotate(-4deg);}
+.tool-num{font-size:13px;font-weight:700;color:var(--ink-3);}
+.tool h3{font-size:21px;font-weight:700;margin-bottom:9px;color:var(--ink);display:flex;align-items:center;gap:8px;}
+.tool h3 .arr{color:var(--green-acc);opacity:0;transform:translateX(-6px);transition:opacity .3s var(--ease),transform .3s var(--ease);}
+.tool:hover h3 .arr{opacity:1;transform:none;}
+.tool p{font-size:14.5px;color:var(--ink-2);font-weight:400;line-height:1.6;}
+
+/* STEPS */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+.step{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:30px;transition:transform .35s var(--ease),box-shadow .35s var(--ease);}
+.step:hover{transform:translateY(-4px);box-shadow:var(--sh-lift);}
+.step-num{width:38px;height:38px;border-radius:11px;background:var(--forest);color:#fff;display:flex;align-items:center;justify-content:center;
+  font-size:15px;font-weight:700;margin-bottom:18px;}
+.step h3{font-size:19px;font-weight:700;margin-bottom:9px;color:var(--ink);}
+.step p{font-size:14.5px;color:var(--ink-2);font-weight:400;line-height:1.6;}
+
+/* EXAMPLE */
+.example-card{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;background:var(--surface);
+  border:1px solid var(--line);border-radius:32px;padding:48px;box-shadow:var(--sh);}
+.example-left .eyebrow{margin-bottom:16px;}
+.example-left h2{font-size:32px;font-weight:800;letter-spacing:-0.03em;color:var(--ink);margin-bottom:14px;line-height:1.15;}
+.example-left p{font-size:15.5px;color:var(--ink-2);font-weight:400;margin-bottom:12px;}
+.example-left .note{font-size:13px;color:var(--ink-3);}
+.calc{background:var(--surface-2);border:1px solid var(--line-2);border-radius:var(--r);padding:30px;}
+.calc-line{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);}
+.calc-line:first-child{padding-top:0;}
+.calc-label{font-size:14.5px;color:var(--ink-2);font-weight:500;}
+.calc-val{font-size:18px;font-weight:700;color:var(--ink);}
+.calc-line.total{border-bottom:none;padding-bottom:0;margin-top:8px;padding-top:20px;border-top:2px solid var(--forest);}
+.calc-line.total .calc-label{color:var(--ink);font-weight:700;font-size:15px;}
+.calc-line.total .calc-val{font-size:30px;font-weight:800;color:var(--green-acc);letter-spacing:-0.02em;}
 
 /* GUIDE */
-.guide{background:var(--gx);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);}
 .guide-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
-.guide-card{background:var(--w);border:1px solid var(--bd);border-radius:var(--rs);padding:26px;text-decoration:none;color:inherit;transition:all .2s;}
-.guide-card:hover{box-shadow:0 10px 28px rgba(15,41,66,0.08);transform:translateY(-2px);}
-.guide-card-ico{width:40px;height:40px;border-radius:10px;background:var(--g);display:flex;align-items:center;justify-content:center;margin-bottom:16px;}
-.guide-card h3{font-family:'Spectral',serif;font-size:18px;font-weight:600;margin-bottom:7px;color:var(--g);}
-.guide-card p{font-size:13.5px;color:var(--gr);font-weight:300;line-height:1.55;}
+.guide-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:28px;text-decoration:none;color:inherit;
+  display:block;transition:transform .35s var(--ease),box-shadow .35s var(--ease);}
+.guide-card:hover{transform:translateY(-4px);box-shadow:var(--sh-lift);}
+.guide-ico{width:46px;height:46px;border-radius:13px;background:var(--lime-soft);display:flex;align-items:center;justify-content:center;margin-bottom:18px;
+  transition:transform .35s var(--ease);}
+.guide-card:hover .guide-ico{transform:scale(1.06) rotate(-4deg);}
+.guide-ico svg{width:23px;height:23px;stroke:var(--forest);}
+.guide-card h3{font-size:18px;font-weight:700;margin-bottom:7px;color:var(--ink);}
+.guide-card p{font-size:13.5px;color:var(--ink-2);font-weight:400;line-height:1.55;}
 
 /* FAQ */
-.faq-list{max-width:780px;margin:0 auto;}
-.faq-item{border-bottom:1px solid var(--bd);}
-.faq-q{width:100%;text-align:left;background:none;border:none;padding:24px 0;font-family:'Inter',sans-serif;font-size:17px;font-weight:500;color:var(--g);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:20px;}
-.faq-q::after{content:'+';font-size:24px;color:var(--cuivre-dark);font-weight:300;flex-shrink:0;transition:transform .2s;}
-.faq-item.open .faq-q::after{content:'−';}
-.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s ease;font-size:15px;color:var(--gr);font-weight:300;line-height:1.7;}
-.faq-item.open .faq-a{max-height:320px;padding-bottom:24px;}
+.faq-list{max-width:800px;margin:0 auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:8px 28px;box-shadow:var(--sh);}
+.faq-item{border-bottom:1px solid var(--line);}
+.faq-item:last-child{border-bottom:none;}
+.faq-q{width:100%;text-align:left;background:none;border:none;padding:22px 0;font-family:inherit;font-size:17px;font-weight:600;color:var(--ink);
+  cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:20px;transition:color .2s;}
+.faq-q:hover{color:var(--green-acc);}
+.faq-q .icon{position:relative;width:20px;height:20px;flex-shrink:0;border-radius:7px;background:var(--surface-3);transition:background .25s;}
+.faq-q .icon::before,.faq-q .icon::after{content:'';position:absolute;background:var(--forest);border-radius:2px;transition:transform .25s var(--ease);}
+.faq-q .icon::before{width:10px;height:2px;top:9px;left:5px;}
+.faq-q .icon::after{width:2px;height:10px;top:5px;left:9px;}
+.faq-item.open .faq-q .icon{background:var(--lime);}
+.faq-item.open .faq-q .icon::after{transform:rotate(90deg);}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .35s var(--ease),padding .35s var(--ease);font-size:15px;color:var(--ink-2);font-weight:400;line-height:1.7;}
+.faq-item.open .faq-a{max-height:340px;padding-bottom:24px;}
 
 /* CTA */
-.cta{background:var(--g);color:var(--cr);padding:90px 0;text-align:center;}
-.cta h2{font-family:'Spectral',serif;font-weight:600;font-size:44px;line-height:1.1;margin-bottom:16px;}
-.cta p{font-size:17px;opacity:0.8;font-weight:300;margin-bottom:36px;}
-.cta .btn-primary{background:var(--cuivre);color:var(--g);}
-.cta .btn-primary:hover{background:var(--w);}
+.cta{padding:40px 0 100px;}
+.cta-panel{position:relative;background:var(--forest);border-radius:32px;padding:72px 48px;text-align:center;overflow:hidden;}
+.cta-panel::before{content:'';position:absolute;width:420px;height:420px;background:radial-gradient(circle,rgba(191,240,95,.22),transparent 70%);
+  top:-180px;right:-120px;border-radius:50%;}
+.cta-panel::after{content:'';position:absolute;width:360px;height:360px;background:radial-gradient(circle,rgba(191,240,95,.14),transparent 70%);
+  bottom:-160px;left:-100px;border-radius:50%;}
+.cta-panel .eyebrow{color:var(--lime);position:relative;z-index:1;justify-content:center;margin-bottom:18px;}
+.cta-panel .eyebrow .pip{background:var(--lime);}
+.cta h2{font-size:44px;font-weight:800;letter-spacing:-0.03em;color:#fff;margin-bottom:14px;position:relative;z-index:1;}
+.cta h2 .lime{color:var(--lime);}
+.cta p{font-size:17px;color:rgba(255,255,255,.7);font-weight:400;margin-bottom:34px;position:relative;z-index:1;}
+.cta .btn-primary{position:relative;z-index:1;}
 
 /* FOOTER */
-footer{background:var(--g);color:var(--cr);padding:48px 0 34px;}
-.footer-in{max-width:1180px;margin:0 auto;padding:0 48px;}
-.footer-top{display:flex;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.15);padding-bottom:32px;margin-bottom:22px;flex-wrap:wrap;gap:30px;}
-.footer-logo{font-family:'Spectral',serif;font-size:20px;font-weight:700;}
-.footer-cols{display:flex;gap:56px;flex-wrap:wrap;}
-.footer-col h4{font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--cuivre);margin-bottom:13px;}
-.footer-col a{display:block;color:rgba(255,255,255,0.72);text-decoration:none;font-size:13.5px;margin-bottom:9px;font-weight:300;}
-.footer-col a:hover{color:#fff;}
-.footer-bottom{font-size:12px;color:rgba(255,255,255,0.5);}
+footer{border-top:1px solid var(--line);padding:60px 0 36px;}
+.footer-in{max-width:1200px;margin:0 auto;padding:0 32px;}
+.footer-top{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;padding-bottom:40px;border-bottom:1px solid var(--line);margin-bottom:26px;}
+.footer-brand{max-width:280px;}
+.footer-logo{display:flex;align-items:center;gap:10px;}
+.footer-logo .logo-mark{width:34px;height:34px;border-radius:10px;}
+.footer-logo .logo-mark svg{width:21px;height:21px;}
+.footer-logo span{font-size:20px;font-weight:800;color:var(--ink);letter-spacing:-0.03em;}
+.footer-brand p{margin-top:14px;color:var(--ink-2);font-size:13.5px;font-weight:400;line-height:1.6;}
+.footer-cols{display:flex;gap:60px;flex-wrap:wrap;}
+.footer-col h4{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:16px;font-weight:700;}
+.footer-col a{display:block;color:var(--ink-2);text-decoration:none;font-size:14px;margin-bottom:11px;font-weight:500;transition:color .2s,padding-left .2s;}
+.footer-col a:hover{color:var(--green-acc);padding-left:3px;}
+.footer-bottom{font-size:13px;color:var(--ink-3);font-weight:500;}
 
-@media(max-width:900px){
-  .nav-in{padding:14px 22px;}.nav-links{display:none;}.wrap{padding:0 22px;}
-  .hero{padding:48px 0;}.hero-grid{grid-template-columns:1fr;gap:40px;}.hero h1{font-size:40px;}
-  .figures-grid{grid-template-columns:1fr 1fr;padding:0 22px;}
-  .figure:nth-child(-n+2){border-bottom:1px solid rgba(255,255,255,0.12);}.figure:nth-child(2){border-right:none;}
-  .section{padding:54px 0;}.section-title{font-size:30px;}
+@media(max-width:960px){
+  .wrap{padding:0 20px;}
+  .nav-links{display:none;}
+  .hero{padding:40px 0;}.hero-grid{grid-template-columns:1fr;gap:54px;}.hero h1{font-size:42px;}
+  .hero-visual{max-width:440px;}
+  .stats-grid{grid-template-columns:1fr 1fr;}
+  .section{padding:60px 0;}.section-title{font-size:32px;}
   .tools{grid-template-columns:1fr;}
-  .example{padding:54px 0;}.example-card{grid-template-columns:1fr;}.example-left,.example-right{padding:40px 28px;}
+  .steps{grid-template-columns:1fr;}
+  .example-card{grid-template-columns:1fr;gap:28px;padding:32px;}
   .guide-grid{grid-template-columns:1fr;}
-  .cta{padding:60px 0;}.cta h2{font-size:32px;}
-  .footer-cols{gap:34px;}
+  .cta-panel{padding:50px 28px;}.cta h2{font-size:32px;}
+  .footer-top{flex-direction:column;gap:30px;}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important;scroll-behavior:auto!important;}
+  .reveal{opacity:1!important;transform:none!important;}
 }
 </style>
 <script type="application/ld+json">
@@ -242,14 +356,21 @@ footer{background:var(--g);color:var(--cr);padding:48px 0 34px;}
 </head>
 <body>
 
-<nav>
+<!-- NAV -->
+<nav id="nav">
   <div class="nav-in">
     <a href="index.html" class="logo">
-      <div class="logo-mark"><svg viewBox="10 11 28 25" fill="none"><path d="M13 19L24 13.5L35 19" stroke="#e8b873" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 29V34M24 25V34M30 21V34" stroke="#e8b873" stroke-width="2.6" stroke-linecap="round"/></svg></div>
+      <span class="logo-mark">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M4.5 11.5 L12 5.5 L19.5 11.5 V20 H4.5 Z" stroke="#15241d" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M7.5 17 L10.5 14 L12.5 15.5 L16.2 11.8" stroke="#15241d" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.9 11.8 H16.4 V14.3" stroke="#15241d" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
       <span class="logo-name">Sumba</span>
     </a>
     <ul class="nav-links">
       <li><a href="#fonctionnalites">Outils</a></li>
+      <li><a href="#methode">Méthode</a></li>
       <li><a href="guide/index.html">Le Guide</a></li>
       <li><a href="#faq">FAQ</a></li>
     </ul>
@@ -261,93 +382,154 @@ footer{background:var(--g);color:var(--cr);padding:48px 0 34px;}
 </nav>
 
 <!-- HERO -->
-<section class="hero">
+<header class="hero">
   <div class="wrap">
     <div class="hero-grid">
       <div>
-        <div class="hero-badge"><span class="dot"></span>100% gratuit · sans inscription</div>
-        <h1>Savez-vous vraiment <span class="light">combien vous pouvez</span> emprunter ?</h1>
-        <p class="hero-sub">Sumba calcule votre capacité d'emprunt, votre note de crédit et votre rentabilité locative avec la précision d'un conseiller en gestion de patrimoine.</p>
-        <div class="hero-actions">
-          <a href="simulateur.html?mod=cap" class="btn-primary">Lancer ma simulation</a>
-          <a href="#exemple" class="btn-line">Voir un exemple</a>
+        <div class="hero-badge reveal in"><span class="tag">Nouveau</span> Pensé avec les règles HCSF 2026</div>
+        <h1 class="reveal in d1">L'immobilier, <span class="hl">chiffré</span> avant de vous lancer.</h1>
+        <p class="hero-sub reveal in d2">Capacité d'emprunt, rentabilité locative, fiscalité : Sumba calcule chaque scénario avec la précision d'un conseiller en gestion de patrimoine. Gratuit, sans inscription.</p>
+        <div class="hero-actions reveal in d3">
+          <a href="simulateur.html?mod=cap" class="btn-primary">Lancer ma simulation
+            <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="#exemple" class="btn-ghost">Voir un exemple</a>
+        </div>
+        <div class="hero-trust reveal in d4">
+          <div class="avs">
+            <span style="background-image:url('https://i.pravatar.cc/80?img=12')"></span>
+            <span style="background-image:url('https://i.pravatar.cc/80?img=32')"></span>
+            <span style="background-image:url('https://i.pravatar.cc/80?img=5')"></span>
+            <span style="background-image:url('https://i.pravatar.cc/80?img=45')"></span>
+          </div>
+          <div class="txt"><span class="stars">★★★★★</span><br><b>Des milliers de projets</b> simulés en toute confiance</div>
         </div>
       </div>
-      <div class="hero-demo">
-        <div class="hero-demo-top">
-          <div class="demo-gauge">
-            <svg viewBox="0 0 84 84" width="84" height="84">
-              <circle cx="42" cy="42" r="36" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="6"/>
-              <circle cx="42" cy="42" r="36" fill="none" stroke="#e8b873" stroke-width="6" stroke-linecap="round" stroke-dasharray="226" stroke-dashoffset="54" transform="rotate(-90 42 42)"/>
-            </svg>
-            <div class="demo-gauge-num"><strong>76</strong><span>/ 100</span></div>
+
+      <div class="hero-visual reveal in d2">
+        <div class="hv-card">
+          <div class="hv-top">
+            <span class="hv-label">Votre capacité d'emprunt</span>
           </div>
-          <div>
-            <div class="demo-label">Votre note de crédit</div>
-            <div class="demo-title">Bon dossier</div>
+          <div class="hv-amount">324 000 €</div>
+          <div class="hv-bar"><i data-w="78"></i></div>
+          <div class="hv-barmeta"><span>Mensualité 1 750 € / 2 240 € max</span><span>78%</span></div>
+          <div class="hv-stats">
+            <div class="hv-stat"><div class="k">Durée du prêt</div><div class="v">25 ans</div></div>
+            <div class="hv-stat"><div class="k">Taux estimé</div><div class="v">4,1 %</div></div>
+            <div class="hv-stat"><div class="k">Rentabilité nette</div><div class="v up">6,8 %</div></div>
+            <div class="hv-stat"><div class="k">Cash-flow / mois</div><div class="v up">+340 €</div></div>
           </div>
         </div>
-        <div class="demo-factors">
-          <div><div class="demo-factor-head"><span>Taux d'endettement</span><span>32 / 35</span></div><div class="demo-bar"><div class="demo-bar-fill" style="width:91%"></div></div></div>
-          <div><div class="demo-factor-head"><span>Stabilité professionnelle</span><span>22 / 25</span></div><div class="demo-bar"><div class="demo-bar-fill" style="width:88%"></div></div></div>
-          <div><div class="demo-factor-head"><span>Apport personnel</span><span>14 / 20</span></div><div class="demo-bar"><div class="demo-bar-fill" style="width:70%"></div></div></div>
-          <div><div class="demo-factor-head"><span>Reste à vivre</span><span>8 / 12</span></div><div class="demo-bar"><div class="demo-bar-fill" style="width:66%"></div></div></div>
+
+        <div class="hv-float score">
+          <div class="ring">
+            <svg viewBox="0 0 46 46" width="46" height="46">
+              <circle cx="23" cy="23" r="19" fill="none" stroke="#eef1ea" stroke-width="5"/>
+              <circle id="ring" cx="23" cy="23" r="19" fill="none" stroke="#aee63f" stroke-width="5" stroke-linecap="round"
+                stroke-dasharray="119" stroke-dashoffset="119" transform="rotate(-90 23 23)"/>
+            </svg>
+            <span class="num" id="ringNum">0</span>
+          </div>
+          <div><div class="k">Note de crédit</div><div class="v">Bon dossier</div></div>
+        </div>
+
+        <div class="hv-float flow">
+          <span class="ic-badge">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M4 18l5-5 4 3 7-8" stroke="#15241d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 8h4v4" stroke="#15241d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <div><div class="k">Rendement annuel</div><div class="v green">+6,8 %</div></div>
         </div>
       </div>
     </div>
+
+    <!-- TRUST STRIP -->
+    <div class="strip reveal">
+      <div class="strip-in">
+        <span class="lbl">Tout est pris en compte :</span>
+        <span class="chip"><span class="pip"></span>Règle HCSF 35%</span>
+        <span class="chip"><span class="pip"></span>LMNP &amp; amortissement</span>
+        <span class="chip"><span class="pip"></span>SCI à l'IR / IS</span>
+        <span class="chip"><span class="pip"></span>Plus-value immobilière</span>
+        <span class="chip"><span class="pip"></span>Déficit foncier</span>
+        <span class="chip"><span class="pip"></span>Reste à vivre</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- STATS -->
+<section class="stats">
+  <div class="wrap">
+    <div class="stats-grid">
+      <div class="stat-card reveal"><div class="stat-num" data-count="35" data-suffix="%"><span class="u">0%</span></div><div class="stat-lbl">Taux d'endettement maximal retenu (règle HCSF)</div></div>
+      <div class="stat-card reveal d1"><div class="stat-num" data-count="5">0</div><div class="stat-lbl">Critères analysés exactement comme en banque</div></div>
+      <div class="stat-card reveal d2"><div class="stat-num" data-count="2" data-suffix=" min">0 min</div><div class="stat-lbl">Pour une simulation complète et chiffrée</div></div>
+      <div class="stat-card reveal d3"><div class="stat-num">0 €</div><div class="stat-lbl">Sans inscription, sans publicité, sans engagement</div></div>
+    </div>
   </div>
 </section>
-
-<!-- FIGURES -->
-<div class="figures">
-  <div class="figures-grid">
-    <div class="figure"><div class="figure-num">35 %</div><div class="figure-lbl">Taux d'endettement max (règle HCSF)</div></div>
-    <div class="figure"><div class="figure-num">5</div><div class="figure-lbl">Critères analysés comme en banque</div></div>
-    <div class="figure"><div class="figure-num">2 min</div><div class="figure-lbl">Pour une simulation complète</div></div>
-    <div class="figure"><div class="figure-num">Gratuit</div><div class="figure-lbl">Sans inscription, sans publicité</div></div>
-  </div>
-</div>
 
 <!-- OUTILS -->
 <section class="section" id="fonctionnalites">
   <div class="wrap">
-    <div class="section-head">
-      <div class="section-eyebrow">Quatre outils, une méthode</div>
+    <div class="section-head reveal">
+      <div class="eyebrow"><span class="pip"></span>Quatre outils, une méthode</div>
       <h2 class="section-title">De votre budget à votre fiscalité, tout est couvert.</h2>
-      <p class="section-intro">Chaque simulateur vous donne une réponse claire et un chiffre fiable, pas un argumentaire commercial.</p>
+      <p class="section-intro">Chaque simulateur vous donne une réponse claire et un chiffre fiable — pas un argumentaire commercial.</p>
     </div>
     <div class="tools">
-      <a href="simulateur.html?mod=cap" class="tool">
-        <div class="tool-head"><div class="tool-ico"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="12" rx="2" stroke="#1c4a6e" stroke-width="1.6"/><path d="M3 10h18" stroke="#1c4a6e" stroke-width="1.6"/></svg></div><span class="tool-num">01</span></div>
-        <h3>Capacité d'emprunt</h3><p>Votre budget maximal et votre note de crédit, calculés selon les critères réels d'analyse d'une banque : endettement, stabilité, apport, reste à vivre.</p>
+      <a href="simulateur.html?mod=cap" class="tool reveal">
+        <div class="tool-head"><span class="tool-ico"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="12" rx="2" stroke-width="1.7"/><path d="M3 10h18" stroke-width="1.7"/></svg></span><span class="tool-num">01</span></div>
+        <h3>Capacité d'emprunt <span class="arr">→</span></h3>
+        <p>Votre budget maximal et votre note de crédit, calculés selon les critères réels d'analyse d'une banque : endettement, stabilité, apport, reste à vivre.</p>
       </a>
-      <a href="simulateur.html?mod=loc" class="tool">
-        <div class="tool-head"><div class="tool-ico"><svg viewBox="0 0 24 24" fill="none"><path d="M5 11l7-6 7 6" stroke="#1c4a6e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 10v8h10v-8" stroke="#1c4a6e" stroke-width="1.6" stroke-linejoin="round"/></svg></div><span class="tool-num">02</span></div>
-        <h3>Investissement locatif</h3><p>Loyer estimé, cash-flow mensuel et rentabilité nette, charges, vacance et fiscalité comprises. Le vrai rendement, pas le brut.</p>
+      <a href="simulateur.html?mod=loc" class="tool reveal d1">
+        <div class="tool-head"><span class="tool-ico"><svg viewBox="0 0 24 24" fill="none"><path d="M5 11l7-6 7 6" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 10v8h10v-8" stroke-width="1.7" stroke-linejoin="round"/></svg></span><span class="tool-num">02</span></div>
+        <h3>Investissement locatif <span class="arr">→</span></h3>
+        <p>Loyer estimé, cash-flow mensuel et rentabilité nette — charges, vacance et fiscalité comprises. Le vrai rendement, pas le brut.</p>
       </a>
-      <a href="simulateur.html?mod=comp" class="tool">
-        <div class="tool-head"><div class="tool-ico"><svg viewBox="0 0 24 24" fill="none"><path d="M5 19V11M12 19V6M19 19V14" stroke="#1c4a6e" stroke-width="1.6" stroke-linecap="round"/><path d="M4 20h16" stroke="#1c4a6e" stroke-width="1.6" stroke-linecap="round"/></svg></div><span class="tool-num">03</span></div>
-        <h3>Comparateur fiscal</h3><p>Le régime le plus avantageux pour votre projet : location nue, meublée, et leurs différentes options, avec le détail de l'imposition.</p>
+      <a href="simulateur.html?mod=comp" class="tool reveal">
+        <div class="tool-head"><span class="tool-ico"><svg viewBox="0 0 24 24" fill="none"><path d="M5 19V11M12 19V6M19 19V14" stroke-width="1.7" stroke-linecap="round"/><path d="M4 20h16" stroke-width="1.7" stroke-linecap="round"/></svg></span><span class="tool-num">03</span></div>
+        <h3>Comparateur fiscal <span class="arr">→</span></h3>
+        <p>Le régime le plus avantageux pour votre projet : location nue, meublée et leurs options, avec le détail complet de l'imposition.</p>
       </a>
-      <a href="simulateur.html?mod=mb" class="tool">
-        <div class="tool-head"><div class="tool-ico"><svg viewBox="0 0 24 24" fill="none"><path d="M5 10l7-5 7 5" stroke="#1c4a6e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 9v9h10V9" stroke="#1c4a6e" stroke-width="1.6" stroke-linejoin="round"/><path d="M9.5 14h5M12 11.5v5" stroke="#1c4a6e" stroke-width="1.5" stroke-linecap="round"/></svg></div><span class="tool-num">04</span></div>
-        <h3>Marchand de biens</h3><p>Marge nette et rendement d'une opération d'achat-revente, du plan de financement jusqu'à la plus-value après impôts.</p>
+      <a href="simulateur.html?mod=mb" class="tool reveal d1">
+        <div class="tool-head"><span class="tool-ico"><svg viewBox="0 0 24 24" fill="none"><path d="M5 10l7-5 7 5" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 9v9h10V9" stroke-width="1.7" stroke-linejoin="round"/><path d="M9.5 14h5M12 11.5v5" stroke-width="1.6" stroke-linecap="round"/></svg></span><span class="tool-num">04</span></div>
+        <h3>Marchand de biens <span class="arr">→</span></h3>
+        <p>Marge nette et rendement d'une opération d'achat-revente, du plan de financement jusqu'à la plus-value après impôts.</p>
       </a>
     </div>
   </div>
 </section>
 
-<!-- EXEMPLE CONCRET -->
-<div class="example" id="exemple">
+<!-- METHODE -->
+<section class="section" id="methode" style="padding-top:0;">
   <div class="wrap">
-    <div class="example-card">
+    <div class="section-head reveal">
+      <div class="eyebrow"><span class="pip"></span>Comment ça marche</div>
+      <h2 class="section-title">Une réponse fiable en trois étapes.</h2>
+      <p class="section-intro">Pas de jargon, pas de compte obligatoire. Vous décrivez votre situation, Sumba fait le reste.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal"><div class="step-num">1</div><h3>Décrivez votre projet</h3><p>Revenus, apport, type de bien, durée. Quelques champs suffisent — exactement les informations qu'une banque examine.</p></div>
+      <div class="step reveal d1"><div class="step-num">2</div><h3>Sumba calcule en direct</h3><p>Capacité, note de crédit, rentabilité et fiscalité sont recalculées instantanément selon les règles HCSF et les barèmes en vigueur.</p></div>
+      <div class="step reveal d2"><div class="step-num">3</div><h3>Décidez en confiance</h3><p>Un chiffre clair, expliqué en langage simple, avec le meilleur scénario mis en évidence. Sauvegardez-le si vous le souhaitez.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- EXEMPLE -->
+<section class="section" id="exemple" style="padding-top:0;">
+  <div class="wrap">
+    <div class="example-card reveal">
       <div class="example-left">
-        <div class="section-eyebrow">Un exemple concret</div>
+        <div class="eyebrow"><span class="pip"></span>Un exemple concret</div>
         <h2>Couple, 60 000 € de revenus, 30 000 € d'apport.</h2>
-        <p>Voici ce que Sumba calcule en quelques secondes, charges et règles HCSF prises en compte, exactement comme le ferait votre banquier.</p>
-        <p style="font-size:13.5px;opacity:0.7">Illustration. Votre simulation sera adaptée à votre situation réelle.</p>
+        <p>Voici ce que Sumba calcule en quelques secondes — charges et règles HCSF prises en compte, exactement comme le ferait votre banquier.</p>
+        <p class="note">Illustration. Votre simulation sera adaptée à votre situation réelle.</p>
       </div>
-      <div class="example-right">
+      <div class="calc">
         <div class="calc-line"><span class="calc-label">Mensualité maximale</span><span class="calc-val">1 750 €</span></div>
         <div class="calc-line"><span class="calc-label">Durée du prêt</span><span class="calc-val">25 ans</span></div>
         <div class="calc-line"><span class="calc-label">Taux estimé (assurance comprise)</span><span class="calc-val">4,1 %</span></div>
@@ -355,39 +537,39 @@ footer{background:var(--g);color:var(--cr);padding:48px 0 34px;}
       </div>
     </div>
   </div>
-</div>
+</section>
 
 <!-- GUIDE -->
-<section class="section guide" id="guide">
+<section class="section" id="guide" style="padding-top:0;">
   <div class="wrap">
-    <div class="section-head">
-      <div class="section-eyebrow">Le Guide Sumba</div>
+    <div class="section-head reveal">
+      <div class="eyebrow"><span class="pip"></span>Le Guide Sumba</div>
       <h2 class="section-title">Comprendre avant d'investir.</h2>
       <p class="section-intro">Des articles clairs pour maîtriser les notions clés de l'investissement immobilier.</p>
     </div>
     <div class="guide-grid">
-      <a href="guide/lmnp.html" class="guide-card">
-        <div class="guide-card-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 13v-2a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v2" stroke="#e8b873" stroke-width="1.6" stroke-linecap="round"/><path d="M4 13h16v4H4z" stroke="#e8b873" stroke-width="1.6" stroke-linejoin="round"/><path d="M6 17v2M18 17v2" stroke="#e8b873" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+      <a href="guide/lmnp.html" class="guide-card reveal">
+        <div class="guide-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 13v-2a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v2" stroke-width="1.7" stroke-linecap="round"/><path d="M4 13h16v4H4z" stroke-width="1.7" stroke-linejoin="round"/><path d="M6 17v2M18 17v2" stroke-width="1.7" stroke-linecap="round"/></svg></div>
         <h3>Le statut LMNP</h3><p>Louer en meublé pour amortir le bien et réduire votre imposition.</p>
       </a>
-      <a href="simulateur.html?mod=apprendre&article=sci" class="guide-card">
-        <div class="guide-card-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="5" y="4" width="14" height="16" rx="1.5" stroke="#e8b873" stroke-width="1.6"/><path d="M9 8h2M9 12h2M9 16h2M14 8h1M14 12h1M14 16h1" stroke="#e8b873" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <a href="simulateur.html?mod=apprendre&article=sci" class="guide-card reveal d1">
+        <div class="guide-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="5" y="4" width="14" height="16" rx="1.5" stroke-width="1.7"/><path d="M9 8h2M9 12h2M9 16h2M14 8h1M14 12h1M14 16h1" stroke-width="1.6" stroke-linecap="round"/></svg></div>
         <h3>La SCI</h3><p>Acheter en société : IR ou IS, avantages et contraintes.</p>
       </a>
-      <a href="simulateur.html?mod=apprendre&article=plusvalue" class="guide-card">
-        <div class="guide-card-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 19V11M12 19V6M19 19V14" stroke="#e8b873" stroke-width="1.6" stroke-linecap="round"/><path d="M4 20h16" stroke="#e8b873" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+      <a href="simulateur.html?mod=apprendre&article=plusvalue" class="guide-card reveal d2">
+        <div class="guide-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 19V11M12 19V6M19 19V14" stroke-width="1.7" stroke-linecap="round"/><path d="M4 20h16" stroke-width="1.7" stroke-linecap="round"/></svg></div>
         <h3>La plus-value</h3><p>Comment est calculée et imposée la plus-value immobilière.</p>
       </a>
-      <a href="guide/regles-hcsf.html" class="guide-card">
-        <div class="guide-card-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 10l8-5 8 5" stroke="#e8b873" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 10v8M10 10v8M14 10v8M18 10v8M4 18h16" stroke="#e8b873" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+      <a href="guide/regles-hcsf.html" class="guide-card reveal">
+        <div class="guide-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 10l8-5 8 5" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 10v8M10 10v8M14 10v8M18 10v8M4 18h16" stroke-width="1.7" stroke-linecap="round"/></svg></div>
         <h3>Les règles HCSF</h3><p>Le cadre qui encadre votre crédit : 35%, 25 ans, flexibilité.</p>
       </a>
-      <a href="simulateur.html?mod=apprendre&article=marchand" class="guide-card">
-        <div class="guide-card-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 10l7-5 7 5" stroke="#e8b873" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 9v9h10V9" stroke="#e8b873" stroke-width="1.6" stroke-linejoin="round"/><path d="M9.5 14h5M12 11.5v5" stroke="#e8b873" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <a href="simulateur.html?mod=apprendre&article=marchand" class="guide-card reveal d1">
+        <div class="guide-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 10l7-5 7 5" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 9v9h10V9" stroke-width="1.7" stroke-linejoin="round"/><path d="M9.5 14h5M12 11.5v5" stroke-width="1.6" stroke-linecap="round"/></svg></div>
         <h3>Marchand de biens</h3><p>Acheter, rénover, revendre : le statut et sa fiscalité.</p>
       </a>
-      <a href="simulateur.html?mod=apprendre&article=transmission" class="guide-card">
-        <div class="guide-card-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="8" cy="9" r="2.5" stroke="#e8b873" stroke-width="1.5"/><circle cx="16" cy="9" r="2.5" stroke="#e8b873" stroke-width="1.5"/><path d="M4 18c0-2.2 1.8-3.5 4-3.5s4 1.3 4 3.5M12 18c0-2.2 1.8-3.5 4-3.5s4 1.3 4 3.5" stroke="#e8b873" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <a href="simulateur.html?mod=apprendre&article=transmission" class="guide-card reveal d2">
+        <div class="guide-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="8" cy="9" r="2.5" stroke-width="1.6"/><circle cx="16" cy="9" r="2.5" stroke-width="1.6"/><path d="M4 18c0-2.2 1.8-3.5 4-3.5s4 1.3 4 3.5M12 18c0-2.2 1.8-3.5 4-3.5s4 1.3 4 3.5" stroke-width="1.6" stroke-linecap="round"/></svg></div>
         <h3>La transmission</h3><p>Anticiper la transmission de votre patrimoine immobilier.</p>
       </a>
     </div>
@@ -395,35 +577,35 @@ footer{background:var(--g);color:var(--cr);padding:48px 0 34px;}
 </section>
 
 <!-- FAQ -->
-<section class="section" id="faq">
+<section class="section" id="faq" style="padding-top:0;">
   <div class="wrap">
-    <div class="section-head" style="text-align:center;margin-left:auto;margin-right:auto;">
-      <div class="section-eyebrow">Questions fréquentes</div>
+    <div class="section-head center reveal">
+      <div class="eyebrow"><span class="pip"></span>Questions fréquentes</div>
       <h2 class="section-title">Tout ce que vous devez savoir.</h2>
     </div>
-    <div class="faq-list">
+    <div class="faq-list reveal d1">
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">Sumba est-il vraiment gratuit ?</button>
+        <button class="faq-q" onclick="toggleFaq(this)"><span>Sumba est-il vraiment gratuit ?</span><span class="icon"></span></button>
         <div class="faq-a">Oui, toutes les simulations sont 100% gratuites et le resteront. Sumba se rémunère uniquement sur les exports avancés (Excel, PDF business plan) disponibles en version Pro, et à terme sur des partenariats avec des courtiers et CGP sélectionnés.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">Mes données sont-elles sécurisées ?</button>
+        <button class="faq-q" onclick="toggleFaq(this)"><span>Mes données sont-elles sécurisées ?</span><span class="icon"></span></button>
         <div class="faq-a">Vos données ne sont jamais vendues ni transmises à des tiers. Les simulations sans compte sont entièrement anonymes et stockées localement dans votre navigateur. La création de compte vous permet uniquement de sauvegarder vos simulations.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">Les calculs sont-ils fiables ?</button>
+        <button class="faq-q" onclick="toggleFaq(this)"><span>Les calculs sont-ils fiables ?</span><span class="icon"></span></button>
         <div class="faq-a">Sumba est conçu par des professionnels de l'immobilier et mis à jour régulièrement selon les règles HCSF, les barèmes fiscaux en vigueur et les taux du marché. Les résultats sont des estimations fiables mais ne remplacent pas un conseil personnalisé d'un notaire ou d'un conseiller fiscal.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">Quelle différence entre LMNP et location nue ?</button>
+        <button class="faq-q" onclick="toggleFaq(this)"><span>Quelle différence entre LMNP et location nue ?</span><span class="icon"></span></button>
         <div class="faq-a">La location meublée non professionnelle (LMNP) vous permet d'amortir le bien et de réduire significativement votre base imposable. La location nue est plus simple à gérer mais fiscalement moins avantageuse pour les tranches élevées. Sumba calcule les deux et met en évidence le meilleur choix selon votre tranche marginale d'imposition.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">Puis-je simuler un achat en SCI ?</button>
+        <button class="faq-q" onclick="toggleFaq(this)"><span>Puis-je simuler un achat en SCI ?</span><span class="icon"></span></button>
         <div class="faq-a">Oui. Sumba simule aussi bien les achats en nom propre qu'en société (SCI à l'IR, SCI à l'IS, SAS). Le module compare automatiquement les deux approches et explique en langage clair les avantages et inconvénients de chaque structure pour votre situation.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">Qu'est-ce qu'un marchand de biens ?</button>
+        <button class="faq-q" onclick="toggleFaq(this)"><span>Qu'est-ce qu'un marchand de biens ?</span><span class="icon"></span></button>
         <div class="faq-a">Un marchand de biens achète un bien immobilier, le rénove et le revend rapidement pour dégager une plus-value. C'est une activité commerciale qui nécessite généralement une structure sociétaire et un financement court terme (crédit in fine). Sumba simule la rentabilité de ce type d'opération en intégrant tous les frais réels.</div>
       </div>
     </div>
@@ -433,9 +615,14 @@ footer{background:var(--g);color:var(--cr);padding:48px 0 34px;}
 <!-- CTA -->
 <section class="cta">
   <div class="wrap">
-    <h2>Votre simulation vous attend.</h2>
-    <p>Gratuit, sans inscription, en deux minutes.</p>
-    <a href="simulateur.html?mod=cap" class="btn-primary">Lancer ma simulation</a>
+    <div class="cta-panel reveal">
+      <div class="eyebrow"><span class="pip"></span>Prêt à vous lancer</div>
+      <h2>Votre prochaine décision immobilière <span class="lime">commence ici.</span></h2>
+      <p>Gratuit, sans inscription, en deux minutes.</p>
+      <a href="simulateur.html?mod=cap" class="btn-primary">Lancer ma simulation
+        <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
   </div>
 </section>
 
@@ -443,9 +630,17 @@ footer{background:var(--g);color:var(--cr);padding:48px 0 34px;}
 <footer>
   <div class="footer-in">
     <div class="footer-top">
-      <div>
-        <div class="footer-logo">Sumba</div>
-        <p style="margin-top:12px;opacity:0.6;font-size:12.5px;font-weight:300;max-width:260px">Le simulateur d'investissement immobilier pensé avec exigence.</p>
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <span class="logo-mark">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M4.5 11.5 L12 5.5 L19.5 11.5 V20 H4.5 Z" stroke="#15241d" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M7.5 17 L10.5 14 L12.5 15.5 L16.2 11.8" stroke="#15241d" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.9 11.8 H16.4 V14.3" stroke="#15241d" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span>Sumba</span>
+        </div>
+        <p>Le simulateur d'investissement immobilier pensé avec exigence. Des chiffres fiables pour décider en confiance.</p>
       </div>
       <div class="footer-cols">
         <div class="footer-col"><h4>Outils</h4><a href="simulateur.html?mod=cap">Capacité d'emprunt</a><a href="simulateur.html?mod=loc">Investissement locatif</a><a href="simulateur.html?mod=comp">Comparateur fiscal</a><a href="simulateur.html?mod=mb">Marchand de biens</a></div>
@@ -464,6 +659,61 @@ function toggleFaq(btn) {
   document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
   if (!isOpen) item.classList.add('open');
 }
+
+// Nav ombre au scroll
+(function(){
+  const nav = document.getElementById('nav');
+  const onScroll = () => { nav.classList.toggle('scrolled', window.scrollY > 12); };
+  window.addEventListener('scroll', onScroll, { passive:true }); onScroll();
+})();
+
+// Révélation au scroll + compteurs + jauge + barre
+(function(){
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function countUp(el){
+    const target = parseFloat(el.dataset.count);
+    const suffix = el.dataset.suffix || '';
+    if (reduce){ el.textContent = target + suffix; return; }
+    const dur = 1300, t0 = performance.now();
+    (function tick(now){
+      const p = Math.min((now - t0)/dur, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(target * eased) + suffix;
+      if (p < 1) requestAnimationFrame(tick);
+    })(t0);
+  }
+
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if (e.isIntersecting){
+        e.target.classList.add('in');
+        e.target.querySelectorAll('[data-count]').forEach(countUp);
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold:0.16, rootMargin:'0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // Hero : barre + anneau de score
+  window.addEventListener('load', ()=>{
+    const bar = document.querySelector('.hv-bar > i');
+    if (bar) setTimeout(()=>{ bar.style.width = bar.dataset.w + '%'; }, 220);
+
+    const ring = document.getElementById('ring'), num = document.getElementById('ringNum');
+    if (ring && num){
+      const score = 76, full = 119, off = full - (score/100)*full;
+      if (reduce){ ring.style.strokeDashoffset = off; num.textContent = score; return; }
+      requestAnimationFrame(()=>{ ring.style.transition = 'stroke-dashoffset 1.4s var(--ease)'; ring.style.strokeDashoffset = off; });
+      const dur = 1400, t0 = performance.now();
+      (function tick(now){
+        const p = Math.min((now - t0)/dur, 1);
+        num.textContent = Math.round(score * (1 - Math.pow(1 - p, 3)));
+        if (p < 1) requestAnimationFrame(tick);
+      })(t0);
+    }
+  });
+})();
 
 // Détection de session : adapte la nav si l'utilisateur est connecté
 (function(){

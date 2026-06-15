@@ -14,60 +14,75 @@
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <title>Connexion | Sumba</title>
 <meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#eceee9">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{--g:#0f2942;--gm:#1c4a6e;--gl:#e8b873;--gp:#eef2f6;--gx:#f6f9fb;--cr:#fbfaf8;--w:#fff;--dk:#0f2942;--gr:#6b7280;--bd:rgba(15,41,66,0.1);--cuivre:#e8b873;--cuivre-dark:#c9974f;--rd:#dc2626;--rp:#fef2f2;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Inter',sans-serif;background:var(--cr);color:var(--dk);min-height:100vh;display:flex;flex-direction:column;}
-nav{display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:64px;background:rgba(250,249,246,.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--bd);}
-.nl{display:flex;align-items:center;gap:9px;text-decoration:none;}
-.nlm{width:30px;height:30px;background:var(--g);border-radius:8px;display:flex;align-items:center;justify-content:center;}
-.nlm svg{width:22px;height:22px;}
-.nlt{font-family:'Spectral',serif;font-size:19px;font-weight:700;color:var(--g);}
-.page{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px;}
-.card{background:var(--w);border:1px solid var(--bd);border-radius:24px;padding:40px;width:100%;max-width:420px;box-shadow:0 8px 32px rgba(0,0,0,0.06);}
-.card-logo{display:flex;justify-content:center;margin-bottom:24px;}
-.card-logo-mark{width:48px;height:48px;background:var(--g);border-radius:14px;display:flex;align-items:center;justify-content:center;}
-.card h1{font-family:'Spectral',serif;font-size:24px;font-weight:700;color:var(--dk);text-align:center;margin-bottom:6px;}
-.card-sub{font-size:14px;color:var(--gr);text-align:center;margin-bottom:28px;}
-.tabs{display:flex;border:1.5px solid var(--bd);border-radius:12px;overflow:hidden;margin-bottom:24px;}
-.tab{flex:1;padding:9px;font-family:'Inter',sans-serif;font-size:14px;color:var(--gr);background:var(--w);border:none;cursor:pointer;transition:all .2s;}
-.tab.on{background:var(--g);color:var(--w);font-weight:600;}
-.form{display:flex;flex-direction:column;gap:14px;}
-.f{display:flex;flex-direction:column;gap:5px;}
-.fl{font-size:13px;font-weight:500;color:var(--dk);}
-.fw input{width:100%;font-family:'Inter',sans-serif;font-size:14px;color:var(--dk);background:var(--cr);border:1.5px solid var(--bd);border-radius:10px;padding:11px 14px;transition:all .2s;}
-.fw input:focus{outline:none;border-color:var(--gl);box-shadow:0 0 0 3px rgba(232,184,115,.1);background:var(--w);}
-.btn-full{width:100%;font-family:'Inter',sans-serif;font-size:15px;font-weight:600;color:var(--w);background:var(--g);border:none;border-radius:var(--rp2,100px);padding:13px;cursor:pointer;transition:all .25s;margin-top:4px;}
-.btn-full:hover{background:var(--gm);transform:translateY(-1px);box-shadow:0 8px 22px rgba(15,41,66,.22);}
-.btn-full:disabled{background:var(--gr);cursor:not-allowed;transform:none;box-shadow:none;}
-.divider{display:flex;align-items:center;gap:12px;margin:4px 0;}
-.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--bd);}
-.divider span{font-size:12px;color:var(--gr);}
-.btn-google{width:100%;font-family:'Inter',sans-serif;font-size:14px;font-weight:500;color:var(--dk);background:var(--w);border:1.5px solid var(--bd);border-radius:100px;padding:11px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:10px;}
-.btn-google:hover{border-color:var(--gl);background:var(--gx);}
-.msg{padding:10px 14px;border-radius:10px;font-size:13px;text-align:center;display:none;}
-.msg.ok{background:var(--gp);color:#14532d;border:1px solid rgba(232,184,115,.3);}
-.msg.err{background:var(--rp);color:#991b1b;border:1px solid rgba(220,38,38,.2);}
+:root{
+  --bg:#eceee9;--surface:#ffffff;--surface-2:#f4f6f1;--surface-3:#eef1ea;
+  --ink:#15241d;--ink-2:#46544c;--ink-3:#838d85;
+  --line:#e4e7df;--lime:#bff05f;--lime-2:#aee63f;--lime-soft:#e9f9c8;
+  --forest:#173a2b;--green-acc:#2f8f56;--danger:#c0392b;--danger-soft:#fdeceb;
+  --pill:999px;--ease:cubic-bezier(0.16,1,0.3,1);
+}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased;}
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 32px;height:70px;}
+.nl{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.nlm{width:36px;height:36px;background:var(--lime);border-radius:11px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(150,220,80,.45);}
+.nlm svg{width:23px;height:23px;}
+.nlt{font-size:20px;font-weight:800;letter-spacing:-0.03em;color:var(--ink);}
+.nl-back{font-size:14px;font-weight:600;color:var(--ink-2);text-decoration:none;padding:9px 18px;border:1px solid var(--line);border-radius:var(--pill);background:var(--surface);transition:border-color .2s;}
+.nl-back:hover{border-color:var(--ink-3);}
+.page{flex:1;display:flex;align-items:center;justify-content:center;padding:24px 20px 56px;}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:26px;padding:40px;width:100%;max-width:430px;box-shadow:0 2px 6px rgba(20,40,30,.05),0 24px 50px rgba(20,40,30,.09);}
+.card-logo{display:flex;justify-content:center;margin-bottom:22px;}
+.card-logo-mark{width:54px;height:54px;background:var(--lime);border-radius:16px;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(150,220,80,.45);}
+.card-logo-mark svg{width:32px;height:32px;}
+.card h1{font-size:26px;font-weight:800;letter-spacing:-0.03em;text-align:center;margin-bottom:7px;}
+.card-sub{font-size:14.5px;color:var(--ink-2);text-align:center;margin-bottom:26px;line-height:1.5;}
+.tabs{display:flex;gap:4px;background:var(--surface-3);border-radius:14px;padding:4px;margin-bottom:24px;}
+.tab{flex:1;padding:10px;font-family:inherit;font-size:14px;font-weight:600;color:var(--ink-2);background:none;border:none;border-radius:10px;cursor:pointer;transition:all .25s var(--ease);}
+.tab.on{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(20,40,30,.1);}
+.form{display:flex;flex-direction:column;gap:15px;}
+.f{display:flex;flex-direction:column;gap:6px;}
+.fl{font-size:13px;font-weight:600;color:var(--ink);}
+.fw input{width:100%;font-family:inherit;font-size:14.5px;color:var(--ink);background:var(--surface-2);border:1.5px solid var(--line);border-radius:12px;padding:12px 15px;transition:all .2s;}
+.fw input::placeholder{color:var(--ink-3);}
+.fw input:focus{outline:none;border-color:var(--lime-2);box-shadow:0 0 0 3px rgba(174,230,63,.22);background:var(--surface);}
+.btn-full{width:100%;font-family:inherit;font-size:15px;font-weight:700;color:var(--ink);background:var(--lime);border:1px solid rgba(20,40,30,.06);border-radius:var(--pill);padding:14px;cursor:pointer;transition:all .25s var(--ease);margin-top:6px;box-shadow:0 6px 18px rgba(150,220,80,.4);}
+.btn-full:hover{background:var(--lime-2);transform:translateY(-2px);box-shadow:0 12px 26px rgba(150,220,80,.5);}
+.btn-full:disabled{background:var(--surface-3);color:var(--ink-3);cursor:not-allowed;transform:none;box-shadow:none;}
+.divider{display:flex;align-items:center;gap:12px;margin:6px 0;}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--line);}
+.divider span{font-size:12px;color:var(--ink-3);font-weight:500;}
+.btn-google{width:100%;font-family:inherit;font-size:14px;font-weight:600;color:var(--ink);background:var(--surface);border:1.5px solid var(--line);border-radius:var(--pill);padding:12px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:10px;}
+.btn-google:hover{border-color:var(--ink-3);background:var(--surface-2);}
+.msg{padding:11px 15px;border-radius:12px;font-size:13px;text-align:center;display:none;line-height:1.5;}
+.msg.ok{background:var(--lime-soft);color:var(--forest);border:1px solid rgba(46,143,86,.2);}
+.msg.err{background:var(--danger-soft);color:var(--danger);border:1px solid rgba(192,57,43,.18);}
 .msg.show{display:block;}
-.legal{font-size:12px;color:var(--gr);text-align:center;margin-top:16px;line-height:1.6;}
-.legal a{color:var(--gm);text-decoration:none;}
+.legal{font-size:12px;color:var(--ink-3);text-align:center;margin-top:18px;line-height:1.6;}
+.legal a{color:var(--green-acc);text-decoration:none;font-weight:600;}
+.legal a:hover{text-decoration:underline;}
+@media(max-width:520px){nav{padding:0 16px;}.card{padding:30px 22px;}}
 </style>
 </head>
 <body>
 <nav>
   <a href="index.html" class="nl">
-    <div class="nlm"><svg viewBox="10 11 28 25" fill="none"><path d="M13 19L24 13.5L35 19" stroke="#e8b873" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 29V34M24 25V34M30 21V34" stroke="#e8b873" stroke-width="2.6" stroke-linecap="round"/></svg></div>
+    <div class="nlm"><svg viewBox="0 0 24 24" fill="none" stroke="#15241d" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 11.5 L12 5.5 L19.5 11.5 V20 H4.5 Z"/><path d="M7.5 17 L10.5 14 L12.5 15.5 L16.2 11.8"/><path d="M13.9 11.8 H16.4 V14.3"/></svg></div>
     <span class="nlt">Sumba</span>
   </a>
+  <a href="index.html" class="nl-back">← Retour</a>
 </nav>
 
 <div class="page">
   <div class="card">
     <div class="card-logo">
-      <div class="card-logo-mark"><svg viewBox="10 11 28 25" fill="none" width="28" height="28"><path d="M13 19L24 13.5L35 19" stroke="#e8b873" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 29V34M24 25V34M30 21V34" stroke="#e8b873" stroke-width="2.6" stroke-linecap="round"/></svg></div>
+      <div class="card-logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="#15241d" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 11.5 L12 5.5 L19.5 11.5 V20 H4.5 Z"/><path d="M7.5 17 L10.5 14 L12.5 15.5 L16.2 11.8"/><path d="M13.9 11.8 H16.4 V14.3"/></svg></div>
     </div>
     <h1 id="card-title">Bon retour !</h1>
     <p class="card-sub" id="card-sub">Connectez-vous pour accéder à vos simulations sauvegardées.</p>
@@ -101,7 +116,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 40px
       Continuer avec Google
     </button>
 
-    <p class="legal">En créant un compte, vous acceptez nos <a href="#">CGU</a> et notre <a href="#">politique de confidentialité</a>. Vos données ne sont jamais vendues.</p>
+    <p class="legal">En créant un compte, vous acceptez nos <a href="legal.html#cgu">CGU</a> et notre <a href="legal.html#confidentialite">politique de confidentialité</a>. Vos données ne sont jamais vendues.</p>
   </div>
 </div>
 

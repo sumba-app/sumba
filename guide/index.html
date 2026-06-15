@@ -22,69 +22,84 @@
 <meta property="og:description" content="LMNP, SCI, plus-value, HCSF : des articles clairs pour investir en confiance. Gratuit.">
 <meta property="og:url" content="https://www.sumba.fr/guide/">
 <meta property="og:locale" content="fr_FR">
+<meta name="theme-color" content="#eceee9">
 <link rel="icon" type="image/svg+xml" href="../favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
-  --g:#0f2942;--gm:#1c4a6e;--gl:#e8b873;--gp:#eef2f6;--gx:#f6f9fb;
-  --cr:#fbfaf8;--w:#fff;--dk:#0f2942;--gr:#5a6572;
-  --cuivre:#e8b873;--cuivre-dark:#c9974f;--bd:rgba(15,41,66,0.1);
-  --r:20px;--rs:12px;--rp2:100px;
+  --bg:#eceee9;--surface:#ffffff;--surface-2:#f4f6f1;--surface-3:#eef1ea;
+  --ink:#15241d;--ink-2:#46544c;--ink-3:#838d85;
+  --line:#e4e7df;--lime:#bff05f;--lime-2:#aee63f;--lime-soft:#e9f9c8;
+  --forest:#173a2b;--green-acc:#2f8f56;
+  --r:24px;--rs:16px;--pill:999px;--ease:cubic-bezier(0.16,1,0.3,1);
+  --sh:0 1px 2px rgba(20,40,30,.04),0 10px 30px rgba(20,40,30,.05);
+  --sh-lift:0 2px 6px rgba(20,40,30,.06),0 24px 50px rgba(20,40,30,.10);
 }
 html{scroll-behavior:smooth;}
-body{font-family:'Inter',sans-serif;background:var(--cr);color:var(--dk);line-height:1.6;-webkit-font-smoothing:antialiased;}
-.wrap{max-width:1080px;margin:0 auto;padding:0 48px;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:1100px;margin:0 auto;padding:0 32px;}
+h1,h2,h3{letter-spacing:-0.02em;}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--green-acc);}
+.eyebrow .pip{width:6px;height:6px;border-radius:50%;background:var(--lime-2);}
 
-nav{border-bottom:1px solid var(--bd);position:sticky;top:0;background:rgba(251,250,248,0.92);backdrop-filter:blur(12px);z-index:50;}
-.nav-in{max-width:1180px;margin:0 auto;padding:16px 48px;display:flex;align-items:center;justify-content:space-between;}
-.logo{display:flex;align-items:center;gap:11px;text-decoration:none;}
-.logo-mark{width:34px;height:34px;background:var(--g);border-radius:8px;display:flex;align-items:center;justify-content:center;}
-.logo-mark svg{width:22px;height:22px;}
-.logo-name{font-family:'Spectral',serif;font-size:20px;font-weight:700;color:var(--g);}
-.nav-links{display:flex;gap:30px;list-style:none;}
-.nav-links a{text-decoration:none;color:var(--g);font-size:14px;font-weight:400;opacity:0.85;}
-.nav-links a:hover{opacity:1;color:var(--gm);}
-.nav-cta .btn{text-decoration:none;color:var(--cr);background:var(--g);padding:10px 20px;border-radius:var(--rp2);font-size:13px;font-weight:500;}
-.nav-cta .btn:hover{background:var(--gm);}
+nav{position:sticky;top:0;z-index:100;background:rgba(236,238,233,.82);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--line);}
+.nav-in{max-width:1100px;margin:0 auto;padding:14px 32px;display:flex;align-items:center;justify-content:space-between;}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.logo-mark{width:36px;height:36px;background:var(--lime);border-radius:11px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(150,220,80,.45);}
+.logo-mark svg{width:23px;height:23px;}
+.logo-name{font-size:20px;font-weight:800;letter-spacing:-0.03em;color:var(--ink);}
+.nav-links{display:flex;gap:6px;list-style:none;}
+.nav-links a{text-decoration:none;color:var(--ink-2);font-size:14.5px;font-weight:600;padding:8px 16px;border-radius:var(--pill);transition:all .2s;}
+.nav-links a:hover{color:var(--ink);background:var(--surface-3);}
+.nav-cta .btn{text-decoration:none;color:var(--ink);background:var(--lime);padding:11px 22px;border-radius:var(--pill);font-size:14px;font-weight:700;box-shadow:0 4px 14px rgba(150,220,80,.4);transition:all .3s var(--ease);}
+.nav-cta .btn:hover{background:var(--lime-2);transform:translateY(-2px);}
 
-.guide-hero{padding:70px 0 40px;border-bottom:1px solid var(--bd);}
-.guide-hero .eyebrow{font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:var(--cuivre-dark);margin-bottom:16px;font-weight:600;}
-.guide-hero h1{font-family:'Spectral',serif;font-weight:600;font-size:48px;line-height:1.08;letter-spacing:-0.02em;color:var(--g);margin-bottom:18px;}
-.guide-hero p{font-size:18px;color:var(--gr);font-weight:300;max-width:560px;}
+.guide-hero{padding:72px 0 44px;}
+.guide-hero .eyebrow{margin-bottom:16px;}
+.guide-hero h1{font-weight:800;font-size:52px;line-height:1.08;letter-spacing:-0.035em;color:var(--ink);margin-bottom:18px;}
+.guide-hero p{font-size:18px;color:var(--ink-2);font-weight:400;max-width:580px;}
 
-.guide-list{padding:60px 0 80px;}
-.guide-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
-.gcard{background:var(--w);border:1px solid var(--bd);border-radius:var(--r);padding:30px 32px;text-decoration:none;color:inherit;transition:all .2s;box-shadow:0 4px 16px rgba(15,41,66,0.04);display:block;}
-.gcard:hover{box-shadow:0 14px 34px rgba(15,41,66,0.1);transform:translateY(-2px);}
-.gcard-ico{width:44px;height:44px;border-radius:11px;background:var(--gp);display:flex;align-items:center;justify-content:center;margin-bottom:16px;}
-.gcard-ico svg{width:24px;height:24px;}
-.gcard .eyebrow{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--cuivre-dark);font-weight:600;}
-.gcard h2{font-family:'Spectral',serif;font-size:23px;font-weight:600;color:var(--g);margin:6px 0 9px;}
-.gcard p{font-size:14.5px;color:var(--gr);font-weight:300;line-height:1.55;}
-.gcard .arrow{margin-top:14px;font-size:14px;color:var(--gm);font-weight:500;}
+.guide-list{padding:20px 0 80px;}
+.guide-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;}
+.gcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:30px 32px;text-decoration:none;color:inherit;transition:transform .35s var(--ease),box-shadow .35s var(--ease);display:block;}
+.gcard:hover{box-shadow:var(--sh-lift);transform:translateY(-4px);}
+.gcard-ico{width:48px;height:48px;border-radius:13px;background:var(--lime-soft);display:flex;align-items:center;justify-content:center;margin-bottom:18px;transition:transform .35s var(--ease);}
+.gcard:hover .gcard-ico{transform:scale(1.06) rotate(-4deg);}
+.gcard-ico svg{width:24px;height:24px;stroke:var(--forest);}
+.gcard .eyebrow{font-size:11px;}
+.gcard h2{font-size:23px;font-weight:700;color:var(--ink);margin:8px 0 9px;}
+.gcard p{font-size:14.5px;color:var(--ink-2);font-weight:400;line-height:1.55;}
+.gcard .arrow{margin-top:16px;font-size:14px;color:var(--green-acc);font-weight:700;}
 
-.cta{background:var(--g);color:var(--cr);padding:70px 0;text-align:center;}
-.cta h2{font-family:'Spectral',serif;font-weight:600;font-size:36px;margin-bottom:14px;}
-.cta p{font-size:16px;opacity:0.8;font-weight:300;margin-bottom:30px;}
-.cta .btn{display:inline-block;text-decoration:none;color:var(--g);background:var(--cuivre);padding:15px 32px;border-radius:var(--rp2);font-size:15px;font-weight:600;}
-.cta .btn:hover{background:var(--w);}
+.cta{padding:0 0 80px;}
+.cta-panel{position:relative;background:var(--forest);color:#fff;border-radius:32px;padding:64px 40px;text-align:center;overflow:hidden;}
+.cta-panel::before{content:'';position:absolute;width:380px;height:380px;background:radial-gradient(circle,rgba(191,240,95,.2),transparent 70%);top:-160px;right:-120px;border-radius:50%;}
+.cta-panel h2{font-weight:800;font-size:38px;letter-spacing:-0.03em;margin-bottom:14px;position:relative;z-index:1;}
+.cta-panel p{font-size:16px;color:rgba(255,255,255,.72);font-weight:400;margin-bottom:30px;position:relative;z-index:1;}
+.cta-panel .btn{display:inline-block;text-decoration:none;color:var(--ink);background:var(--lime);padding:15px 32px;border-radius:var(--pill);font-size:15px;font-weight:700;position:relative;z-index:1;box-shadow:0 8px 22px rgba(150,220,80,.4);transition:all .3s var(--ease);}
+.cta-panel .btn:hover{background:var(--lime-2);transform:translateY(-2px);}
 
-footer{background:var(--g);color:var(--cr);padding:48px 0 34px;}
-.footer-in{max-width:1180px;margin:0 auto;padding:0 48px;}
-.footer-top{display:flex;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.15);padding-bottom:32px;margin-bottom:22px;flex-wrap:wrap;gap:30px;}
-.footer-logo{font-family:'Spectral',serif;font-size:20px;font-weight:700;}
+footer{border-top:1px solid var(--line);padding:56px 0 36px;}
+.footer-in{max-width:1100px;margin:0 auto;padding:0 32px;}
+.footer-top{display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:36px;margin-bottom:24px;flex-wrap:wrap;gap:30px;}
+.footer-logo{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:800;letter-spacing:-0.03em;color:var(--ink);}
+.footer-logo .logo-mark{width:32px;height:32px;border-radius:9px;}
+.footer-logo .logo-mark svg{width:21px;height:21px;}
+.footer-brand p{margin-top:12px;color:var(--ink-2);font-size:13px;font-weight:400;max-width:260px;line-height:1.6;}
 .footer-cols{display:flex;gap:56px;flex-wrap:wrap;}
-.footer-col h4{font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--cuivre);margin-bottom:13px;}
-.footer-col a{display:block;color:rgba(255,255,255,0.72);text-decoration:none;font-size:13.5px;margin-bottom:9px;font-weight:300;}
-.footer-bottom{font-size:12px;color:rgba(255,255,255,0.5);}
+.footer-col h4{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:14px;font-weight:700;}
+.footer-col a{display:block;color:var(--ink-2);text-decoration:none;font-size:14px;margin-bottom:10px;font-weight:500;transition:color .2s;}
+.footer-col a:hover{color:var(--green-acc);}
+.footer-bottom{font-size:13px;color:var(--ink-3);font-weight:500;}
 
 @media(max-width:860px){
-  .nav-in{padding:14px 22px;}.nav-links{display:none;}.wrap{padding:0 22px;}
-  .guide-hero{padding:44px 0 30px;}.guide-hero h1{font-size:34px;}
+  .nav-in{padding:12px 18px;}.nav-links{display:none;}.wrap{padding:0 20px;}
+  .guide-hero{padding:44px 0 30px;}.guide-hero h1{font-size:36px;}
   .guide-grid{grid-template-columns:1fr;}
+  .cta-panel{padding:48px 24px;}.cta-panel h2{font-size:28px;}
   .footer-cols{gap:34px;}
 }
 </style>
@@ -94,7 +109,7 @@ footer{background:var(--g);color:var(--cr);padding:48px 0 34px;}
 <nav>
   <div class="nav-in">
     <a href="../index.html" class="logo">
-      <div class="logo-mark"><svg viewBox="10 11 28 25" fill="none"><path d="M13 19L24 13.5L35 19" stroke="#e8b873" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 29V34M24 25V34M30 21V34" stroke="#e8b873" stroke-width="2.6" stroke-linecap="round"/></svg></div>
+      <div class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="#15241d" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 11.5 L12 5.5 L19.5 11.5 V20 H4.5 Z"/><path d="M7.5 17 L10.5 14 L12.5 15.5 L16.2 11.8"/><path d="M13.9 11.8 H16.4 V14.3"/></svg></div>
       <span class="logo-name">Sumba</span>
     </a>
     <ul class="nav-links">
@@ -110,7 +125,7 @@ footer{background:var(--g);color:var(--cr);padding:48px 0 34px;}
 
 <section class="guide-hero">
   <div class="wrap">
-    <div class="eyebrow">Le Guide Sumba</div>
+    <div class="eyebrow"><span class="pip"></span>Le Guide Sumba</div>
     <h1>Comprendre avant d'investir.</h1>
     <p>Des articles clairs et à jour pour maîtriser les notions clés de l'investissement immobilier, sans jargon et avec des exemples concrets.</p>
   </div>
@@ -120,43 +135,43 @@ footer{background:var(--g);color:var(--cr);padding:48px 0 34px;}
   <div class="wrap">
     <div class="guide-grid">
       <a href="lmnp.html" class="gcard">
-        <div class="gcard-ico"><svg viewBox="0 0 24 24" fill="none"><path d="M5 13v-2a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v2" stroke="#1c4a6e" stroke-width="1.6" stroke-linecap="round"/><path d="M4 13h16v4H4z" stroke="#1c4a6e" stroke-width="1.6" stroke-linejoin="round"/><path d="M6 17v2M18 17v2" stroke="#1c4a6e" stroke-width="1.6" stroke-linecap="round"/></svg></div>
-        <div class="eyebrow">Fiscalité</div>
+        <div class="gcard-ico"><svg viewBox="0 0 24 24" fill="none"><path d="M5 13v-2a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v2" stroke-width="1.6" stroke-linecap="round"/><path d="M4 13h16v4H4z" stroke-width="1.6" stroke-linejoin="round"/><path d="M6 17v2M18 17v2" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+        <div class="eyebrow"><span class="pip"></span>Fiscalité</div>
         <h2>Le statut LMNP</h2>
         <p>Louer en meublé pour amortir le bien et réduire votre imposition. Micro-BIC, réel, et la réforme 2025 de la plus-value.</p>
         <div class="arrow">Lire l'article →</div>
       </a>
       <a href="../simulateur.html?mod=apprendre&article=sci" class="gcard">
-        <div class="gcard-ico"><svg viewBox="0 0 24 24" fill="none"><rect x="5" y="4" width="14" height="16" rx="1.5" stroke="#1c4a6e" stroke-width="1.6"/><path d="M9 8h2M9 12h2M9 16h2M14 8h1M14 12h1M14 16h1" stroke="#1c4a6e" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-        <div class="eyebrow">Structure</div>
+        <div class="gcard-ico"><svg viewBox="0 0 24 24" fill="none"><rect x="5" y="4" width="14" height="16" rx="1.5" stroke-width="1.6"/><path d="M9 8h2M9 12h2M9 16h2M14 8h1M14 12h1M14 16h1" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <div class="eyebrow"><span class="pip"></span>Structure</div>
         <h2>La SCI : IR ou IS ?</h2>
         <p>Acheter en société : avantages, contraintes, et le choix crucial entre impôt sur le revenu et impôt sur les sociétés.</p>
         <div class="arrow">Lire l'article →</div>
       </a>
       <a href="plus-value.html" class="gcard">
-        <div class="gcard-ico"><svg viewBox="0 0 24 24" fill="none"><path d="M5 19V11M12 19V6M19 19V14" stroke="#1c4a6e" stroke-width="1.6" stroke-linecap="round"/><path d="M4 20h16" stroke="#1c4a6e" stroke-width="1.6" stroke-linecap="round"/></svg></div>
-        <div class="eyebrow">Fiscalité</div>
+        <div class="gcard-ico"><svg viewBox="0 0 24 24" fill="none"><path d="M5 19V11M12 19V6M19 19V14" stroke-width="1.6" stroke-linecap="round"/><path d="M4 20h16" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+        <div class="eyebrow"><span class="pip"></span>Fiscalité</div>
         <h2>La plus-value immobilière</h2>
         <p>Comment est calculée et imposée la plus-value à la revente, avec les abattements pour durée de détention.</p>
         <div class="arrow">Lire l'article →</div>
       </a>
       <a href="regles-hcsf.html" class="gcard">
-        <div class="gcard-ico"><svg viewBox="0 0 24 24" fill="none"><path d="M4 10l8-5 8 5" stroke="#1c4a6e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 10v8M10 10v8M14 10v8M18 10v8M4 18h16" stroke="#1c4a6e" stroke-width="1.6" stroke-linecap="round"/></svg></div>
-        <div class="eyebrow">Emprunt</div>
+        <div class="gcard-ico"><svg viewBox="0 0 24 24" fill="none"><path d="M4 10l8-5 8 5" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 10v8M10 10v8M14 10v8M18 10v8M4 18h16" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+        <div class="eyebrow"><span class="pip"></span>Emprunt</div>
         <h2>Les règles HCSF</h2>
         <p>Le cadre qui encadre votre crédit immobilier : 35 % d'endettement, 25 ans maximum, et la marge de flexibilité.</p>
         <div class="arrow">Lire l'article →</div>
       </a>
       <a href="../simulateur.html?mod=apprendre&article=marchand" class="gcard">
-        <div class="gcard-ico"><svg viewBox="0 0 24 24" fill="none"><path d="M5 10l7-5 7 5" stroke="#1c4a6e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 9v9h10V9" stroke="#1c4a6e" stroke-width="1.6" stroke-linejoin="round"/><path d="M9.5 14h5M12 11.5v5" stroke="#1c4a6e" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-        <div class="eyebrow">Opération</div>
+        <div class="gcard-ico"><svg viewBox="0 0 24 24" fill="none"><path d="M5 10l7-5 7 5" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 9v9h10V9" stroke-width="1.6" stroke-linejoin="round"/><path d="M9.5 14h5M12 11.5v5" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <div class="eyebrow"><span class="pip"></span>Opération</div>
         <h2>Marchand de biens</h2>
         <p>Acheter, rénover, revendre : le statut, le financement et la fiscalité de l'achat-revente immobilier.</p>
         <div class="arrow">Lire l'article →</div>
       </a>
       <a href="../simulateur.html?mod=apprendre&article=transmission" class="gcard">
-        <div class="gcard-ico"><svg viewBox="0 0 24 24" fill="none"><circle cx="8" cy="9" r="2.5" stroke="#1c4a6e" stroke-width="1.5"/><circle cx="16" cy="9" r="2.5" stroke="#1c4a6e" stroke-width="1.5"/><path d="M4 18c0-2.2 1.8-3.5 4-3.5s4 1.3 4 3.5M12 18c0-2.2 1.8-3.5 4-3.5s4 1.3 4 3.5" stroke="#1c4a6e" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-        <div class="eyebrow">Patrimoine</div>
+        <div class="gcard-ico"><svg viewBox="0 0 24 24" fill="none"><circle cx="8" cy="9" r="2.5" stroke-width="1.5"/><circle cx="16" cy="9" r="2.5" stroke-width="1.5"/><path d="M4 18c0-2.2 1.8-3.5 4-3.5s4 1.3 4 3.5M12 18c0-2.2 1.8-3.5 4-3.5s4 1.3 4 3.5" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <div class="eyebrow"><span class="pip"></span>Patrimoine</div>
         <h2>La transmission</h2>
         <p>Anticiper la transmission de votre patrimoine immobilier : donation, démembrement, SCI familiale.</p>
         <div class="arrow">Lire l'article →</div>
@@ -167,18 +182,23 @@ footer{background:var(--g);color:var(--cr);padding:48px 0 34px;}
 
 <section class="cta">
   <div class="wrap">
-    <h2>Passez de la théorie à la pratique.</h2>
-    <p>Simulez votre projet gratuitement, en deux minutes.</p>
-    <a href="../simulateur.html?mod=cap" class="btn">Lancer ma simulation</a>
+    <div class="cta-panel">
+      <h2>Passez de la théorie à la pratique.</h2>
+      <p>Simulez votre projet gratuitement, en deux minutes.</p>
+      <a href="../simulateur.html?mod=cap" class="btn">Lancer ma simulation</a>
+    </div>
   </div>
 </section>
 
 <footer>
   <div class="footer-in">
     <div class="footer-top">
-      <div>
-        <div class="footer-logo">Sumba</div>
-        <p style="margin-top:12px;opacity:0.6;font-size:12.5px;font-weight:300;max-width:260px">Le simulateur d'investissement immobilier pensé avec exigence.</p>
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <div class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="#15241d" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 11.5 L12 5.5 L19.5 11.5 V20 H4.5 Z"/><path d="M7.5 17 L10.5 14 L12.5 15.5 L16.2 11.8"/><path d="M13.9 11.8 H16.4 V14.3"/></svg></div>
+          Sumba
+        </div>
+        <p>Le simulateur d'investissement immobilier pensé avec exigence.</p>
       </div>
       <div class="footer-cols">
         <div class="footer-col"><h4>Outils</h4><a href="../simulateur.html?mod=cap">Capacité d'emprunt</a><a href="../simulateur.html?mod=loc">Investissement locatif</a><a href="../simulateur.html?mod=comp">Comparateur fiscal</a><a href="../simulateur.html?mod=mb">Marchand de biens</a></div>
