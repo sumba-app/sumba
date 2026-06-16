@@ -101,6 +101,12 @@ nav.scrolled .nav-in{box-shadow:var(--sh);background:rgba(255,255,255,.92);}
 .nav-cta .btn{text-decoration:none;color:var(--ink);background:var(--lime);padding:11px 22px;border-radius:var(--pill);font-size:14px;font-weight:700;
   box-shadow:0 4px 14px rgba(150,220,80,.4);transition:transform .3s var(--ease),box-shadow .3s var(--ease),background .2s;white-space:nowrap;}
 .nav-cta .btn:hover{transform:translateY(-2px);background:var(--lime-2);box-shadow:0 8px 20px rgba(150,220,80,.5);}
+.nav-burger{display:none;width:42px;height:42px;border:1px solid var(--line);background:var(--surface);border-radius:12px;align-items:center;justify-content:center;cursor:pointer;color:var(--ink);margin-left:4px;flex-shrink:0;}
+.nav-burger svg{width:22px;height:22px;}
+.mobile-menu{display:none;position:absolute;top:calc(100% + 4px);left:16px;right:16px;background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--sh-lift);padding:10px;z-index:99;opacity:0;transform:translateY(-8px);transition:opacity .28s var(--ease),transform .28s var(--ease);pointer-events:none;}
+.mobile-menu.open{opacity:1;transform:none;pointer-events:auto;}
+.mobile-menu a{display:block;padding:13px 16px;border-radius:12px;text-decoration:none;color:var(--ink);font-weight:600;font-size:15px;transition:background .2s;}
+.mobile-menu a:hover{background:var(--surface-3);}
 
 /* HERO */
 .hero{padding:64px 0 40px;}
@@ -140,7 +146,10 @@ nav.scrolled .nav-in{box-shadow:var(--sh);background:rgba(255,255,255,.92);}
 .hv-float{position:absolute;background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--sh-lift);
   padding:14px 16px;display:flex;align-items:center;gap:12px;}
 .hv-float.score{top:-26px;right:-14px;animation:floaty 6s ease-in-out infinite;}
-.hv-float.flow{bottom:-24px;left:-18px;animation:floaty 7s ease-in-out infinite reverse;}
+.hv-float.flow{bottom:-34px;left:-16px;padding:11px 16px;animation:floaty 7s ease-in-out infinite reverse;}
+.hv-float.flow .ic-badge{width:30px;height:30px;border-radius:9px;}
+.hv-float.flow .ic-badge svg{width:17px;height:17px;}
+.hv-float .flow-txt{font-size:14.5px;font-weight:800;color:var(--ink);letter-spacing:-0.01em;}
 @keyframes floaty{0%,100%{transform:translateY(0);}50%{transform:translateY(-9px);}}
 .ring{width:46px;height:46px;position:relative;flex-shrink:0;}
 .ring .num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:var(--ink);}
@@ -277,6 +286,9 @@ footer{border-top:1px solid var(--line);padding:60px 0 36px;}
 @media(max-width:960px){
   .wrap{padding:0 20px;}
   .nav-links{display:none;}
+  .nav-burger{display:flex;}
+  .mobile-menu{display:block;}
+  .nav-cta .login{display:none;}
   .hero{padding:40px 0;}.hero-grid{grid-template-columns:1fr;gap:54px;}.hero h1{font-size:42px;}
   .hero-visual{max-width:440px;}
   .stats-grid{grid-template-columns:1fr 1fr;}
@@ -378,6 +390,16 @@ footer{border-top:1px solid var(--line);padding:60px 0 36px;}
       <a href="auth.html" class="login">Connexion</a>
       <a href="simulateur.html?mod=cap" class="btn">Commencer</a>
     </div>
+    <button class="nav-burger" id="navBurger" aria-label="Menu" aria-expanded="false" onclick="toggleMenu()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#fonctionnalites" onclick="closeMenu()">Outils</a>
+    <a href="#methode" onclick="closeMenu()">Méthode</a>
+    <a href="guide/index.html">Le Guide</a>
+    <a href="#faq" onclick="closeMenu()">FAQ</a>
+    <a href="auth.html">Connexion</a>
   </div>
 </nav>
 
@@ -417,8 +439,8 @@ footer{border-top:1px solid var(--line);padding:60px 0 36px;}
           <div class="hv-stats">
             <div class="hv-stat"><div class="k">Durée du prêt</div><div class="v">25 ans</div></div>
             <div class="hv-stat"><div class="k">Taux estimé</div><div class="v">4,1 %</div></div>
-            <div class="hv-stat"><div class="k">Rentabilité nette</div><div class="v up">6,8 %</div></div>
-            <div class="hv-stat"><div class="k">Cash-flow / mois</div><div class="v up">+340 €</div></div>
+            <div class="hv-stat"><div class="k">Apport</div><div class="v">30 000 €</div></div>
+            <div class="hv-stat"><div class="k">Frais de notaire</div><div class="v">~ 8 %</div></div>
           </div>
         </div>
 
@@ -436,9 +458,9 @@ footer{border-top:1px solid var(--line);padding:60px 0 36px;}
 
         <div class="hv-float flow">
           <span class="ic-badge">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M4 18l5-5 4 3 7-8" stroke="#15241d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 8h4v4" stroke="#15241d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7" stroke="#15241d" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </span>
-          <div><div class="k">Rendement annuel</div><div class="v green">+6,8 %</div></div>
+          <span class="flow-txt">Conforme HCSF</span>
         </div>
       </div>
     </div>
@@ -659,6 +681,21 @@ function toggleFaq(btn) {
   document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
   if (!isOpen) item.classList.add('open');
 }
+
+function toggleMenu(){
+  const m = document.getElementById('mobileMenu'), b = document.getElementById('navBurger');
+  const open = m.classList.toggle('open');
+  if (b) b.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+function closeMenu(){
+  const m = document.getElementById('mobileMenu'), b = document.getElementById('navBurger');
+  if (m) m.classList.remove('open');
+  if (b) b.setAttribute('aria-expanded', 'false');
+}
+document.addEventListener('click', e => {
+  const m = document.getElementById('mobileMenu'), b = document.getElementById('navBurger');
+  if (m && m.classList.contains('open') && !m.contains(e.target) && b && !b.contains(e.target)) closeMenu();
+});
 
 // Nav ombre au scroll
 (function(){
