@@ -1774,8 +1774,15 @@ function pick(key, val, el) {
   if (key==='c_sit') {
     S.cap.sit=val;
     document.getElementById('cap-s1-obj').style.display='block';
-    document.getElementById('c-co-section').style.display=val==='co'?'block':'none';
+    const coOn=(val==='co');
+    document.getElementById('c-co-section').style.display=coOn?'block':'none';
     document.getElementById('c-soc-extra').style.display=val==='soc'?'block':'none';
+    if(!coOn){
+      // On quitte le co-emprunt : purge des champs du 2e emprunteur pour éviter
+      // qu'une ancienne valeur ne fausse le calcul ou l'affichage du récap.
+      ['c-brut2','c-var2','c-age2','c-anc2'].forEach(function(id){const e=document.getElementById(id); if(e) e.value='';});
+      S.profil.brut2=0; S.profil.tmi2=0;
+    }
     checkN1();
   }
   if (key==='c_obj') { S.cap.obj=val; checkN1(); }
@@ -1972,7 +1979,7 @@ function validerProfilEtContinuer() {
   }
 
   // Si co-emprunteur visible et activé, valider aussi ses champs
-  const coSection = document.getElementById('co-section');
+  const coSection = document.getElementById('c-co-section');
   if (coSection && coSection.style.display !== 'none' && S.cap.sit === 'co') {
     const brut2 = parseFloat(document.getElementById('c-brut2')?.value) || 0;
     const ct2 = document.getElementById('c-ct2')?.value;
@@ -2307,8 +2314,12 @@ function calcCap() {
   // Le fixe est pondéré selon le type de contrat (stabilité), le variable est en plus
   // minoré car les banques le retiennent prudemment (moyenne, risque de non-récurrence).
   const POIDS_VARIABLE = 0.7; // les banques retiennent ~70% du variable
+  // Le co-emprunteur n'est compté QUE si la situation est "à deux".
+  // Sans ce garde-fou, une ancienne valeur de c-brut2 (test précédent restauré)
+  // serait ajoutée même en "seul" → revenu total faussé.
+  const estCoEmprunt = (S.cap.sit === 'co');
   const net1=(b1 + var1*POIDS_VARIABLE) * poidsRevenu(ct1);
-  const net2=(b2 + var2*POIDS_VARIABLE) * poidsRevenu(ct2);
+  const net2=estCoEmprunt ? (b2 + var2*POIDS_VARIABLE) * poidsRevenu(ct2) : 0;
   const locR=locRev*0.7;
   const revT=net1+net2+locR+aut;
   const capM=Math.max(revT*0.35-dettes, 0);
