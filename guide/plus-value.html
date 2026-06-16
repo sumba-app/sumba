@@ -77,6 +77,14 @@ nav{position:sticky;top:0;z-index:50;background:rgba(236,238,233,.82);backdrop-f
 .nav-links a:hover{color:var(--ink);background:var(--surface-3);}
 .nav-cta .btn{text-decoration:none;color:var(--ink);background:var(--lime);padding:11px 22px;border-radius:var(--pill);font-size:14px;font-weight:700;box-shadow:0 4px 14px rgba(150,220,80,.4);transition:all .3s var(--ease);}
 .nav-cta .btn:hover{background:var(--lime-2);transform:translateY(-2px);}
+.nav-burger{display:none;width:42px;height:42px;border:1px solid var(--line);background:var(--surface);border-radius:12px;align-items:center;justify-content:center;cursor:pointer;color:var(--ink);margin-left:4px;flex-shrink:0;}
+.nav-burger svg{width:22px;height:22px;}
+.mobile-menu{display:none;position:absolute;top:calc(100% + 4px);left:16px;right:16px;background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--sh-lift);padding:10px;z-index:99;opacity:0;transform:translateY(-8px);transition:opacity .28s var(--ease),transform .28s var(--ease);pointer-events:none;}
+.mobile-menu.open{opacity:1;transform:none;pointer-events:auto;}
+.mobile-menu a{display:block;padding:13px 16px;border-radius:12px;text-decoration:none;color:var(--ink);font-weight:600;font-size:15px;transition:background .2s;}
+.mobile-menu a:hover{background:var(--surface-3);}
+.mobile-menu .mm-cta{background:var(--lime);color:var(--ink);text-align:center;font-weight:700;margin-top:6px;}
+.mobile-menu .mm-cta:hover{background:var(--lime-2);}
 
 .article-head{max-width:760px;margin:0 auto;padding:56px 24px 28px;}
 .breadcrumb{font-size:13px;color:var(--ink-3);margin-bottom:22px;}
@@ -156,7 +164,7 @@ footer{border-top:1px solid var(--line);padding:56px 0 36px;}
 .footer-bottom{font-size:13px;color:var(--ink-3);font-weight:500;}
 
 @media(max-width:860px){
-  .nav-in{padding:12px 18px;}.nav-links{display:none;}
+  .nav-in{padding:12px 18px;}.nav-links{display:none;}.nav-burger{display:flex;}.mobile-menu{display:block;}.nav-cta{display:none;}
   .article-head{padding:40px 20px 24px;}.article-head h1{font-size:32px;}
   .article-lede{font-size:17px;}
   .article-body h2{font-size:25px;}
@@ -181,6 +189,16 @@ footer{border-top:1px solid var(--line);padding:56px 0 36px;}
     <div class="nav-cta">
       <a href="../simulateur.html?mod=cap" class="btn">Lancer une simulation</a>
     </div>
+    <button class="nav-burger" id="navBurger" aria-label="Menu" aria-expanded="false" onclick="toggleMenu()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="../index.html#fonctionnalites">Outils</a>
+    <a href="../index.html#methode">Méthode</a>
+    <a href="index.html">Le Guide</a>
+    <a href="../index.html#faq">FAQ</a>
+    <a href="../simulateur.html?mod=cap" class="mm-cta">Lancer une simulation</a>
   </div>
 </nav>
 
@@ -367,6 +385,9 @@ function toggleFaq(btn) {
   document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
   if (!isOpen) item.classList.add('open');
 }
+function toggleMenu(){var m=document.getElementById('mobileMenu'),b=document.getElementById('navBurger');var o=m.classList.toggle('open');if(b)b.setAttribute('aria-expanded',o?'true':'false');}
+function closeMenu(){var m=document.getElementById('mobileMenu'),b=document.getElementById('navBurger');if(m)m.classList.remove('open');if(b)b.setAttribute('aria-expanded','false');}
+document.addEventListener('click',function(e){var m=document.getElementById('mobileMenu'),b=document.getElementById('navBurger');if(m&&m.classList.contains('open')&&!m.contains(e.target)&&b&&!b.contains(e.target))closeMenu();});
 </script>
 
 </body>

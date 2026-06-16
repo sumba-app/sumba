@@ -190,9 +190,9 @@ input[type=range].white{width:100%;accent-color:var(--gl);height:4px;}
 .snav{display:flex;justify-content:space-between;align-items:center;margin-top:28px;padding-top:18px;border-top:1px solid var(--bd);}
 .bback{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:500;color:var(--gr);background:none;border:none;cursor:pointer;padding:0;display:flex;align-items:center;gap:5px;transition:color .2s;}
 .bback:hover{color:var(--dk);}
-.bnext{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:600;color:var(--w);background:var(--g);border:none;border-radius:var(--rp2);padding:11px 28px;cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:7px;}
-.bnext:hover{background:var(--gm);transform:translateY(-1px);box-shadow:0 8px 22px rgba(20,40,30,.22);}
-.bnext:disabled{background:var(--gr);cursor:not-allowed;transform:none;box-shadow:none;}
+.bnext{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:700;color:#15241d;background:#bff05f;border:none;border-radius:var(--rp2);padding:11px 28px;cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:7px;box-shadow:0 4px 14px rgba(150,220,80,.4);}
+.bnext:hover{background:#aee63f;transform:translateY(-1px);box-shadow:0 8px 22px rgba(150,220,80,.5);}
+.bnext:disabled{background:var(--grl);color:#9aa297;cursor:not-allowed;transform:none;box-shadow:none;}
 
 /* RESULTS PANEL */
 
@@ -1073,7 +1073,7 @@ input[type=range].white{width:100%;accent-color:var(--gl);height:4px;}
   <div id="cap-res"></div>
   <div id="cap-save-block" style="margin-top:20px"></div>
   <div id="cap-comp-cta" style="margin-top:16px"></div>
-  <div class="snav"><button class="bback" onclick="capGo(4)">← Modifier</button><button class="bnext" id="cap-next-btn" onclick="capNextAction()" style="background:var(--gm)">Continuer →</button></div>
+  <div class="snav"><button class="bback" onclick="capGo(4)">← Modifier</button><button class="bnext" id="cap-next-btn" onclick="capNextAction()">Continuer →</button></div>
 </div>
 </div><!-- end cap -->
 
