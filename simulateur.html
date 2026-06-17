@@ -193,6 +193,49 @@ input[type=range].white{width:100%;accent-color:var(--gl);height:4px;}
 .bnext{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:700;color:#15241d;background:#bff05f;border:none;border-radius:var(--rp2);padding:11px 28px;cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:7px;box-shadow:0 4px 14px rgba(150,220,80,.4);}
 .bnext:hover{background:#aee63f;transform:translateY(-1px);box-shadow:0 8px 22px rgba(150,220,80,.5);}
 .bnext:disabled{background:var(--grl);color:#9aa297;cursor:not-allowed;transform:none;box-shadow:none;}
+.partner-block{margin-top:18px;padding-top:18px;border-top:1px dashed var(--bd);}
+.partner-eyebrow{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gl);margin-bottom:10px;}
+.partner-card{display:flex;align-items:center;gap:14px;background:var(--w);border:1px solid var(--bd);border-radius:14px;padding:14px 16px;text-decoration:none;color:inherit;margin-bottom:8px;transition:border-color .2s,transform .2s,box-shadow .2s;}
+.partner-card:hover{border-color:#bff05f;transform:translateY(-1px);box-shadow:0 8px 22px rgba(20,40,30,.08);}
+.partner-ico{width:40px;height:40px;border-radius:11px;background:var(--gx);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.partner-ico svg{width:21px;height:21px;stroke:var(--g);}
+.partner-txt{flex:1;min-width:0;}
+.partner-txt strong{display:block;font-size:14.5px;font-weight:700;color:var(--g);}
+.partner-txt span{display:block;font-size:12.5px;color:var(--gr);margin-top:2px;line-height:1.4;}
+.partner-arrow{color:var(--gl);font-weight:700;flex-shrink:0;font-size:16px;}
+.partner-note{font-size:11px;color:var(--gr);opacity:.85;margin-top:6px;}
+.lead-cta{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:#bff05f;border:none;border-radius:16px;padding:16px 18px;margin-top:18px;cursor:pointer;box-shadow:0 8px 22px rgba(150,220,80,.4);transition:transform .2s,box-shadow .2s;font-family:'Plus Jakarta Sans',sans-serif;}
+.lead-cta:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(150,220,80,.5);}
+.lead-cta-ico{width:42px;height:42px;border-radius:12px;background:rgba(21,36,29,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.lead-cta-ico svg{width:22px;height:22px;}
+.lead-cta-txt{flex:1;min-width:0;}
+.lead-cta-txt strong{display:block;font-size:15px;font-weight:800;color:#15241d;}
+.lead-cta-txt span{display:block;font-size:12.5px;color:#1f4a37;margin-top:2px;line-height:1.4;}
+.lead-cta-arrow{color:#15241d;font-weight:800;font-size:18px;flex-shrink:0;}
+.lead-modal{position:fixed;inset:0;background:rgba(15,36,29,.5);display:none;align-items:center;justify-content:center;z-index:1000;padding:20px;}
+.lead-modal.open{display:flex;}
+.lead-box{background:var(--w);border-radius:22px;padding:28px;width:100%;max-width:440px;box-shadow:0 30px 80px rgba(0,0,0,.35);position:relative;max-height:92vh;overflow-y:auto;}
+.lead-close{position:absolute;top:14px;right:16px;background:none;border:none;font-size:26px;line-height:1;color:var(--gr);cursor:pointer;}
+.lead-box h3{font-size:21px;font-weight:800;color:var(--g);letter-spacing:-0.02em;margin-bottom:6px;}
+.lead-sub{font-size:14px;color:var(--gr);margin-bottom:16px;line-height:1.5;}
+.lead-recap{font-size:13px;font-weight:600;color:var(--g);background:var(--gx);border:1px solid var(--bd);border-radius:12px;padding:11px 14px;margin-bottom:16px;}
+.lead-f{margin-bottom:12px;}
+.lead-f label{display:block;font-size:13px;font-weight:600;color:var(--g);margin-bottom:5px;}
+.lead-f input{width:100%;font-family:'Plus Jakarta Sans',sans-serif;font-size:14.5px;color:var(--g);background:var(--w);border:1.5px solid var(--bd);border-radius:11px;padding:11px 14px;transition:border-color .2s;}
+.lead-f input:focus{outline:none;border-color:#aee63f;}
+.lead-consent{display:flex;align-items:flex-start;gap:9px;font-size:12.5px;color:var(--gr);line-height:1.5;margin:8px 0 14px;cursor:pointer;}
+.lead-consent input{margin-top:2px;flex-shrink:0;}
+.lead-consent a{color:var(--gl);}
+.lead-msg{font-size:13px;border-radius:10px;margin-bottom:12px;}
+.lead-msg.err{display:block;background:#fdeceb;color:#b3261e;padding:10px 12px;}
+.lead-submit{width:100%;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;color:#15241d;background:#bff05f;border:none;border-radius:var(--rp2);padding:14px;cursor:pointer;box-shadow:0 6px 18px rgba(150,220,80,.4);transition:background .2s,transform .2s;}
+.lead-submit:hover{background:#aee63f;transform:translateY(-1px);}
+.lead-submit:disabled{opacity:.6;cursor:wait;}
+.lead-success{text-align:center;padding:10px 0;}
+.lead-success-ico{width:56px;height:56px;border-radius:50%;background:#e9f9c8;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;}
+.lead-success-ico svg{width:28px;height:28px;}
+.lead-success h3{margin-bottom:8px;}
+.lead-success p{font-size:14px;color:var(--gr);margin-bottom:18px;line-height:1.5;}
 
 /* RESULTS PANEL */
 
@@ -1404,6 +1447,128 @@ function track(event, data) {
   try { if (typeof gtag === 'function') gtag('event', event, data || {}); } catch(e){}
 }
 
+// ══════════════════════════════════════
+// PARTENAIRES — monétisation Phase 1 (affiliation)
+// Les `url` ci-dessous pointent vers les meilleurs partenaires identifiés.
+// 💶 POUR ÊTRE RÉMUNÉRÉ : remplace chaque url par TON lien d'affiliation tracké
+//    une fois inscrit au programme (sinon tu envoies du trafic sans toucher de commission) :
+//    - courtier  → Pretto / Meilleurtaux (réseau Kwanko ou TimeOne, ou apporteur d'affaires direct)
+//    - assurance → Magnolia / Assurly / Allianz Emprunteur (TimeOne)
+//    - lmnp      → Nopillo / Decla.fr (programme partenaire direct)
+//    - sci       → Legalstart (Affilae, ~10% CPA) : https://www.legalstart.fr/corp/partenaires/affiliation/
+//    Chaque clic est déjà mesuré via l'event GA4 "partenaire_clic".
+// ══════════════════════════════════════
+const PARTNERS = {
+  courtier:  { url:'https://www.pretto.fr/', titre:'Faites comparer les banques par un courtier', desc:'Un courtier négocie votre prêt et votre taux, gratuitement.', ico:'<path d="M3 8l4-4h5l2 3"/><path d="M3 8h8l2 2h8v8H3z"/>' },
+  assurance: { url:'https://www.magnolia.fr/', titre:"Allégez votre assurance emprunteur", desc:"Jusqu'à 50 % d'économie grâce à la loi Lemoine.", ico:'<path d="M12 3l8 3v6c0 5-8 9-8 9s-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/>' },
+  lmnp:      { url:'https://www.nopillo.com/', titre:'Déléguez votre comptabilité LMNP', desc:'Déclaration au réel, amortissement inclus, à petit prix.', ico:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/>' },
+  sci:       { url:'https://www.legalstart.fr/', titre:'Créez votre SCI en ligne', desc:'Statuts rédigés et société immatriculée en quelques jours.', ico:'<path d="M4 21V9l8-5 8 5v12"/><path d="M9 21v-6h6v6"/>' },
+};
+const PARTNER_MAP = { cap:['courtier','assurance'], loc:['lmnp','courtier'], mb:['courtier'], comp:['sci','lmnp'] };
+
+function partnerBlock(module){
+  const keys = PARTNER_MAP[module] || [];
+  if (!keys.length) return '';
+  const cards = keys.map(k => {
+    const p = PARTNERS[k]; if (!p) return '';
+    const attrs = p.url !== '#' ? 'target="_blank" rel="nofollow sponsored noopener"' : '';
+    return `<a class="partner-card" href="${p.url}" ${attrs} onclick="return partnerGo('${k}','${module}')">
+      <span class="partner-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${p.ico}</svg></span>
+      <span class="partner-txt"><strong>${p.titre}</strong><span>${p.desc}</span></span>
+      <span class="partner-arrow">→</span>
+    </a>`;
+  }).join('');
+  return `<div class="partner-block"><div class="partner-eyebrow">Aller plus loin</div>${cards}<div class="partner-note">Liens partenaires · sans engagement, sans transmission de vos données.</div></div>`;
+}
+
+function partnerGo(key, module){
+  try { track('partenaire_clic', { partenaire:key, module:module }); } catch(e){}
+  const p = PARTNERS[key];
+  if (!p || p.url === '#') return false; // pas encore de lien configuré → pas de navigation
+  return true; // lien réel : on laisse le navigateur l'ouvrir (target=_blank)
+}
+
+// ══════════════════════════════════════
+// FORMULAIRE LEAD — capture directe (lead-gen, monétisation Phase 2)
+// Le bouton "Être rappelé par un courtier" envoie le lead dans la table Supabase `leads`.
+// ⚠️ Passe LEAD.enabled à true UNIQUEMENT après avoir créé la table `leads` (SQL fourni),
+//    sinon les envois échouent et les leads sont perdus.
+// ══════════════════════════════════════
+const LEAD = { enabled: false };
+let LEAD_MODULE = '';
+
+function leadCtaBlock(module){
+  if (!LEAD.enabled) return '';
+  return `<button type="button" class="lead-cta" onclick="openLeadForm('${module}')">
+    <span class="lead-cta-ico"><svg viewBox="0 0 24 24" fill="none" stroke="#15241d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h14a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H8l-3 3z"/><path d="M8 9h8M8 12h5"/></svg></span>
+    <span class="lead-cta-txt"><strong>Être rappelé gratuitement par un courtier</strong><span>Un expert vous aide à concrétiser ce budget. Sans engagement.</span></span>
+    <span class="lead-cta-arrow">→</span>
+  </button>`;
+}
+
+function leadRecapText(){
+  if (LEAD_MODULE === 'cap' && S.cap && S.cap.capital) {
+    return 'Projet : capacité d\'emprunt estimée à ' + Math.round(S.cap.capital).toLocaleString('fr-FR') + ' €';
+  }
+  if (LEAD_MODULE === 'loc' && S.loc && S.loc.cf != null) {
+    return 'Projet : investissement locatif (cash-flow ' + (S.loc.cf>=0?'+':'') + Math.round(S.loc.cf).toLocaleString('fr-FR') + ' €/mois)';
+  }
+  return 'Projet immobilier';
+}
+
+function openLeadForm(module){
+  LEAD_MODULE = module;
+  const rc = document.getElementById('lead-recap'); if (rc) rc.textContent = leadRecapText();
+  const msg = document.getElementById('lead-msg'); if (msg) { msg.className = 'lead-msg'; msg.textContent = ''; }
+  // pré-remplissage si l'utilisateur est connecté
+  try {
+    sb.auth.getSession().then(({ data }) => {
+      const u = data && data.session && data.session.user; if (!u) return;
+      const em = document.getElementById('lead-email'); if (em && !em.value) em.value = u.email || '';
+      const pr = document.getElementById('lead-prenom');
+      const p = u.user_metadata && (u.user_metadata.prenom || (u.user_metadata.full_name||'').split(' ')[0]);
+      if (pr && !pr.value && p) pr.value = p;
+    });
+  } catch(e){}
+  document.getElementById('lead-modal').classList.add('open');
+  try { track('lead_form_ouvert', { module }); } catch(e){}
+}
+function closeLeadForm(){ const m = document.getElementById('lead-modal'); if (m) m.classList.remove('open'); }
+
+async function submitLead(){
+  const v = id => { const e = document.getElementById(id); return e ? e.value.trim() : ''; };
+  const prenom = v('lead-prenom'), nom = v('lead-nom'), tel = v('lead-tel'), email = v('lead-email');
+  const consent = document.getElementById('lead-consent').checked;
+  const msg = document.getElementById('lead-msg');
+  if (!tel || !email || !consent) {
+    msg.className = 'lead-msg err';
+    msg.textContent = 'Merci d\'indiquer votre téléphone, votre email et de cocher le consentement.';
+    return;
+  }
+  const payload = {
+    prenom, nom, tel, email, consent,
+    module: LEAD_MODULE,
+    capacite: (S.cap && S.cap.capital) ? Math.round(S.cap.capital) : null,
+    mensualite: (S.cap && S.cap.mensu) ? Math.round(S.cap.mensu) : null,
+    projet: (S.cap && S.cap.obj) || null,
+    score: (S.cap && S.cap.score) || null,
+    source: 'simulateur'
+  };
+  const btn = document.getElementById('lead-submit');
+  btn.disabled = true; btn.textContent = 'Envoi…';
+  try {
+    const { error } = await sb.from('leads').insert(payload);
+    if (error) throw error;
+    try { track('lead_envoye', { module: LEAD_MODULE }); } catch(e){}
+    const box = document.querySelector('.lead-box');
+    box.innerHTML = '<div class="lead-success"><div class="lead-success-ico"><svg viewBox="0 0 24 24" fill="none" stroke="#15241d" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></div><h3>C\'est noté !</h3><p>Un courtier partenaire vous recontactera très vite, gratuitement et sans engagement.</p><button class="lead-submit" onclick="closeLeadForm()">Fermer</button></div>';
+  } catch(e) {
+    msg.className = 'lead-msg err';
+    msg.textContent = 'Une erreur est survenue. Merci de réessayer dans un instant.';
+    btn.disabled = false; btn.textContent = 'Demander à être rappelé';
+  }
+}
+
 const S = {
   profil: { brut1:0, fam1:'cel', enf1:0, tmi1:0, ct1:'cdi', age1:0, anc1:1, brut2:0, fam2:'cel', enf2:0, tmi2:0, ct2:'cdi', age2:0, anc2:1, coRel:'' },
   cap: { sit:'', obj:'', capital:0, done:false, budget:0, mensu:0, revenus:0, apport:0, dur:20, taux:3.8, score:0, montantChoisi:0 },
@@ -2512,7 +2677,7 @@ function calcCap() {
       <button class="invest-invite-btn" onclick="showMod('loc')">Simuler la rentabilité</button>
     </div>` : ''}
   `;
-  document.getElementById('cap-res').innerHTML=html;
+  document.getElementById('cap-res').innerHTML=html + leadCtaBlock('cap') + partnerBlock('cap');
   setRight(html);
   goStep('cap',5);
   renderSaveBlock('cap');
@@ -2923,7 +3088,7 @@ function calcLoc() {
     <div class="rsec"><div class="rst">Quel régime fiscal ? (TMI : ${tmiV}%)</div><div class="rl">${regHtml}</div></div>
     ${cfM<0?`<div class="cl danger" style="margin-top:8px"><span class="ci2"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="vertical-align:-3px"><circle cx="12" cy="12" r="8.5" stroke="#dc2626" stroke-width="1.7"/><path d="M6.5 6.5l11 11" stroke="#dc2626" stroke-width="1.7" stroke-linecap="round"/></svg></span><span>Cash flow négatif de ${fmt(Math.abs(cfM))}/mois. Augmentez l'apport ou le loyer.</span></div>`:cfM<100?`<div class="cl warn" style="margin-top:8px"><span class="ci2"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="vertical-align:-3px"><path d="M12 4l8 14H4L12 4z" stroke="#d97706" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 10v4M12 16.5v.5" stroke="#d97706" stroke-width="1.7" stroke-linecap="round"/></svg></span><span>Cash flow faible. Un imprévu peut le rendre négatif.</span></div>`:`<div class="cl ok" style="margin-top:8px"><span class="ci2"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="vertical-align:-3px"><circle cx="12" cy="12" r="8.5" stroke="#15803d" stroke-width="1.7"/><path d="M8.5 12l2.5 2.5L16 9.5" stroke="#15803d" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Bonne opération. Cash flow positif et robuste.</span></div>`}
   `;
-  document.getElementById('loc-res').innerHTML=html;
+  document.getElementById('loc-res').innerHTML=html + partnerBlock('loc');
   setRight(html);
   goStep('loc',3);
   renderSaveBlock('loc');
@@ -3009,7 +3174,7 @@ function calcMB() {
     ${marge>25000?`<div class="cl ok"><span class="ci2"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="vertical-align:-3px"><circle cx="12" cy="12" r="8.5" stroke="#15803d" stroke-width="1.7"/><path d="M8.5 12l2.5 2.5L16 9.5" stroke="#15803d" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Opération rentable. Marge solide.</span></div>`:marge>0?`<div class="cl warn"><span class="ci2"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="vertical-align:-3px"><path d="M12 4l8 14H4L12 4z" stroke="#d97706" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 10v4M12 16.5v.5" stroke="#d97706" stroke-width="1.7" stroke-linecap="round"/></svg></span><span>Marge serrée. +10% travaux = bénéfice effacé.</span></div>`:`<div class="cl danger"><span class="ci2"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="vertical-align:-3px"><circle cx="12" cy="12" r="8.5" stroke="#dc2626" stroke-width="1.7"/><path d="M6.5 6.5l11 11" stroke="#dc2626" stroke-width="1.7" stroke-linecap="round"/></svg></span><span>Opération déficitaire. Revoir l'achat ou la revente.</span></div>`}
     ${margePct<15?`<div class="cl warn" style="margin-top:8px"><span class="ci2"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 10l8-5 8 5" stroke="#d97706" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 10v8M10 10v8M14 10v8M18 10v8M4 18h16" stroke="#d97706" stroke-width="1.6" stroke-linecap="round"/></svg></span><span>Marge < 15% : difficile à financer. Les banques MB exigent généralement 15-20%.</span></div>`:''}
   `;
-  document.getElementById('mb-res').innerHTML=html;
+  document.getElementById('mb-res').innerHTML=html + partnerBlock('mb');
   setRight(html);
   goStep('mb',3);
   renderSaveBlock('mb');
@@ -4513,7 +4678,7 @@ function calcComparator() {
       <span><strong>Profil incomplet :</strong> Sumba a utilisé une TMI par défaut de 30%. <a href="#" onclick="event.preventDefault();editProfil()" style="color:#92400e;font-weight:600">Renseignez votre profil</a> pour des résultats personnalisés.</span>
     </div>` : '';
 
-  document.getElementById('comp-results').innerHTML = tmiWarning + heroHtml + altHtml + detailHtml;
+  document.getElementById('comp-results').innerHTML = tmiWarning + heroHtml + altHtml + detailHtml + partnerBlock('comp');
 }
 
 // ══════════════════════════════════════
@@ -5600,6 +5765,23 @@ function dismissDraftBanner() {
     </div>
   </div>
 </div>
+<!-- MODALE LEAD (être rappelé par un courtier) -->
+<div class="lead-modal" id="lead-modal" onclick="if(event.target===this)closeLeadForm()">
+  <div class="lead-box">
+    <button class="lead-close" onclick="closeLeadForm()" aria-label="Fermer">&times;</button>
+    <h3>Être rappelé par un courtier</h3>
+    <p class="lead-sub">Un courtier partenaire vous rappelle gratuitement pour concrétiser votre projet, négocier votre taux et votre assurance. Sans engagement.</p>
+    <div class="lead-recap" id="lead-recap"></div>
+    <div class="lead-f"><label for="lead-prenom">Prénom</label><input id="lead-prenom" type="text" autocomplete="given-name"></div>
+    <div class="lead-f"><label for="lead-nom">Nom</label><input id="lead-nom" type="text" autocomplete="family-name"></div>
+    <div class="lead-f"><label for="lead-tel">Téléphone</label><input id="lead-tel" type="tel" placeholder="06 12 34 56 78" autocomplete="tel"></div>
+    <div class="lead-f"><label for="lead-email">Email</label><input id="lead-email" type="email" placeholder="vous@email.com" autocomplete="email"></div>
+    <label class="lead-consent"><input type="checkbox" id="lead-consent"><span>J'accepte que mes coordonnées et les données de ma simulation soient transmises à un courtier partenaire pour être recontacté au sujet de mon projet. <a href="legal.html#confidentialite" target="_blank" rel="noopener">En savoir plus</a></span></label>
+    <div class="lead-msg" id="lead-msg"></div>
+    <button class="lead-submit" id="lead-submit" onclick="submitLead()">Demander à être rappelé</button>
+  </div>
+</div>
+
 <!-- Vercel Web Analytics -->
 <script>
   window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
