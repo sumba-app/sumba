@@ -204,6 +204,8 @@ input[type=range].white{width:100%;accent-color:var(--gl);height:4px;}
 .partner-txt span{display:block;font-size:12.5px;color:var(--gr);margin-top:2px;line-height:1.4;}
 .partner-arrow{color:var(--gl);font-weight:700;flex-shrink:0;font-size:16px;}
 .partner-note{font-size:11px;color:var(--gr);opacity:.85;margin-top:6px;}
+.disclaimer-note{font-size:11.5px;color:var(--gr);text-align:center;margin-top:16px;line-height:1.5;}
+.disclaimer-note a{color:var(--gl);}
 .lead-cta{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:#bff05f;border:none;border-radius:16px;padding:16px 18px;margin-top:18px;cursor:pointer;box-shadow:0 8px 22px rgba(150,220,80,.4);transition:transform .2s,box-shadow .2s;font-family:'Plus Jakarta Sans',sans-serif;}
 .lead-cta:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(150,220,80,.5);}
 .lead-cta-ico{width:42px;height:42px;border-radius:12px;background:rgba(21,36,29,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
@@ -1488,6 +1490,10 @@ function partnerGo(key, module){
   return true; // lien réel : on laisse le navigateur l'ouvrir (target=_blank)
 }
 
+function disclaimerNote(){
+  return '<p class="disclaimer-note">Estimation fournie à titre indicatif, calculée à partir des informations que vous avez saisies et des règles en vigueur. Elle ne constitue pas un conseil en investissement, financier, juridique ou fiscal. <a href="legal.html#mentions" target="_blank" rel="noopener">En savoir plus</a>.</p>';
+}
+
 // ══════════════════════════════════════
 // FORMULAIRE LEAD — capture directe (lead-gen, monétisation Phase 2)
 // Le bouton "Être rappelé par un courtier" envoie le lead dans la table Supabase `leads`.
@@ -2677,7 +2683,7 @@ function calcCap() {
       <button class="invest-invite-btn" onclick="showMod('loc')">Simuler la rentabilité</button>
     </div>` : ''}
   `;
-  document.getElementById('cap-res').innerHTML=html + leadCtaBlock('cap') + partnerBlock('cap');
+  document.getElementById('cap-res').innerHTML=html + leadCtaBlock('cap') + partnerBlock('cap') + disclaimerNote();
   setRight(html);
   goStep('cap',5);
   renderSaveBlock('cap');
@@ -2941,10 +2947,10 @@ function locLive() {
 function calcLoc() {
   // Récupérer TMI - depuis profil partagé ou demander
   let tmiV=S.profil.tmi1;
-  if (!tmiV && !S.profil.brut1) {
-    const b=parseFloat(prompt('Pour calculer votre fiscalité, entrez votre salaire net mensuel (€) :','2500')||'0');
-    if (b>0) { S.profil.brut1=b; S.profil.tmi1=calcTMI(netMensuelVersNetAnnuel(b),'cel',0); tmiV=S.profil.tmi1; updateBanner(); }
-  }
+  // Aucun revenu renseigné : on applique une TMI médiane (30 %) par défaut, ajustable en
+  // renseignant ses revenus (onglet Capacité). Remplace un ancien prompt() natif bloquant.
+  S.loc._tmiDefaut = false;
+  if (!tmiV) { tmiV = 30; S.loc._tmiDefaut = true; }
 
   const prix=parseFloat(document.getElementById('l-prix').value)||0;
   const neuf=document.getElementById('l-neuf').value==='nf';
@@ -3088,7 +3094,8 @@ function calcLoc() {
     <div class="rsec"><div class="rst">Quel régime fiscal ? (TMI : ${tmiV}%)</div><div class="rl">${regHtml}</div></div>
     ${cfM<0?`<div class="cl danger" style="margin-top:8px"><span class="ci2"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="vertical-align:-3px"><circle cx="12" cy="12" r="8.5" stroke="#dc2626" stroke-width="1.7"/><path d="M6.5 6.5l11 11" stroke="#dc2626" stroke-width="1.7" stroke-linecap="round"/></svg></span><span>Cash flow négatif de ${fmt(Math.abs(cfM))}/mois. Augmentez l'apport ou le loyer.</span></div>`:cfM<100?`<div class="cl warn" style="margin-top:8px"><span class="ci2"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="vertical-align:-3px"><path d="M12 4l8 14H4L12 4z" stroke="#d97706" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 10v4M12 16.5v.5" stroke="#d97706" stroke-width="1.7" stroke-linecap="round"/></svg></span><span>Cash flow faible. Un imprévu peut le rendre négatif.</span></div>`:`<div class="cl ok" style="margin-top:8px"><span class="ci2"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="vertical-align:-3px"><circle cx="12" cy="12" r="8.5" stroke="#15803d" stroke-width="1.7"/><path d="M8.5 12l2.5 2.5L16 9.5" stroke="#15803d" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Bonne opération. Cash flow positif et robuste.</span></div>`}
   `;
-  document.getElementById('loc-res').innerHTML=html + partnerBlock('loc');
+  const locTmiNote = S.loc._tmiDefaut ? '<div class="cl info" style="margin-bottom:14px"><span class="ci2">ℹ️</span><span>Fiscalité estimée sur une <strong>TMI de 30 %</strong> (tranche médiane). Renseignez vos revenus dans l\'onglet <strong>Capacité</strong> pour l\'affiner.</span></div>' : '';
+  document.getElementById('loc-res').innerHTML=locTmiNote + html + partnerBlock('loc') + disclaimerNote();
   setRight(html);
   goStep('loc',3);
   renderSaveBlock('loc');
@@ -3174,7 +3181,7 @@ function calcMB() {
     ${marge>25000?`<div class="cl ok"><span class="ci2"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="vertical-align:-3px"><circle cx="12" cy="12" r="8.5" stroke="#15803d" stroke-width="1.7"/><path d="M8.5 12l2.5 2.5L16 9.5" stroke="#15803d" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Opération rentable. Marge solide.</span></div>`:marge>0?`<div class="cl warn"><span class="ci2"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="vertical-align:-3px"><path d="M12 4l8 14H4L12 4z" stroke="#d97706" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 10v4M12 16.5v.5" stroke="#d97706" stroke-width="1.7" stroke-linecap="round"/></svg></span><span>Marge serrée. +10% travaux = bénéfice effacé.</span></div>`:`<div class="cl danger"><span class="ci2"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="vertical-align:-3px"><circle cx="12" cy="12" r="8.5" stroke="#dc2626" stroke-width="1.7"/><path d="M6.5 6.5l11 11" stroke="#dc2626" stroke-width="1.7" stroke-linecap="round"/></svg></span><span>Opération déficitaire. Revoir l'achat ou la revente.</span></div>`}
     ${margePct<15?`<div class="cl warn" style="margin-top:8px"><span class="ci2"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 10l8-5 8 5" stroke="#d97706" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 10v8M10 10v8M14 10v8M18 10v8M4 18h16" stroke="#d97706" stroke-width="1.6" stroke-linecap="round"/></svg></span><span>Marge < 15% : difficile à financer. Les banques MB exigent généralement 15-20%.</span></div>`:''}
   `;
-  document.getElementById('mb-res').innerHTML=html + partnerBlock('mb');
+  document.getElementById('mb-res').innerHTML=html + partnerBlock('mb') + disclaimerNote();
   setRight(html);
   goStep('mb',3);
   renderSaveBlock('mb');
@@ -4678,7 +4685,7 @@ function calcComparator() {
       <span><strong>Profil incomplet :</strong> Sumba a utilisé une TMI par défaut de 30%. <a href="#" onclick="event.preventDefault();editProfil()" style="color:#92400e;font-weight:600">Renseignez votre profil</a> pour des résultats personnalisés.</span>
     </div>` : '';
 
-  document.getElementById('comp-results').innerHTML = tmiWarning + heroHtml + altHtml + detailHtml + partnerBlock('comp');
+  document.getElementById('comp-results').innerHTML = tmiWarning + heroHtml + altHtml + detailHtml + partnerBlock('comp') + disclaimerNote();
 }
 
 // ══════════════════════════════════════
@@ -5511,8 +5518,8 @@ async function saveSimFor(activeModule) {
   };
   const typeMap = { cap:'capacite', loc:'locatif', mb:'mb' };
   const labelMap = { cap:"Capacité d'emprunt", loc:'Investissement locatif', mb:'Marchand de biens' };
-  const name = prompt('Nommez cette simulation :', labelMap[activeModule] + ' - ' + new Date().toLocaleDateString('fr-FR'));
-  if (!name) return;
+  // Nom auto (renommable ensuite depuis l'espace compte) — plus de prompt() natif
+  const name = labelMap[activeModule] + ' - ' + new Date().toLocaleDateString('fr-FR');
   const { error } = await sb.from('simulations').insert({
     user_id: sbUser.id,
     name,
@@ -5531,8 +5538,8 @@ async function sauvegarderToutLeProjet() {
   if (S.loc.done) modulesFaits.push('loc');
   if (S.mb.done) modulesFaits.push('mb');
   if (!modulesFaits.length) { showToast('Complétez au moins une simulation.'); return; }
-  const nomProjet = prompt('Nommez votre projet :', 'Mon projet - ' + new Date().toLocaleDateString('fr-FR'));
-  if (!nomProjet) return;
+  // Nom auto (renommable ensuite depuis l'espace compte) — plus de prompt() natif
+  const nomProjet = 'Mon projet - ' + new Date().toLocaleDateString('fr-FR');
   const dataMap = {
     cap: { capital: S.cap.capital, sit: S.cap.sit, obj: S.cap.obj, budget: S.cap.budget, mensu: S.cap.mensu, revenus: S.cap.revenus, montantChoisi: S.cap.montantChoisi, score: S.cap.score, apport: S.cap.apport },
     loc: { cf: S.loc.cf, rNet: S.loc.rNet, regime: S.loc.regime, type: S.loc.type, rBrut: S.loc.rBrut, loyerAn: S.loc.loyerAn, prix: S.loc.prix, mensu: S.loc.mensu },

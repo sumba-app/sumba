@@ -125,6 +125,9 @@ nav.scrolled .nav-in{box-shadow:var(--sh);background:rgba(255,255,255,.92);}
 .hero-trust .txt{font-size:13.5px;color:var(--ink-2);}
 .hero-trust .txt b{color:var(--ink);font-weight:700;}
 .hero-trust .stars{color:#f0a92b;letter-spacing:1px;}
+.hero-trust{flex-wrap:wrap;gap:10px 20px;}
+.trust-chip{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;color:var(--ink-2);font-weight:500;}
+.trust-chip svg{width:18px;height:18px;color:var(--green-acc);flex-shrink:0;}
 
 /* HERO VISUAL */
 .hero-visual{position:relative;}
@@ -345,7 +348,7 @@ footer{border-top:1px solid var(--line);padding:60px 0 36px;}
     {
       "@type": "Question",
       "name": "Les calculs sont-ils fiables ?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Sumba est conçu par des professionnels de l'immobilier et mis à jour régulièrement selon les règles HCSF, les barèmes fiscaux en vigueur et les taux du marché. Les résultats sont des estimations fiables mais ne remplacent pas un conseil personnalisé d'un notaire ou d'un conseiller fiscal." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Sumba applique les règles professionnelles en vigueur (HCSF, barèmes fiscaux) et ses calculs sont mis à jour régulièrement selon les taux du marché. Les résultats sont des estimations fiables mais ne remplacent pas un conseil personnalisé d'un notaire, d'un courtier ou d'un conseiller fiscal." }
     },
     {
       "@type": "Question",
@@ -418,13 +421,8 @@ footer{border-top:1px solid var(--line);padding:60px 0 36px;}
           <a href="#exemple" class="btn-ghost">Voir un exemple</a>
         </div>
         <div class="hero-trust reveal in d4">
-          <div class="avs">
-            <span style="background-image:url('https://i.pravatar.cc/80?img=12')"></span>
-            <span style="background-image:url('https://i.pravatar.cc/80?img=32')"></span>
-            <span style="background-image:url('https://i.pravatar.cc/80?img=5')"></span>
-            <span style="background-image:url('https://i.pravatar.cc/80?img=45')"></span>
-          </div>
-          <div class="txt"><span class="stars">★★★★★</span><br><b>Des milliers de projets</b> simulés en toute confiance</div>
+          <span class="trust-chip"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12.5l5 5L20 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Calculs alignés sur les règles HCSF &amp; les barèmes fiscaux 2026</span>
+          <span class="trust-chip"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3l8 3v6c0 5-8 9-8 9s-8-4-8-9V6z" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg>Vos données restent privées</span>
         </div>
       </div>
 
@@ -616,7 +614,7 @@ footer{border-top:1px solid var(--line);padding:60px 0 36px;}
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)"><span>Les calculs sont-ils fiables ?</span><span class="icon"></span></button>
-        <div class="faq-a">Sumba est conçu par des professionnels de l'immobilier et mis à jour régulièrement selon les règles HCSF, les barèmes fiscaux en vigueur et les taux du marché. Les résultats sont des estimations fiables mais ne remplacent pas un conseil personnalisé d'un notaire ou d'un conseiller fiscal.</div>
+        <div class="faq-a">Sumba applique les règles professionnelles en vigueur (HCSF, barèmes fiscaux) et ses calculs sont mis à jour régulièrement selon les taux du marché. Les résultats sont des estimations fiables mais ne remplacent pas un conseil personnalisé d'un notaire, d'un courtier ou d'un conseiller fiscal.</div>
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)"><span>Quelle différence entre LMNP et location nue ?</span><span class="icon"></span></button>
